@@ -1,0 +1,5 @@
+﻿ Install-Package Microsoft.Bcl
+ Install-Package Microsoft.Bcl.Build
+ Install-Package Microsoft.Bcl.Async
+ Install-Package Microsoft.Net.Http
+ Install-Package WriteableBitmapEx
