@@ -31,24 +31,6 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
             return false;
         }
 
-        
-
-
-        public static Bitmap ToBitmap(this BitmapImage bmi)
-        {
-            if (bmi.IsNullOrEmpty())
-                return null;
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                BitmapEncoder encoder = new BmpBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bmi));
-                encoder.Save(stream);
-                Bitmap bmp = new Bitmap(stream);
-                return new Bitmap(bmp);
-            }
-        }
-
         public static BitmapImage ToBitmapImage(this Bitmap bmp, ImageFormat format)
         {
             if (bmp.IsNullOrEmpty())

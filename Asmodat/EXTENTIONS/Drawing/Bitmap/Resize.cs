@@ -152,7 +152,7 @@ namespace Asmodat.Extensions.Drawing
             }
             catch(Exception ex)
             {
-                Exceptions.Write(ex);
+                ex.WriteToExcpetionBuffer();
                 return null;
             }
         }

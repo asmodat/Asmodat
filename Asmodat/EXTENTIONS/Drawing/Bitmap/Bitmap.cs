@@ -23,19 +23,22 @@ using System.Runtime.InteropServices;
 
 namespace Asmodat.Extensions.Drawing
 {
-    /*
-    
-    */
-
-
-    
 
     public static partial class BitmapEx
     {
-        public static ExceptionBuffer Exceptions { get; private set; } = new ExceptionBuffer();
-
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Fits(this Bitmap bmp, Rectangle rect)
+        {
+            if (bmp != null && bmp.Width > 0 && bmp.Height > 0
+                && rect.X >= 0 && rect.Y >= 0 && rect.Width > 0 && rect.Height > 0 &&
+                (rect.Width + rect.X) <= bmp.Width && (rect.Height + rect.Y) <= bmp.Height)
+                return true;
+
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Fits(this Bitmap bmp, Int32Rect rect)
         {
             if (bmp != null && bmp.Width > 0 && bmp.Height > 0
                 && rect.X >= 0 && rect.Y >= 0 && rect.Width > 0 && rect.Height > 0 &&
@@ -63,7 +66,7 @@ namespace Asmodat.Extensions.Drawing
             }
             catch (Exception ex)
             {
-                Exceptions.Write(ex);
+                ex.WriteToExcpetionBuffer();
                 return null;
             }
         }
@@ -71,6 +74,7 @@ namespace Asmodat.Extensions.Drawing
        
         public static void Clear(this Bitmap bmp, Color color)
         {
+           
             if (bmp == null)
                 return;
 
@@ -80,14 +84,7 @@ namespace Asmodat.Extensions.Drawing
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Rectangle ToRectangle(this Bitmap bmp)
-        {
-            if (bmp == null)
-                return Rectangle.Empty;
-            else 
-                return new Rectangle(0, 0, bmp.Width, bmp.Height);
-        }
+        
 
 
 
@@ -170,7 +167,7 @@ namespace Asmodat.Extensions.Drawing
             }
             catch(Exception ex)
             {
-                Exceptions.Write(ex);
+                ex.WriteToExcpetionBuffer();
                 return;
             }
             
@@ -195,30 +192,6 @@ namespace Asmodat.Extensions.Drawing
         }
 
 
-        /// <summary>
-        /// Can be used in conjunction with ToByteArray extention method
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static Bitmap ToBitmap(this byte[] data)
-        {
-            if (data.IsNullOrEmpty())
-                return null;
-            try
-            {
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    stream.Write(data, 0, data.Length);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    Bitmap bmp = new Bitmap(stream);
-                    return bmp;
-                }
-            }
-            catch(Exception ex)
-            {
-                Exceptions.Write(ex);
-                return null;
-            }
-        }
+        
     }
 }

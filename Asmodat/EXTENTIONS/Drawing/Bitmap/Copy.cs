@@ -42,12 +42,12 @@ namespace Asmodat.Extensions.Drawing
 
             if (bmp.ToRectangle().EqualSize(rect))
             {
-                result = src.ToBitmapFast();
+                result = src.ToBitmapFast(System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             }
             else
             {
                 CroppedBitmap cropped = new CroppedBitmap(src, bmp.ToInt32Rect());
-                result = cropped.ToBitmapFast();
+                result = cropped.ToBitmapFast(System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             }
             
             return result;
@@ -96,7 +96,7 @@ namespace Asmodat.Extensions.Drawing
             }
             catch (Exception ex)
             {
-                Exceptions.Write(ex);
+                ex.WriteToExcpetionBuffer();
                 return null;
             }
         }
@@ -131,7 +131,7 @@ namespace Asmodat.Extensions.Drawing
             }
             catch (Exception ex)
             {
-                Exceptions.Write(ex);
+                ex.WriteToExcpetionBuffer();
                 return null;
             }
         }

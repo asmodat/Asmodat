@@ -13,6 +13,9 @@ using Asmodat.Extensions.Collections.Generic;
 using System.Drawing.Imaging;
 using Asmodat.Imaging;
 using Asmodat.Debugging;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Asmodat.Extensions.Drawing
 {
@@ -20,6 +23,34 @@ namespace Asmodat.Extensions.Drawing
 
     public static partial class RectangleEx
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Rectangle ToRectangle(this Bitmap bmp)
+        {
+            if (bmp == null)
+                return Rectangle.Empty;
+            else
+                return new Rectangle(0, 0, bmp.Width, bmp.Height);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Rectangle ToRectangle(this Int32Rect rect)
+        {
+            if (rect == null)
+                return Rectangle.Empty;
+            else
+                return new Rectangle(0, 0, rect.Width, rect.Height);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Rectangle ToRectangle(this WriteableBitmap wbm)
+        {
+            if (wbm == null)
+                return Rectangle.Empty;
+            else
+                return new Rectangle(0, 0, wbm.PixelWidth, wbm.PixelHeight);
+        }
+
+
         public static Rectangle[,] Split(this Rectangle rect, int xParts, int yParts)
         {
             int width = rect.Width;
@@ -61,10 +92,7 @@ namespace Asmodat.Extensions.Drawing
         }
 
 
-        public static Bitmap ToBitmap(this Rectangle rect)
-        {
-            return new Bitmap(rect.Width, rect.Height);
-        }
+        
 
         public static readonly Rectangle Default = new Rectangle();
 
@@ -75,22 +103,31 @@ namespace Asmodat.Extensions.Drawing
 
             return false;
         }
+        
 
-
-        public static bool Fits(this Rectangle rect, Bitmap bmp)
+        /// <summary>
+        /// Checks if one rect1 surround rect2, this method is location (X,Y), and order (rect1,rect2) sensitive
+        /// </summary>
+        /// <param name="rect1"></param>
+        /// <param name="rect2"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Fits(this Rectangle rect1, Rectangle rect2)
         {
-            if (bmp != null && bmp.Width > 0 && bmp.Height > 0
-                && rect.X >= 0 && rect.Y >= 0 && rect.Width > 0 && rect.Height > 0 &&
-                (rect.Width + rect.X) <= bmp.Width && (rect.Height + rect.Y) <= bmp.Height )
+            if ((rect1.Width + rect1.X) >= (rect2.Width + rect2.X) &&
+                (rect1.Height + rect1.Y) >= (rect2.Height + rect2.Y) &&
+                rect1.X <= rect2.X &&
+                rect1.Y <= rect2.Y)
                 return true;
-
-            return false;
+            else
+                return false;
         }
 
 
-        public static bool EqualSize(this Rectangle rect, Rectangle cmp)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool EqualSize(this Rectangle rect1, Rectangle rect2)
         {
-            if (rect.Width == cmp.Width && rect.Height == cmp.Height)
+            if (rect1.Width == rect2.Width && rect1.Height == rect2.Height)
                 return true;
             else 
                 return false;
@@ -100,6 +137,8 @@ namespace Asmodat.Extensions.Drawing
         {
             return rect.Width * rect.Height;
         }
+
+        
 
         /*public static Bitmap ToBitmap(this Rectangle rect, Graphics graph)
         {

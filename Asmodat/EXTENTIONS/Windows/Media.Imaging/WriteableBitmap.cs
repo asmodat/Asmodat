@@ -19,8 +19,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Globalization;
 using System.Windows.Controls;
-
-
+using Asmodat.Natives;
+using Asmodat.Extensions.Windows.Media.Imaging;
 
 namespace Asmodat.Extensions.Windows.Media.Imaging
 {
@@ -36,6 +36,16 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
             else
                 return false;
         }
+
+
+       /* public static bool Fits(this WriteableBitmap wbm, Bitmap bmp)
+        {
+            if (wbm.ToInt32Rect().)
+                return true;
+            else
+                return false;
+        }*/
+
 
         public static WriteableBitmap ToWriteableBitmap(this BitmapSource bms)
         {
@@ -60,6 +70,75 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
 
             return new WriteableBitmap(rtb);
         }
+
+        public static void DrawImage(this WriteableBitmap wbm, Bitmap bmp)
+        {
+            if (wbm.IsNullOrEmpty() || bmp.IsNullOrEmpty())
+                return;
+            
+
+            BitmapData data = bmp.LockBits(bmp.ToRectangle(), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+
+            try
+            {
+                wbm.Lock();
+                kernel32.CopyMemory(wbm.BackBuffer, data.Scan0, (wbm.BackBufferStride * bmp.Height));
+                wbm.AddDirtyRect(bmp.ToInt32Rect());
+                wbm.Unlock();
+            }
+            finally
+            {
+                bmp.UnlockBits(data);
+                bmp.Dispose();
+            }
+        }
+
+
+        public static void WritePixels(this WriteableBitmap wbm, Bitmap bmp)
+        {
+            if (wbm.IsNullOrEmpty() || bmp.IsNullOrEmpty())
+                return;
+
+
+            BitmapData data = bmp.LockBits(bmp.ToRectangle(), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+
+            try
+            {
+                wbm.WritePixels(bmp.ToInt32Rect(), data.Scan0, data.Stride, 0);
+            }
+            finally
+            {
+                bmp.UnlockBits(data);
+                bmp.Dispose();
+            }
+        }
+
+        public static WriteableBitmap ToWriteableBitmap(this Bitmap bmp)
+        {
+            if (bmp.IsNullOrEmpty())
+                return null;
+
+            WriteableBitmap wbm = new WriteableBitmap(bmp.Width, bmp.Height, 96, 96, PixelFormats.Pbgra32, null);
+            wbm.DrawImage(bmp);
+
+            return wbm;
+        }
+
+
+        public static WriteableBitmap CopyDeep(this WriteableBitmap wbm)
+        {
+            if (wbm.IsNullOrEmpty())
+                return null;
+
+            if (wbm.Format != PixelFormats.Pbgra32)
+            {
+                var temp = BitmapFactory.ConvertToPbgra32Format(wbm);
+                return temp.Crop(wbm.ToRect());
+            }
+            else
+                return wbm.Crop(wbm.ToRect());
+        }
+
 
 
         /*public static void WriteTextToBitmap(this WriteableBitmap wbm, string text, decimal fontSizePercentage)

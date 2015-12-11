@@ -18,6 +18,7 @@ using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Globalization;
+using Asmodat.Natives;
 
 namespace Asmodat.Extensions.Windows.Media.Imaging
 {
@@ -34,11 +35,7 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
             return false;
         }
         
-
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        public static extern bool DeleteObject(IntPtr hObject);
-
-
+        
         public static BitmapSource ToBitmapSource(this Bitmap bmp)
         {
             if (bmp.IsNullOrEmpty())
@@ -53,7 +50,7 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
             }
             finally
             {
-                DeleteObject(hBitmap);
+                gdi32.DeleteObject(hBitmap);
             }
 
             return result;
@@ -61,7 +58,7 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
 
         public static BitmapSource ToBitmapSourceFast(this Bitmap bmp)
         {
-            return bmp.ToBitmapSourceFast(PixelFormats.Bgr24);
+            return bmp.ToBitmapSourceFast(PixelFormats.Pbgra32);
         }
 
         public static BitmapSource ToBitmapSourceFast(this Bitmap bmp, System.Windows.Media.PixelFormat format)
@@ -105,7 +102,7 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
 
         public static Bitmap ToBitmapFast(this BitmapSource source)
         {
-            return source.ToBitmapFast(System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            return source.ToBitmapFast(System.Drawing.Imaging.PixelFormat.Format24bppRgb);
         }
 
         public static Bitmap ToBitmapFast(this BitmapSource source, System.Drawing.Imaging.PixelFormat format)
@@ -115,7 +112,7 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
 
             Bitmap bmp = new Bitmap(source.PixelWidth, source.PixelHeight, format);
 
-            BitmapData data = bmp.LockBits(bmp.ToRectangle(), ImageLockMode.WriteOnly, format);
+            BitmapData data = bmp.LockBits(bmp.ToRectangle(), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);// format);
 
             source.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
 
@@ -144,29 +141,11 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
         }*/
 
 
-        public static Rect ToRect(this BitmapSource source)
-        {
-            if (source.IsNullOrEmpty())
-                return Rect.Empty;
+        
 
-            return new Rect(0, 0, source.Width, source.Height);
-        }
+        
 
-        public static Int32Rect ToInt32Rect(this BitmapSource bms)
-        {
-            if (bms.IsNullOrEmpty())
-                return Int32Rect.Empty;
-
-            return new Int32Rect(0, 0, bms.PixelWidth, bms.PixelHeight);
-        }
-
-        public static Rect ToRect(this BitmapSource source, double locationX, double locationY)
-        {
-            if (source.IsNullOrEmpty() || locationX < 0 || locationY < 0)
-                return Rect.Empty;
-
-            return new Rect(locationX, locationY, source.Width, source.Height);
-        }
+        
 
         public static RenderTargetBitmap WriteTextToRenderTargetBitmap(this BitmapSource bms, string text, decimal fontSizePercentage)
         {

@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using Asmodat.Extensions.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using Asmodat.Extensions.Windows.Media.Imaging;
 
 namespace Asmodat.Extensions.Windows
 {
@@ -38,5 +39,52 @@ namespace Asmodat.Extensions.Windows
         {
             return new Int32Rect(0, 0, rect.Width, rect.Height);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32Rect ToInt32Rect(this System.Drawing.Size size)
+        {
+            return new Int32Rect(0, 0, size.Width, size.Height);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Int32Rect ToInt32Rect(this BitmapSource bms)
+        {
+            if (bms.IsNullOrEmpty())
+                return Int32Rect.Empty;
+
+            return new Int32Rect(0, 0, bms.PixelWidth, bms.PixelHeight);
+        }
+
+
+
+
+
+        /// <summary>
+        /// Checks if one rect1 surround rect2, this method is location (X,Y), and order (rect1,rect2) sensitive
+        /// </summary>
+        /// <param name="rect1"></param>
+        /// <param name="rect2"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Fits(this Int32Rect rect1, Int32Rect rect2)
+        {
+            if ((rect1.Width + rect1.X) >= (rect2.Width + rect2.X) && 
+                (rect1.Height + rect1.Y) >= (rect2.Height + rect2.Y) &&
+                rect1.X <= rect2.X && 
+                rect1.Y <= rect2.Y)
+                return true;
+            else
+                return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool EqualSize(this Int32Rect rect1, Int32Rect rect2)
+        {
+            if (rect1.Width == rect2.Width && rect1.Height == rect2.Height)
+                return true;
+            else
+                return false;
+        }
+
     }
 }
