@@ -107,11 +107,10 @@ namespace Asmodat.Types
                 return new TickTime(DefaultTicks);
             }
         }
+    
 
 
-
-
-        public TickTime(long Ticks)
+        public TickTime(long Ticks) //: this()
         {
             this.Ticks = Ticks;
         }

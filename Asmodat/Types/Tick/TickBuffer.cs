@@ -10,8 +10,14 @@ using Asmodat.Extensions.Collections.Generic;
 
 namespace Asmodat.Types
 {
-    public partial class TickBuffer<T>
+    public partial class TickBuffer<T> : IDisposable
     {
+        public void Dispose()
+        {
+            this.Clear();
+        }
+
+
         ThreadedDictionary<TickTime, T> Buffer = new ThreadedDictionary<TickTime, T>();
 
         public long Timeout { get; private set; }
@@ -20,7 +26,29 @@ namespace Asmodat.Types
 
         public int Size { get; private set; }
 
-        private readonly object locker = new object();
+
+        private TickTime _TickerRead = TickTime.Default;
+        private TickTime _TickerWrite = TickTime.Default;
+        private TickTime _TickerClear = TickTime.Default;
+        private TickTime _TickerCleanup  = TickTime.Default;
+
+        /// <summary>
+        /// Defines if last operation was a write operation and buffor is greater then zero
+        /// </summary>
+        public bool IsHot
+        {
+            get
+            {
+                if (Buffer.Count > 0 &&
+                    _TickerWrite > _TickerRead &&
+                    _TickerWrite > _TickerClear &&
+                    _TickerWrite > _TickerCleanup)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
 
         public TickBuffer(int size, long timeout, TickTime.Unit unit = TickTime.Unit.ms)
         {
@@ -31,63 +59,90 @@ namespace Asmodat.Types
 
         public void Cleanup()
         {
-            lock (locker)
-            {
-                var keys = Buffer.KeysArray;
-                if (keys.IsNullOrEmpty())
-                    return;
+            var keys = Buffer.KeysArray;
+            if (keys.IsNullOrEmpty())
+                return;
 
-                foreach (var v in keys)
-                {
-                    if (v.Timeout(Timeout, TimeoutUnit))
-                        Buffer.Remove(v);
-                }
+            foreach (var v in keys)
+            {
+                if (v.Timeout(Timeout, TimeoutUnit))
+                    Buffer.Remove(v);
             }
+
+            _TickerCleanup.SetNow();
         }
 
         public void Write(T data)
         {
-            
+            this.Write(data, TickTime.Now);
+        }
+
+
+        public void Write(T data, TickTime time)
+        {
+
             if (Size > 0 && Buffer.Count > Size)
                 this.Cleanup();
 
-            lock (locker)
-                Buffer.Add(TickTime.Now, data);
+            Buffer.Add(time.Copy(), data);
+            _TickerWrite.SetNow();
         }
 
 
         public T[] ReadAllValues()
         {
             this.Cleanup();
-
-            lock (locker)
-                return Buffer.ValuesArray;
-        }
-
-        public T ReadLast()
-        {
-            
-            T result = default(T);
-            TickTime time = TickTime.Default;
-            lock (locker) foreach (var v in Buffer)
-                {
-                    if(v.Key > time)
-                    {
-                        time = v.Key;
-                        result = v.Value;
-                    }
-                }
+            T[] result = Buffer.ValuesArray;
+            _TickerRead.SetNow();
 
             return result;
         }
 
-        public void Clear()
+        public T ReadLast()
         {
-            lock (locker)
-            {
-                Buffer.Clear();
-            }
+            TickTime time;
+            T result = ReadLast(out time);
+            return result;
         }
 
+        public T ReadLast(out TickTime time)
+        {
+            return this.ReadNext(out time, TickTime.Default);
+        }
+
+        public T ReadNext(out TickTime time, TickTime previous)
+        {
+            T result = default(T);
+            time = previous.Copy();
+            var keys = Buffer.KeysArray;
+
+            foreach (var key in keys)
+            {
+                if (key > time)
+                {
+                    time = key;
+                    result = Buffer[key];
+                }
+            }
+
+            _TickerRead.SetNow();
+            return result;
+        }
+
+        public T ReadNext(TickTime previous)
+        {
+            TickTime time;
+            T result = ReadNext(out time, previous);
+            return result;
+        }
+
+
+        public void Clear()
+        {
+            Buffer.Clear();
+            _TickerClear.SetNow();
+        }
+
+        
     }
 }

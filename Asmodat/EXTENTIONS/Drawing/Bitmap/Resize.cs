@@ -137,6 +137,12 @@ namespace Asmodat.Extensions.Drawing
             return bmp.AForge_ResizeFast(width, height);
         }
 
+
+        public static Bitmap AForge_ResizeFast(this Bitmap bmp, Size size)
+        {
+            return bmp.AForge_ResizeFast(size.Width, size.Height);
+        }
+
         public static Bitmap AForge_ResizeFast(this Bitmap source, int width, int height)
         {
             if (source.IsNullOrEmpty() || width <= 0 || height <= 0)

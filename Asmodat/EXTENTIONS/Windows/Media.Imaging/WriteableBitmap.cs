@@ -98,8 +98,7 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
         {
             if (wbm.IsNullOrEmpty() || bmp.IsNullOrEmpty())
                 return;
-
-
+            
             BitmapData data = bmp.LockBits(bmp.ToRectangle(), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
 
             try
@@ -111,6 +110,18 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
                 bmp.UnlockBits(data);
                 bmp.Dispose();
             }
+        }
+
+
+        public static void WritePixels(this WriteableBitmap wbm, BitmapSource bms)
+        {
+            if (wbm.IsNullOrEmpty() || bms.IsNullOrEmpty())
+                return;
+
+            int stride = bms.GetStride();
+            byte[] data = new byte[stride * bms.PixelHeight];
+            bms.CopyPixels(data, stride, 0);
+            wbm.WritePixels(bms.ToInt32Rect(), data, stride, 0);
         }
 
         public static WriteableBitmap ToWriteableBitmap(this Bitmap bmp)
