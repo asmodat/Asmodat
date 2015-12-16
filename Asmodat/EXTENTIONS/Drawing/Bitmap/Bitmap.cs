@@ -85,28 +85,7 @@ namespace Asmodat.Extensions.Drawing
         }
 
         
-
-
-
-
-      /*  public static byte[] ToGraphicsStream(this Bitmap bmp)
-        {
-            if (bmp.IsNullOrEmpty())
-                return null;
-
-            SlimDX.Direct3D9.Surface sf;
-            //SurfaceLoader sf;
-
-            GraphicsStream gs;
-
-
-                return null;
-            
-        }*/
-
-
-
-
+       
 
 
 
@@ -174,24 +153,33 @@ namespace Asmodat.Extensions.Drawing
         }
 
 
-
-
-
-
-
-        public static ImageCodecInfo GetEncoder(ImageFormat format)
+        public static BitmapData LockBitsRW(this Bitmap bmp, Rectangle rect)
         {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                    return codec;
-            }
+            if (bmp.IsNullOrEmpty() || !rect.IsValid() || !bmp.Fits(rect))
+                return null;
+
+            BitmapData bmd = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
+            return bmd;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BitmapData LockBitsRW(this Bitmap bmp)
+        {
+            return bmp.LockBitsRW(bmp.ToRectangle());
+        }
+
+
+        public static byte[] PixelData(this Bitmap bmp)
+        {
+            if (bmp.IsNullOrEmpty())
+                return null;
+
+            BitmapData bmd = bmp.LockBitsRW();
+
+
 
             return null;
         }
 
-
-        
     }
 }

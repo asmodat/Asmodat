@@ -357,6 +357,7 @@
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Join.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Split.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Bitmap.cs" />
+    <Compile Include="EXTENTIONS\Drawing\Imaging\BitmapData.cs" />
     <Compile Include="EXTENTIONS\Drawing\Rectangle.cs" />
     <Compile Include="EXTENTIONS\Drawing\Imaging\PixelFormat.cs" />
     <Compile Include="EXTENTIONS\Drawing\Point.cs" />

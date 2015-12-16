@@ -38,6 +38,56 @@ namespace Asmodat.Extensions.Collections.Generic
             return false;
         }
 
+
+        public static bool IsNullOrEmpty<TKey>(this TKey[,,] source)
+        {
+            if (source == null)
+                return true;
+
+            int i = 0, r = source.Rank;
+            for (; i < r; i++)
+                if (source.GetLength(i) <= 0)
+                    return true;
+
+            return false;
+        }
+
+
+        public static void PopulateDepth<TKey>(this TKey[,,] source, int x, int y, TKey[] values)
+        {
+            if (source.IsNullOrEmpty() || values.IsNullOrEmpty())
+                return;
+
+            int 
+                w = source.Width(), 
+                h = source.Height(), 
+                d = source.Depth(),
+                offset = (y * w + x ) * d,
+                l = Math.Min(d, values.Length);
+
+            Buffer.BlockCopy(values, 0, source, offset, l);
+         
+            return;
+        }
+
+        public static void PopulateWidth<TKey>(this TKey[,,] source, int y, TKey[,] values)
+        {
+            if (source.IsNullOrEmpty() || values.IsNullOrEmpty())
+                return;
+
+            int 
+                w = source.Width(), 
+                h = source.Height(), 
+                d = source.Depth(),
+                offset = (y * w) * d,
+                l = Math.Min(y * w, values.Length);
+
+            Buffer.BlockCopy(values, 0, source, offset, l);
+            return;
+        }
+
+
+
         /// <summary>
         /// IEquitable required
         /// </summary>
@@ -52,16 +102,43 @@ namespace Asmodat.Extensions.Collections.Generic
             T _default = default(T);
             int x, y = 0, w = source.Width(), h = source.Height();
             for (x = 0; x < w; x++)
-            {
                 for (y = 0; y < h; y++)
-                {
                     if (EqualityComparer<T>.Default.Equals(source[x, y], _default))
                         return false;
-                }
-            }
 
             return true;
         }
+
+
+
+        public static int CountEquatables<T>(this T[,] source, T value) where T : IEquatable<T>
+        {
+            if (source.IsNullOrEmpty())
+                return 0;
+
+            int x, y = 0, w = source.Width(), h = source.Height(), sum = 0;
+            for (x = 0; x < w; x++)
+                for (y = 0; y < h; y++)
+                    if (EqualityComparer<T>.Default.Equals(source[x, y], value))
+                        ++sum;
+
+            return sum;
+        }
+
+        public static int CountEquatables<T>(this T[] source, T value) where T : IEquatable<T>
+        {
+            if (source.IsNullOrEmpty())
+                return 0;
+
+            int i = 0, l = source.Length, sum = 0;
+            for (i = 0; i < l; i++)
+                if (EqualityComparer<T>.Default.Equals(source[i], value))
+                    ++sum;
+
+            return sum;
+        }
+
+
 
         public static bool AllClassesAreNull<TKey>(this TKey[,] source) where TKey : class
         {
@@ -72,34 +149,24 @@ namespace Asmodat.Extensions.Collections.Generic
             int x, y = 0, w = source.Width(), h = source.Height();
 
             for (x = 0; x < w; x++)
-            {
                 for (y = 0; y < h; y++)
-                {
                     if (source[x, y] != null)
                         return false;
-                }
-            }
 
             return true;
         }
 
         public static bool AllClassesAreNotNull<TKey>(this TKey[,] source) where TKey : class
         {
-
             if (source == null)
                 return false;
 
             int x, y = 0, w = source.Width(), h = source.Height();
-
             for (x = 0; x < w; x++)
-            {
                 for (y = 0; y < h; y++)
-                {
                     if (source[x, y] == null)
                         return false;
-                }
-            }
-
+                
             return true;
         }
 
@@ -113,14 +180,10 @@ namespace Asmodat.Extensions.Collections.Generic
             if (source.IsNullOrEmpty())
                 return;
 
-            int x, y = 0, w = source.Width(), h = source.Height();
+            int x = 0, y = 0, w = source.Width(), h = source.Height();
             for (x = 0; x < w; x++)
-            {
                 for (y = 0; y < h; y++)
-                {
                     source[x, y] = value;
-                }
-            }
         }
 
         public static void Clear<TKey>(this TKey[,] source)
@@ -152,12 +215,8 @@ namespace Asmodat.Extensions.Collections.Generic
 
             int x, y = 0, w = source.Width(), h = source.Height();
             for (x = 0; x < w; x++)
-            {
                 for (y = 0; y < h; y++)
-                {
                     source[x, y] = (TKey)value.Clone();
-                }
-            }
         }
 
 
@@ -298,13 +357,13 @@ namespace Asmodat.Extensions.Collections.Generic
         }
 
         /// <summary>
-        /// [width,height,depp]
+        /// [width,height,depth]
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int Deep<TKey>(this TKey[,,] source)
+        public static int Depth<TKey>(this TKey[,,] source)
         {
             if (source == null)
                 return 0;

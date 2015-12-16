@@ -41,6 +41,18 @@ namespace Asmodat.Extensions.Drawing
 
     public static partial class BitmapEx
     {
+        public static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                    return codec;
+            }
+
+            return null;
+        }
+
 
         public static Bitmap Compress(this Bitmap bmp, long quality)
         {

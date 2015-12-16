@@ -31,6 +31,10 @@ namespace Asmodat.Extensions.Objects
             }
         }
 
+       
+
+
+
         public static void InvertAllValues(this bool[] array)
         {
             if (array.IsNullOrEmpty())
