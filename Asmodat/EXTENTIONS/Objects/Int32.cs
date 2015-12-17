@@ -96,7 +96,7 @@ namespace Asmodat.Extensions.Objects
         /// <param name="min"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static int ToClosedInterval(this Int32 value, int min, int max)
+        public static int ToClosedInterval(this Int32 value, Int32 min, int max)
         {
             if (min > max)
                 throw new ArgumentException("Invalid interval.");

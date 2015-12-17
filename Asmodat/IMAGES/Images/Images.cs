@@ -11,6 +11,7 @@ using System.Drawing;
 using Asmodat.Types;
 using System.Drawing.Imaging;
 using System.IO;
+using Asmodat.Extensions.Drawing;
 
 namespace Asmodat.Imaging
 {
@@ -65,13 +66,13 @@ namespace Asmodat.Imaging
                 return false;
 
             byte[] data1, data2;
-            
-            if(rect1 == null) data1 = Images.GetRawBytes(bmp1);
-            else data1 = Images.GetRawBytes(bmp1, (Rectangle)rect1);
 
 
-            if (rect2 == null) data2 = Images.GetRawBytes(bmp1);
-            else data2 = Images.GetRawBytes(bmp2, (Rectangle)rect1);
+            if (rect1 == null) data1 = bmp1.GetRawBytes();
+            else data1 = bmp1.GetRawBytes((Rectangle)rect1);
+
+            if (rect2 == null) data2 = bmp2.GetRawBytes();
+            else data2 = bmp2.GetRawBytes((Rectangle)rect2);
 
             return Bytes.Compare(data1, data2);
         }
@@ -83,12 +84,11 @@ namespace Asmodat.Imaging
 
             byte[] data1, data2;
 
-            if (rect1 == null) data1 = Images.GetRawBytes(bmp1);
-            else data1 = Images.GetRawBytes(bmp1, (Rectangle)rect1);
+            if (rect1 == null) data1 = bmp1.GetRawBytes();
+            else data1 = bmp1.GetRawBytes((Rectangle)rect1);
 
-
-            if (rect2 == null) data2 = Images.GetRawBytes(bmp1);
-            else data2 = Images.GetRawBytes(bmp2, (Rectangle)rect1);
+            if (rect2 == null) data2 = bmp2.GetRawBytes();
+            else data2 = bmp2.GetRawBytes((Rectangle)rect2);
 
             return Bytes.Similarity32Bit(data1, data2);
         }
@@ -123,7 +123,7 @@ namespace Asmodat.Imaging
             Bitmap sourceFormated = Images.Convert(source, format);
             Bitmap sampleFormated = Images.Convert(sample, format);
 
-            byte[] sampleFData = Images.GetRawBytes(sampleFormated);
+            byte[] sampleFData = sampleFormated.GetRawBytes();
             byte[] data;
             Size size = sample.Size;
             Point2D location;
@@ -137,7 +137,7 @@ namespace Asmodat.Imaging
                 for (int iy = 0; iy < (sourceHeight - sampleHeight); iy++)
                 {
                     location = new Point2D(ix, iy);
-                    data = Images.GetRawBytes(sourceFormated, new Rectangle((Point)location, size));
+                    data = sourceFormated.GetRawBytes(new Rectangle((Point)location, size));
                     value = Bytes.Similarity8Bit(data, sampleFData);
                     if (value >= similarityMin && value <= similarityMax)
                         outputs.Add(location, value);

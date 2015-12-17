@@ -238,7 +238,6 @@
     <Compile Include="ABBREVIATE\FormsControls\Locations.cs" />
     <Compile Include="ABBREVIATE\Properties.cs" />
     <Compile Include="ABBREVIATE\Sizes.cs" />
-    <Compile Include="ABBREVIATE\Console.cs" />
     <Compile Include="ABBREVIATE\Convert.cs" />
     <Compile Include="ABBREVIATE\Doubles\Doubles.cs" />
     <Compile Include="ABBREVIATE\Doubles\Parse.cs" />
@@ -348,6 +347,9 @@
     <Compile Include="EXTENTIONS\Collections\Generic\ICollections.cs" />
     <Compile Include="EXTENTIONS\Collections\ArrayList.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\Get.cs" />
+    <Compile Include="EXTENTIONS\Diagnostics\Process.cs" />
+    <Compile Include="EXTENTIONS\Diagnostics\ProcessStartInfo.cs" />
+    <Compile Include="EXTENTIONS\Drawing\Bitmap\Lock.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\ToBitmap.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Compress.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Copy.cs" />
@@ -441,8 +443,8 @@
     <Compile Include="IMAGES\EmguCV\EmguImages.cs" />
     <Compile Include="IMAGES\EmguCV\VisualLocator\Locate.cs" />
     <Compile Include="IMAGES\EmguCV\VisualLocator\VisualLocator.cs" />
-    <Compile Include="IMAGES\GetPixels.cs" />
-    <Compile Include="IMAGES\Images.cs" />
+    <Compile Include="IMAGES\Images\Comparison.cs" />
+    <Compile Include="IMAGES\Images\Images.cs" />
     <Compile Include="IO\AlternateDataStreams\SaveLoad.cs" />
     <Compile Include="IO\Compression\StringCompressor.cs" />
     <Compile Include="IO\Devices\Disable Device\Reset.cs" />
@@ -730,7 +732,6 @@
     <None Include="Scripts\jquery-2.1.3.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EXTENTIONS\Generic\" />
     <Folder Include="OVERRIDE\" />
   </ItemGroup>
   <ItemGroup>

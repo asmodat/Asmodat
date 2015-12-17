@@ -71,9 +71,7 @@ namespace Asmodat.Extensions.Drawing
             Bitmap result = rect.ToBitmap();
 
             using (Graphics graphics = Graphics.FromImage(result))
-            {
                 graphics.DrawImage(bmp, 0, 0, rect, GraphicsUnit.Pixel);
-            }
 
             return result;
         }

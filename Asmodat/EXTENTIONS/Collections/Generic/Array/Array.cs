@@ -80,7 +80,7 @@ namespace Asmodat.Extensions.Collections.Generic
                 h = source.Height(), 
                 d = source.Depth(),
                 offset = (y * w) * d,
-                l = Math.Min(y * w, values.Length);
+                l = Math.Min(w * d, values.Length);
 
             Buffer.BlockCopy(values, 0, source, offset, l);
             return;

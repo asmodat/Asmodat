@@ -37,6 +37,23 @@ namespace Asmodat.Extensions.Drawing
             return false;
         }
 
+        public static Color[,] GetPixels(this Bitmap bmp)
+        {
+            if (bmp == null)
+                return null;
+
+            int x = bmp.Width;
+            int y = bmp.Height;
+
+            Color[,] pixels = new Color[x, y];
+
+            for (int ix = 0; ix < x; ix++)
+                for (int iy = 0; iy < y; iy++)
+                    pixels[ix, iy] = bmp.GetPixel(ix, iy);
+
+            return pixels;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Fits(this Bitmap bmp, Int32Rect rect)
         {
@@ -48,15 +65,20 @@ namespace Asmodat.Extensions.Drawing
             return false;
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte[] GetRawBytes(this Bitmap bmp)
         {
-            if (bmp.IsNullOrEmpty())
+            return bmp.GetRawBytes(bmp.ToRectangle());
+        }
+
+        public static byte[] GetRawBytes(this Bitmap bmp, Rectangle rect)
+        {
+            if (bmp.IsNullOrEmpty() || !bmp.Fits(rect))
                 return null;
 
             try
             {
-                BitmapData data = bmp.LockBits(bmp.ToRectangle(), ImageLockMode.ReadOnly, bmp.PixelFormat);
+                BitmapData data = bmp.LockBitsR(rect);//.LockBits(bmp.ToRectangle(), ImageLockMode.ReadOnly, bmp.PixelFormat);
                 int length = data.Stride * data.Height;
                 byte[] output = new byte[length];
 
@@ -71,7 +93,7 @@ namespace Asmodat.Extensions.Drawing
             }
         }
 
-       
+
         public static void Clear(this Bitmap bmp, Color color)
         {
            
@@ -153,20 +175,7 @@ namespace Asmodat.Extensions.Drawing
         }
 
 
-        public static BitmapData LockBitsRW(this Bitmap bmp, Rectangle rect)
-        {
-            if (bmp.IsNullOrEmpty() || !rect.IsValid() || !bmp.Fits(rect))
-                return null;
-
-            BitmapData bmd = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
-            return bmd;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BitmapData LockBitsRW(this Bitmap bmp)
-        {
-            return bmp.LockBitsRW(bmp.ToRectangle());
-        }
+        
 
 
         public static byte[] PixelData(this Bitmap bmp)
