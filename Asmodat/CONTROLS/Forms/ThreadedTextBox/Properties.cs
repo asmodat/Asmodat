@@ -14,14 +14,32 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using Asmodat.Types;
 using Asmodat.Debugging;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
     public partial class ThreadedTextBox : TextBox
     {
 
+        private Control _Invoker = null;
+        public Control Invoker
+        {
+            get
+            {
+                if (_Invoker == null)
+                    _Invoker = this.GetFirstParent();
 
-        public Control Invoker { get; private set; }
+                return _Invoker;
+            }
+        }
+
+
+        public bool Initialized { get; private set; } = false;
+        public bool Autosave_Text { get; set; } = false;
+
+
+
+
         public bool AutoscrollTop { get; set; } = false;
         public bool AutoscrollLeft { get; set; } = false;
 
@@ -31,22 +49,11 @@ namespace Asmodat.FormsControls
         {
             get
             {
-                bool var = false;
-                if (Invoker == null) return base.ReadOnly;
-                else Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    var = base.ReadOnly;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.ReadOnly; });
             }
             set
             {
-                if(Invoker == null) base.ReadOnly = value;
-                else Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    base.ReadOnly = value;
-                }));
+                Invoker.TryInvokeMethodAction(() => { base.ReadOnly = value; });
             }
         }
 
@@ -54,22 +61,11 @@ namespace Asmodat.FormsControls
         {
             get
             {
-                string[] var = null;
-                if (Invoker == null) return base.Lines;
-                else Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    var = base.Lines;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.Lines; });
             }
             set
             {
-                if (Invoker == null) base.Lines = value;
-                else Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    base.Lines = value;
-                }));
+                Invoker.TryInvokeMethodAction(() => { base.Lines = value; });
             }
         }
         
@@ -78,22 +74,11 @@ namespace Asmodat.FormsControls
         {
             get
             {
-                int var = -1;
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                   
-                    var = base.SelectionStart;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectionStart; });
             }
             set
             {
-                if (Invoker == null) base.SelectionStart = value;
-                else Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    base.SelectionStart = value;
-                }));
+                Invoker.TryInvokeMethodAction(() => { base.SelectionStart = value; });
             }
         }
 
@@ -101,21 +86,11 @@ namespace Asmodat.FormsControls
         {
             get
             {
-                int var = -1;
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    var = base.SelectionLength;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectionLength; });
             }
             set
             {
-                if (Invoker == null) base.SelectionLength = value;
-                else Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    base.SelectionLength = value;
-                }));
+                Invoker.TryInvokeMethodAction(() => { base.SelectionLength = value; });
             }
         }
 
@@ -126,58 +101,24 @@ namespace Asmodat.FormsControls
         {
             get
             {
-                if (Invoker == null) return base.SelectedText;
-
-                string var = null;
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    var = base.SelectedText;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectedText; });
             }
             set
             {
-                if (Invoker == null) base.SelectedText = value;
-                else Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    base.SelectedText = value;
-                }));
+                Invoker.TryInvokeMethodAction(() => { base.SelectedText = value; });
             }
         }
+
         ExceptionBuffer Exceptions = new ExceptionBuffer();
         public new string Text
         {
             get
             {
-                if (Invoker == null || !this.IsHandleCreated) return base.Text;
-
-                string var = null;
-                
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    var = base.Text;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.Text; });
             }
             set
             {
-                if (Invoker == null || !this.IsHandleCreated) base.Text = value;
-                else
-                {
-                    try
-                    {
-                        Invoker.Invoke((MethodInvoker)(() =>
-                        {
-                            base.Text = value;
-                        }));
-                    }
-                    catch(Exception ex)
-                    {
-                        Exceptions.Write(ex);
-                    }
-                }
+                Invoker.TryInvokeMethodAction(() => { base.Text = value; });
             }
         }
     }

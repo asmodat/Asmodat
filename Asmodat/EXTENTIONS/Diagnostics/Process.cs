@@ -60,6 +60,7 @@ namespace Asmodat.Extensions.Diagnostics
             if (process.IsNull())
                 return null;
 
+
             string result = process.GetStandardOutput();
 
             if (result.IsNullOrEmpty())

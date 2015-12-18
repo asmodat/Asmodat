@@ -13,6 +13,15 @@ namespace Asmodat.Extensions.Objects
 
     public static partial class stringEx
     {
+        public static string GetHashCodeHexString(this string str)
+        {
+            if (str.IsNullOrEmpty())
+                return null;
+            else 
+                return String.Format("{0:X}", str.GetHashCode());
+        }
+
+
         public static string RemoveFirst(this string str, int count)
         {
             if (count <= 0 || str == null) return str;

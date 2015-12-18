@@ -13,6 +13,7 @@ using System.Drawing;
 using Asmodat.Extensions;
 using System.Runtime.CompilerServices;
 
+
 namespace Asmodat.Extensions.Collections.Generic
 {
     
@@ -27,6 +28,8 @@ namespace Asmodat.Extensions.Collections.Generic
         /// <returns></returns>
         public static bool IsNullOrEmpty<TKey>(this TKey[,] source)
         {
+           
+
             if (source == null)
                 return true;
             

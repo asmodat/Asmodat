@@ -30,6 +30,5 @@ namespace Asmodat.Types
         public double Start;
         [XmlElement("end")]
         public double End;
-
     }
 }

@@ -11,25 +11,76 @@ using Asmodat.Extensions.Collections.Generic;
 using System.Windows.Forms;
 using System.ComponentModel;
 using Asmodat;
-
+using Asmodat.Extensions.Windows.Forms;
+using Asmodat.IO;
+using Asmodat.Cryptography;
+using Asmodat.Extensions.Security.Cryptography;
 
 namespace Asmodat.FormsControls 
 {
     public partial class ThreadedCheckBox : CheckBox
     {
-
-        public Control Invoker { get; private set; }
-
-        public void Initialize(Control Invoker)
+        public void Initialize()
         {
-            this.Invoker = Invoker;
+            if (Autosave_Checked)
+                this.LoadProperty("Checked");
+
+            Initialized = true;
+            this.CheckedChanged += ThreadedCheckBox_CheckedChanged;
         }
+
+        private void ThreadedCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Initialized && Autosave_Checked)
+                this.SaveProperty("Checked");
+        }
+
+        private Control _Invoker = null;
+        public Control Invoker
+        {
+            get
+            {
+                if (_Invoker == null)
+                    _Invoker = this.GetFirstParent();
+                
+                return _Invoker;
+            }
+        }
+
+
+        public bool Initialized { get; private set; } = false;
+        public bool Autosave_Checked { get; set; } = false;
 
         public new bool Checked
         {
             get
             {
+                return Invoker.TryInvokeMethodFunction(() => { return base.Checked; });
+            }
+            set
+            {
+                Invoker.TryInvokeMethodAction(() => { base.Checked = value; });
+            }
+        }
+
+
+
+    }
+}
+
+
+/*
+public new bool Checked
+        {
+            get
+            {
+                return Invoker.InvokeMethodFunction(() => { return base.Checked; });
+
                 bool var = false;
+
+
+                
+
                 if (Invoker == null) return base.Checked;
                 else
                     Invoker.Invoke((MethodInvoker)(() =>
@@ -48,42 +99,5 @@ namespace Asmodat.FormsControls
                         base.Checked = value;
                     }));
             }
-        }
-
-
-
-    }
-}
-
-
-/*
-public void AddItems(bool append = true, int index = 0, params string[] items) 
-        {
-            if (items.IsNullOrEmpty()) return;
-            int index_Save = 0;
-
-            if(this.IsHandleCreated)
-            Invoker.Invoke((MethodInvoker)(() =>
-            {
-                index_Save = this.SelectedIndex;
-                var item = this.SelectedItem;
-
-                bool equals = Objects.EqualsItems(items, this.Items.Cast<object>().ToArray());
-
-                if (!equals)
-                {
-                    if (!append) this.Items.Clear();
-
-                    this.Items.AddRange(items);
-
-                    if (index >= 0 && index < this.Items.Count)
-                        this.SelectedIndex = index;
-                    else if(index < 0 && index_Save < this.Items.Count)
-                        this.SelectedIndex = index_Save;
-                }
-            }));
-
-
-            
         }
 */

@@ -53,10 +53,33 @@ namespace Asmodat.IO
 
             if (filename.EqualsAny(InvalidNameStrings))
                 return false;
-
-
+            
             return true;
+        }
 
+        public static string RemoveInvalidFilenameCharacters(string filename)
+        {
+            if (filename.IsNullOrEmpty()) return null;
+
+            string result = filename;
+
+            char[] list = System.IO.Path.GetInvalidFileNameChars();
+
+            foreach (char c in list)
+                result = result.Replace(c + "", "");
+
+            if (result.IsNullOrEmpty()) return null;
+
+            string upper = result.ToUpper();
+
+            foreach (string s in InvalidNameStrings)
+                if (upper == s)
+                    return null;
+
+            if (result.Length > Files.MaximumNameLength)
+                result = result.Substring(0, Files.MaximumNameLength);
+
+            return result;
         }
 
         /// <summary>

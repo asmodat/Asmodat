@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AsmodatMath;
 using Asmodat.Resources;
 using Asmodat.Debugging;
+using Asmodat.Extensions.Security.Cryptography;
 
 namespace Asmodat.Cryptography
 {
@@ -31,7 +32,7 @@ namespace Asmodat.Cryptography
 
                     format = format.Replace(":", "");
 
-                    return AMD5.ComputeHash(format);
+                    return format.MD5_ComputeHashString();// AMD5.ComputeHash(format);
                 }
                 catch(Exception ex)
                 {

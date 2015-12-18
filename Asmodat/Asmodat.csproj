@@ -318,7 +318,6 @@
     <Compile Include="AUDIO\Speech\Recognition\Phonems\PhonemsRecognition.cs" />
     <Compile Include="AUDIO\Speech\Recognition\CreateGrammar2D.cs" />
     <Compile Include="Cryptography\AES256.cs" />
-    <Compile Include="Cryptography\AMD5.cs" />
     <Compile Include="Cryptography\AMUID.cs" />
     <Compile Include="Cryptography\AUID.cs" />
     <Compile Include="Cryptography\AED0x2.cs" />
@@ -364,12 +363,15 @@
     <Compile Include="EXTENTIONS\Drawing\Imaging\PixelFormat.cs" />
     <Compile Include="EXTENTIONS\Drawing\Point.cs" />
     <Compile Include="EXTENTIONS\IO\Stream.cs" />
+    <Compile Include="EXTENTIONS\IWshRuntimeLiblary\WshShellClass.cs" />
+    <Compile Include="EXTENTIONS\Microsoft.Win32\RegistryKey.cs" />
     <Compile Include="EXTENTIONS\Net.Sockets\Socket.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\compression.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\SumValues.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\checksum.cs" />
     <Compile Include="EXTENTIONS\Objects\bool.cs" />
     <Compile Include="EXTENTIONS\Objects\Int16.cs" />
+    <Compile Include="EXTENTIONS\Security.Cryptography\MD5.cs" />
     <Compile Include="EXTENTIONS\Threading.Thread.cs" />
     <Compile Include="EXTENTIONS\Objects\char.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\Add.cs" />
@@ -387,9 +389,10 @@
     <Compile Include="EXTENTIONS\Objects\Int64.cs" />
     <Compile Include="EXTENTIONS\Drawing\Size.cs" />
     <Compile Include="EXTENTIONS\Objects\ulong.cs" />
+    <Compile Include="EXTENTIONS\Windows\Forms\Control\Property.cs" />
     <Compile Include="EXTENTIONS\Windows\Rect.cs" />
     <Compile Include="EXTENTIONS\Windows\Int32Rect.cs" />
-    <Compile Include="EXTENTIONS\Windows\Forms\Control.cs" />
+    <Compile Include="EXTENTIONS\Windows\Forms\Control\Control.cs" />
     <Compile Include="EXTENTIONS\Windows\Media.Imaging\BitmapFrame.cs" />
     <Compile Include="EXTENTIONS\Windows\Media.Imaging\WriteableBitmap.cs" />
     <Compile Include="EXTENTIONS\Windows\Media.Imaging\RenderTargetBitmap.cs" />
@@ -735,6 +738,24 @@
     <Folder Include="OVERRIDE\" />
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
     <COMReference Include="SpeechLib">
       <Guid>{C866CA3A-32F7-11D2-9602-00C04F8EE628}</Guid>
       <VersionMajor>5</VersionMajor>

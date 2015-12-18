@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AsmodatMath;
 using Asmodat.Debugging;
 using Asmodat.Extensions.Objects;
+using Asmodat.Extensions.Security.Cryptography;
 
 namespace Asmodat.Cryptography
 {
@@ -76,7 +77,7 @@ namespace Asmodat.Cryptography
             
                 try
                 {
-                    return AMD5.ComputeHash(AUID.NewString()).Replace("-","");
+                    return AUID.NewString().MD5_ComputeHashString().Replace("-", "");// AMD5.ComputeHash(AUID.NewString()).Replace("-","");
                 }
                 catch (Exception ex)
                 {

@@ -4,27 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Asmodat.Abbreviate;using Asmodat.Extensions.Objects;
+using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
 
 using System.Windows.Forms;
 using System.ComponentModel;
 using Asmodat;
-
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
     public partial class ThreadedTextBox : TextBox
     {
+        public void Initialize()
+        {
+            if (Autosave_Text)
+                this.LoadProperty("Text");
+
+            Initialized = true;
+            this.TextChanged += ThreadedTextBox_TextChanged_Save;
+        }
+
+        private void ThreadedTextBox_TextChanged_Save(object sender, EventArgs e)
+        {
+            if (Initialized && Autosave_Text)
+                this.SaveProperty("Text");
+        }
+
         public void InitMode()
         {
             this.TextChanged += ThreadedTextBox_TextChanged;
         }
-        
 
-        public void Initialize(Control Invoker)
-        {
-            this.Invoker = Invoker;
-        }
+        
 
         void ThreadedTextBox_TextChanged(object sender, EventArgs e)
         {

@@ -16,7 +16,7 @@ namespace Asmodat.Extensions.Diagnostics
 {
     public static partial class ProcessStartInfoEx
     {
-        public static Process Start(string filename, string arguments)
+        /*public static Process Start(string filename, string arguments)
         {
             string 
                 sOutput = string.Empty, 
@@ -36,12 +36,17 @@ namespace Asmodat.Extensions.Diagnostics
             SDProc.Start();
 
             return SDProc;
-        }
+        }*/
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Process CMD_Shutdown(string param)
         {
-            return ProcessStartInfoEx.Start("cmd", "/ C shutdown" + param);
+            ProcessStartInfo PSInfo = new ProcessStartInfo("shutdown",param);
+            PSInfo.CreateNoWindow = true;
+            PSInfo.UseShellExecute = true;
+
+            return Process.Start(PSInfo);
+           // return ProcessStartInfoEx.Start("cmd", "shutdown " + param);/// C 
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
