@@ -179,6 +179,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.5.7.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.5.7\lib\net40\Microsoft.Win32.TaskScheduler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NAudio">
       <HintPath>..\..\..\Liblaries\NuGet\NAudio\lib\net35\NAudio.dll</HintPath>
     </Reference>
@@ -346,6 +350,7 @@
     <Compile Include="EXTENTIONS\Collections\Generic\ICollections.cs" />
     <Compile Include="EXTENTIONS\Collections\ArrayList.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\Get.cs" />
+    <Compile Include="EXTENTIONS\COM\Shell32\Shell.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\Process.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\ProcessStartInfo.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Lock.cs" />
@@ -363,8 +368,9 @@
     <Compile Include="EXTENTIONS\Drawing\Imaging\PixelFormat.cs" />
     <Compile Include="EXTENTIONS\Drawing\Point.cs" />
     <Compile Include="EXTENTIONS\IO\Stream.cs" />
-    <Compile Include="EXTENTIONS\IWshRuntimeLiblary\WshShellClass.cs" />
-    <Compile Include="EXTENTIONS\Microsoft.Win32\RegistryKey.cs" />
+    <Compile Include="EXTENTIONS\COM\IWshRuntimeLibrary\WshShellClass.cs" />
+    <Compile Include="EXTENTIONS\Microsoft\Win32\TaskSheduler.cs" />
+    <Compile Include="EXTENTIONS\Microsoft\Win32\RegistryKey.cs" />
     <Compile Include="EXTENTIONS\Net.Sockets\Socket.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\compression.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\SumValues.cs" />
@@ -754,7 +760,7 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="SpeechLib">
       <Guid>{C866CA3A-32F7-11D2-9602-00C04F8EE628}</Guid>
