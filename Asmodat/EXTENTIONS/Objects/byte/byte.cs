@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using AsmodatMath;
+using Asmodat.Natives;
+using System.Runtime.CompilerServices;
 
 namespace Asmodat.Extensions.Objects
 {
@@ -37,8 +39,11 @@ namespace Asmodat.Extensions.Objects
             return result;
         }
 
-
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool EqualsFast(this byte[] arr1, byte[] arr2)
+        {
+            return msvcrtEx.memcmp(arr1, arr2);
+        }
 
 
 

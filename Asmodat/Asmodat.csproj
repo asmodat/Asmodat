@@ -321,6 +321,12 @@
     <Compile Include="AUDIO\Speech\Recognition\Phonems\Grammar.cs" />
     <Compile Include="AUDIO\Speech\Recognition\Phonems\PhonemsRecognition.cs" />
     <Compile Include="AUDIO\Speech\Recognition\CreateGrammar2D.cs" />
+    <Compile Include="CONTROLS\Forms\ThreadedTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CONTROLS\Forms\ThreadedLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Cryptography\AES256.cs" />
     <Compile Include="Cryptography\AMUID.cs" />
     <Compile Include="Cryptography\AUID.cs" />
@@ -422,9 +428,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedTrackBar\ThreadedTrackBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CONTROLS\Forms\ThreadedPictureBox\Properties.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedPictureBox\ThreadedPictureBox.cs">

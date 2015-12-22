@@ -196,6 +196,12 @@ namespace Asmodat.Types
             else return false;
         }
 
+        public static decimal TimeoutSpan(TickTime start, long timeout, Unit unit, Unit unit_result)
+        {
+            TickTime end = start + ((long)unit * timeout);
+            return end.Span(unit_result);
+        }
+
 
         [IgnoreDataMember]
         [XmlIgnore]

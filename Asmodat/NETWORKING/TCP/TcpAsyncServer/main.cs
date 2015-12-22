@@ -51,7 +51,11 @@ namespace Asmodat.Networking
 
         public void Dispose()
         {
+            //
+
             this.StopAll();
+
+            Listener.Cleanup();
         }
 
         
@@ -73,7 +77,6 @@ namespace Asmodat.Networking
 
         public void StopAll()
         {
-          
             IsStarted = false;
 
             if(Timers != null) Timers.TerminateAll();
@@ -89,13 +92,14 @@ namespace Asmodat.Networking
             if (keys.IsNullOrEmpty())
                 return;
             
-            TasksManager tasks = new TasksManager(100);
+          //  TasksManager tasks = new TasksManager(100);
 
             foreach (string key in keys)
-                tasks.Run(() => this.Stop(key), "stop" + key, true);
+                this.Stop(key);
+                //tasks.Run(() => this.Stop(key), "stop" + key, true);
 
-            tasks.JoinStopAll(2000);
-            tasks.Dispose();
+           // tasks.JoinStopAll(2000);
+            //tasks.Dispose();
         }
 
         public void Stop(string key)

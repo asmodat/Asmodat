@@ -23,7 +23,7 @@ namespace Asmodat.FormsControls
 
             Initialized = true;
             this.TextChanged += ThreadedTextBox_TextChanged_Save;
-        }
+        } 
 
         private void ThreadedTextBox_TextChanged_Save(object sender, EventArgs e)
         {

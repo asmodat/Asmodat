@@ -29,7 +29,7 @@ using Asmodat.Extensions.Net.Sockets;
 namespace Asmodat.Networking
 {
 
-    public partial class TcpAsyncServer //: IDisposable
+    public partial class TcpAsyncServer
     {
 
         public Socket Listener { get; private set; } = null;
@@ -38,9 +38,7 @@ namespace Asmodat.Networking
         {
             if (Listener == null)
                 return;
-
             Listener.Listen(128);
-
             try
             {
                 while (IsStarted)

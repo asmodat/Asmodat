@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
+using Asmodat.Debugging;
+
 namespace Asmodat.Extensions.Net.Sockets
 {
     
@@ -52,24 +54,86 @@ namespace Asmodat.Extensions.Net.Sockets
         }
 
 
-        public static bool Cleanup(this Socket socket)
+        public static bool TryShutdown(this Socket socket, SocketShutdown shutdown)
         {
             if (socket == null)
                 return true;
 
             try
             {
-                socket.Shutdown(SocketShutdown.Both);
-                socket.Disconnect(true);
-                socket.Close();
-                socket.Dispose();
-
+                socket.Shutdown(shutdown);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                ex.WriteToExcpetionBuffer();
                 return false;
             }
+        }
+
+        public static bool TryDisconnect(this Socket socket, bool reuseSocket)
+        {
+            if (socket == null)
+                return true;
+
+            try
+            {
+                socket.Disconnect(reuseSocket);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.WriteToExcpetionBuffer();
+                return false;
+            }
+        }
+
+        public static bool TryClose(this Socket socket)
+        {
+            if (socket == null)
+                return true;
+
+            try
+            {
+                socket.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.WriteToExcpetionBuffer();
+                return false;
+            }
+        }
+
+        public static bool TryDispose(this Socket socket)
+        {
+            if (socket == null)
+                return true;
+
+            try
+            {
+                socket.Dispose();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.WriteToExcpetionBuffer();
+                return false;
+            }
+        }
+
+        public static void Cleanup(this Socket socket)
+        {
+            if (socket == null)
+                return;
+
+            
+            socket.TryShutdown(SocketShutdown.Both);
+            socket.TryDisconnect(true);
+            socket.TryClose();
+            //socket.TryDispose();
+           // socket = null;
+
         }
 
 

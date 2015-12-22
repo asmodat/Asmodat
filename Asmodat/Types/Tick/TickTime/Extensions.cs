@@ -29,5 +29,15 @@ namespace Asmodat.Types
         {
             return TickTime.Timeout(start, timeout, unit);
         }
+
+        public static decimal TimeoutSpan(this TickTime start, long timeout, TickTime.Unit unit = TickTime.Unit.ms)
+        {
+            return TickTime.TimeoutSpan(start, timeout, unit, unit);
+        }
+
+        public static decimal TimeoutSpan(this TickTime start, long timeout, TickTime.Unit unit, TickTime.Unit unit_result)
+        {
+            return TickTime.TimeoutSpan(start, timeout, unit, unit_result);
+        }
     }
 }
