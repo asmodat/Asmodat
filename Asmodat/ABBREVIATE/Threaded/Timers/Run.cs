@@ -24,7 +24,12 @@ namespace Asmodat.Abbreviate
 
         ThreadedMethod Threads = null;
 
-        public bool Run(Expression<Action> EAMethod, int interval, int delay, string ID = null, bool Exceptions = true, bool waitForAccess = false)
+        public bool Run(Expression<Action> EAMethod, int interval, int delay)
+        {
+            return this.Run(EAMethod, interval, delay, null, false);
+        }
+
+        public bool Run(Expression<Action> EAMethod, int interval, int delay, string ID, bool waitForAccess)
         {
             if (System.String.IsNullOrEmpty(ID))
                 ID = Expressions.nameofFull(EAMethod);
@@ -33,13 +38,21 @@ namespace Asmodat.Abbreviate
                 Threads = new ThreadedMethod(this.MaxThreadsCount, ThreadPriority.Lowest, 1);
 
 
-            Threads.Run(() => this.Run(EAMethod, interval, ID, Exceptions, waitForAccess), ID, delay, true, true, false);
+            Threads.Run(() => this.Run(EAMethod, interval, ID, waitForAccess), ID, delay, true, true, false);
 
             return false;
         }
 
 
+        public bool Run(Expression<Action> EAMethod, int interval)
+        {
+            return this.Run(EAMethod, interval, null, false);
+        }
 
+        public bool Run(Expression<Action> EAMethod, int interval, string ID)
+        {
+            return this.Run(EAMethod, interval, ID, false);
+        }
 
         /// <summary>
         /// Autostarts timer
@@ -50,38 +63,12 @@ namespace Asmodat.Abbreviate
         /// <param name="Exceptions"></param>
         /// <param name="waitForAccess"></param>
         /// <returns></returns>
-        public bool Run(Expression<Action> EAMethod, int interval, string ID = null, bool Exceptions = true, bool waitForAccess = false)
+        public bool Run(Expression<Action> EAMethod, int interval, string ID, bool waitForAccess)
         {
-            if (EAMethod == null) return false;
-
-            if (MaxThreadsCount < TDSTTimers.Count)
-            {
-                if (!waitForAccess) return false;
-
-                while (MaxThreadsCount <= TDSTTimers.Count) Thread.Sleep(1);
-            }
-
-
-            if (System.String.IsNullOrEmpty(ID))
-                ID = Expressions.nameofFull(EAMethod);
-
-            ThreadedTimer TTimer = Timer(ID);
-
-            if (TTimer != null && TTimer.Enabled)
-                return false;
-
-            TTimer = new ThreadedTimer(EAMethod, interval, true);
-
-            TDSTTimers.Add(ID, TTimer);
-            TDSTTimers[ID].Start();
-
-            return true;
-
-
-           // return this.Run(EAMethod, interval, ID, Exceptions, waitForAccess, true);
+             return this.Run(EAMethod, interval, ID, waitForAccess, true);
         }
 
-        public bool Run(Expression<Action> EAMethod, int interval, string ID, bool Exceptions, bool waitForAccess, bool autostart)
+        public bool Run(Expression<Action> EAMethod, int interval, string ID, bool waitForAccess, bool autostart)
         {
             if (EAMethod == null) return false;
 
@@ -112,3 +99,36 @@ namespace Asmodat.Abbreviate
 
     }
 }
+
+/*
+
+return this.Run(EAMethod, interval, ID, Exceptions, waitForAccess, true);
+
+            if (EAMethod == null) return false;
+
+            if (MaxThreadsCount < TDSTTimers.Count)
+            {
+                if (!waitForAccess) return false;
+
+                while (MaxThreadsCount <= TDSTTimers.Count) Thread.Sleep(1);
+            }
+
+
+            if (System.String.IsNullOrEmpty(ID))
+                ID = Expressions.nameofFull(EAMethod);
+
+            ThreadedTimer TTimer = Timer(ID);
+
+            if (TTimer != null && TTimer.Enabled)
+                return false;
+
+            TTimer = new ThreadedTimer(EAMethod, interval, true);
+
+            TDSTTimers.Add(ID, TTimer);
+            TDSTTimers[ID].Start();
+
+            return true;
+
+
+           //
+*/

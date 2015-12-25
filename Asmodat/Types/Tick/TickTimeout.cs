@@ -107,6 +107,26 @@ namespace Asmodat.Types
             }
         }
 
+
+        private readonly object locker = new object();
+
+        /// <summary>
+        /// Returns true and resets timeout if it is triggered, else returns false
+        /// </summary>
+        /// <returns></returns>
+        public bool TryEnter()
+        {
+            lock (locker)
+            if (IsTriggered)
+                {
+                    this.Reset();
+                    return true;
+                }
+
+            return false;
+        }
+
+
         /// <summary>
         /// returns start time span in Unit's ((long)this.Start.TimeSpan / (long)this.Unit;)
         /// </summary>

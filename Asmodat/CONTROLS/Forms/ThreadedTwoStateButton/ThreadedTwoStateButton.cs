@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 using Asmodat.Types;
 using System.Drawing;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
@@ -20,12 +21,21 @@ namespace Asmodat.FormsControls
             this.Click += ThreadedTwoStateButton_Click;
         }
 
-        public void Initialize(Control Invoker)
-        {
-            this.Invoker = Invoker;
-            this.UpdateState();
-        }
 
+        private Control _Invoker = null;
+        public Control Invoker
+        {
+            get
+            {
+                if (_Invoker == null)
+                {
+                    _Invoker = this.GetFirstParent();
+                    this.UpdateState();
+                }
+
+                return _Invoker;
+            }
+        }
 
         private void ThreadedTwoStateButton_Click(object sender, EventArgs e)
         {

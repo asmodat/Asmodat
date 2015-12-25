@@ -73,14 +73,35 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Imaging">
-      <HintPath>..\..\..\Liblaries\WebCam\AForge.NET Framework-2.2.5\Release\AForge.Imaging.dll</HintPath>
+    <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AForge.Controls, Version=2.2.5.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Controls.2.2.5\lib\AForge.Controls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AForge.Imaging, Version=2.2.5.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Imaging.2.2.5\lib\AForge.Imaging.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="AForge.Imaging.Formats">
       <HintPath>..\..\..\Liblaries\WebCam\AForge.NET Framework-2.2.5\Release\AForge.Imaging.Formats.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Imaging.IPPrototyper">
       <HintPath>..\..\..\Liblaries\WebCam\AForge.NET Framework-2.2.5\Release\AForge.Imaging.IPPrototyper.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Math, Version=2.2.5.0, Culture=neutral, PublicKeyToken=abba2e25397ee8c9, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Math.2.2.5\lib\AForge.Math.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AForge.Video, Version=2.2.5.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="AppLimit.CloudComputing.SharpBox, Version=1.2.0.542, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\Asmodat Web Exchange\packages\AppLimit.CloudComputing.SharpBox.1.2.0.542\lib\net40-full\AppLimit.CloudComputing.SharpBox.dll</HintPath>
@@ -351,6 +372,9 @@
     <Compile Include="Debugging\InputTracer\Input.cs" />
     <Compile Include="Debugging\ExceptionBuffer\ExceptionBuffer.cs" />
     <Compile Include="Debugging\Output.cs" />
+    <Compile Include="EXTENTIONS\AForge.Videos.DirectShow\FilterInfoCollection.cs" />
+    <Compile Include="EXTENTIONS\AForge.Videos.DirectShow\VideoCaptureDevice.cs" />
+    <Compile Include="EXTENTIONS\AForge.Videos.DirectShow\VideoCapabilites.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\Array\Add.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\Array\Array.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\ICollections.cs" />
@@ -382,6 +406,7 @@
     <Compile Include="EXTENTIONS\Objects\byte\SumValues.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\checksum.cs" />
     <Compile Include="EXTENTIONS\Objects\bool.cs" />
+    <Compile Include="EXTENTIONS\Objects\object.cs" />
     <Compile Include="EXTENTIONS\Objects\Int16.cs" />
     <Compile Include="EXTENTIONS\Security.Cryptography\MD5.cs" />
     <Compile Include="EXTENTIONS\Threading.Thread.cs" />

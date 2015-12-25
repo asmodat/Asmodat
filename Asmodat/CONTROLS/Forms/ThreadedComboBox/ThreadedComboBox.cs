@@ -11,14 +11,27 @@ using Asmodat.Extensions.Collections.Generic;
 using System.Windows.Forms;
 using System.ComponentModel;
 using Asmodat;
-
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls 
 {
     public partial class ThreadedComboBox : ComboBox
     {
 
-        public Control Invoker { get; private set; }
+        private Control _Invoker = null;
+        public Control Invoker
+        {
+            get
+            {
+                if (_Invoker == null)
+                    _Invoker = this.GetFirstParent();
+
+                return _Invoker;
+            }
+        }
+
+
+       /* public Control Invoker { get; private set; }
 
         public void Initialize(Control Invoker)
         {
@@ -26,10 +39,10 @@ namespace Asmodat.FormsControls
 
             if(EnableTextAlign)
                 DrawMode = DrawMode.OwnerDrawFixed;
-        }
+        }*/
 
         
-        public void AddItemsEnum<E>(bool append = true, int index = 0)
+       /* public void AddItemsEnum<E>(bool append = true, int index = 0)
         {
             string[] items = Enums.ToString<E>().ToArray();
             this.AddItems(append, index, items);
@@ -60,7 +73,7 @@ namespace Asmodat.FormsControls
                 return default(E);
 
             return (E)Enum.Parse(typeof(E), txt);
-        }
+        }*/
 
         public string GetText()
         {
@@ -71,10 +84,7 @@ namespace Asmodat.FormsControls
 
         public void ClearItems()
         {
-            Invoker.Invoke((MethodInvoker)(() =>
-            {
-                this.Items.Clear();
-            }));
+            Invoker.TryInvokeMethodAction(() => { this.Items.Clear(); });
         }
 
 
@@ -98,52 +108,111 @@ namespace Asmodat.FormsControls
         }
 
         //"A chart element with the name 'XETHZCAD' already exists in the 'SeriesCollection
-        public void AddItems(bool append = true, int index = 0, params string[] items) 
+       /* public void AddItems(bool append = true, int index = 0, params string[] items)
         {
-            if (items.IsNullOrEmpty()) return;
-            //int index_Save = 0;
-
-            if(this.IsHandleCreated)
-            Invoker.Invoke((MethodInvoker)(() =>
-            {
-                //index_Save = this.SelectedIndex;
-                var item = this.SelectedItem;
-
-                bool equals = Objects.EqualsItems(items, this.Items.Cast<object>().ToArray());
-
-                if (!equals)
-                {
-                    if (!append) this.Items.Clear();
-
-                    this.Items.AddRange(items);
-
-                    if (index >= 0 && index < this.Items.Count)
-                        this.SelectedIndex = index;
-                    //else if(index < 0 && index_Save < this.Items.Count)  this.SelectedIndex = index_Save;
-
-                    if (item != null && this.Items != null && this.Items.Count > 0 && this.Items.Contains(item))
-                        this.SelectedItem = item;
-                }
-            }));
+            if (items.IsNullOrEmpty())
+                return;
 
 
-            
+            var item = this.SelectedItem;
+
+            if (Objects.EqualsItems(items, this.Items.Cast<object>().ToArray()))
+                return;
+
+            if (!append) this.Items.Clear();
+
+            this.Items.AddRange(items);
+
+            if (index >= 0 && index < this.Items.Count)
+                this.SelectedIndex = index;
+
+            if (item != null && this.Items != null && this.Items.Count > 0 && this.Items.Contains(item))
+                this.SelectedItem = item;
+
+            /* if (this.IsHandleCreated)
+             Invoker.Invoke((MethodInvoker)(() =>
+             {
+
+             }));
+             /
+
+
+        }*/
+
+
+        public void AddItems(params object[] values)
+        {
+            if (values.IsNullOrEmpty())
+                return;
+
+             Invoker.TryInvokeMethodAction(() => 
+             {
+                // int index = this.SelectedIndex;
+
+                 foreach (var v in values)
+                 {
+                     if (v == null)
+                         continue;
+
+                     if (!base.Items.Contains(v))
+                         base.Items.Add(v);
+                 }
+
+                // this.SelectedIndex = index;
+             });
         }
+
+
+        public new object SelectedItem
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectedItem; });
+            }
+            set
+            {
+                Invoker.TryInvokeMethodAction(() => { base.SelectedItem = value; });
+            }
+        }
+
 
         public new ObjectCollection Items
         {
             get
             {
-                if (this.Invoker == null || !this.IsHandleCreated)
-                    return base.Items;
+                return Invoker.TryInvokeMethodFunction(() => { return base.Items; });
+            }
+        }
 
-                ObjectCollection result = null;
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    result = base.Items;
-                }));
+        public int Count
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.Items.Count; });
+            }
+        }
 
-                return result;
+        public new string SelectedText
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectedText; });
+            }
+            set
+            {
+                Invoker.TryInvokeMethodAction(() => { base.SelectedText = value; });
+            }
+        }
+
+        public new object SelectedValue
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectedValue; });
+            }
+            set
+            {
+                Invoker.TryInvokeMethodAction(() => { base.SelectedValue = value; });
             }
         }
 
@@ -151,29 +220,11 @@ namespace Asmodat.FormsControls
         {
             get
             {
-                if (this.Invoker == null || !this.IsHandleCreated)
-                    return base.SelectedIndex;
-
-                int result = -1;
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    result = base.SelectedIndex;
-                }));
-
-                return result;
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectedIndex; });
             }
             set
             {
-                if (this.Invoker == null || !this.IsHandleCreated)
-                {
-                    base.SelectedIndex = value;
-                    return;
-                }
-
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    base.SelectedIndex = value;
-                }));
+                Invoker.TryInvokeMethodAction(() => { base.SelectedIndex = value; });
             }
         }
 
@@ -192,8 +243,6 @@ namespace Asmodat.FormsControls
             {
                 this.SelectedIndex = index;
             }
-
-           
         }
 
 

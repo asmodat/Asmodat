@@ -14,6 +14,24 @@ namespace Asmodat.Extensions
 
     public static class IComparableEx
     {
+
+        public static T ToClosedInterval<T>(this T value, T min, T max) where T : IComparable<T>
+        {
+            //if (min.IsGreaterThen(max)) throw new ArgumentException("Invalid interval.");
+
+            T result = value;
+
+            //note: dont use if else statement, in case min == max
+            if (value.IsLessThen(min)) // value < min
+                result = min;
+            if (value.IsGreaterThen(max)) // value > max
+                result = max;
+
+            return result;
+        }
+        
+
+
         /// <summary>
         /// Checks if value is inside closed [min, max] interval
         /// </summary>
@@ -52,7 +70,13 @@ namespace Asmodat.Extensions
         }
 
 
-
+        /// <summary>
+        /// value {= comp
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="comp"></param>
+        /// <returns></returns>
         public static bool IsLessOrEqual<T>(this T value, T comp) where T : IComparable<T>
         {
             if (value.CompareTo(comp) <= 0)
@@ -61,6 +85,13 @@ namespace Asmodat.Extensions
             return false;
         }
 
+        /// <summary>
+        /// value >= comp
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="comp"></param>
+        /// <returns></returns>
         public static bool IsGreaterOrEqual<T>(this T value, T comp) where T : IComparable<T>
         {
             if (value.CompareTo(comp) >= 0)
@@ -69,6 +100,13 @@ namespace Asmodat.Extensions
             return false;
         }
 
+        /// <summary>
+        /// value { comp
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="comp"></param>
+        /// <returns></returns>
         public static bool IsLessThen<T>(this T value, T comp) where T : IComparable<T>
         {
             if (value.CompareTo(comp) < 0)
@@ -77,6 +115,13 @@ namespace Asmodat.Extensions
             return false;
         }
 
+        /// <summary>
+        /// value > comp
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="comp"></param>
+        /// <returns></returns>
         public static bool IsGreaterThen<T>(this T value, T comp) where T : IComparable<T>
         {
             if (value.CompareTo(comp) > 0)
@@ -86,7 +131,7 @@ namespace Asmodat.Extensions
         }
 
         /// <summary>
-        /// Checks if value is greater than any comp
+        /// ... value > comp[n - 1] && value > comp[n]; where n belongs to [0, comp.length]
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
@@ -106,6 +151,13 @@ namespace Asmodat.Extensions
             return true;
         }
 
+        /// <summary>
+        /// ... value > comp[n - 1] || value > comp[n]; where n belongs to [0, comp.length]
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="comps"></param>
+        /// <returns></returns>
         public static bool IsGreaterThenAny<T>(this T value, params T[] comps) where T : IComparable<T>
         {
             if (comps.IsNullOrEmpty())

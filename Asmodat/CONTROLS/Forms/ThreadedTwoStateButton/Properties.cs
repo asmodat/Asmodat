@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 using Asmodat.Types;
 using System.Drawing;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
@@ -21,38 +22,22 @@ namespace Asmodat.FormsControls
         public Color BackColorNull { get; set; }
         public Color BackColorOn { get; set; }
         public Color BackColorOff { get; set; }
-
-
-
+        
 
         public event ThreadedTwoStateButtonClickStatesEventHandler OnClickOn = null;
         public event ThreadedTwoStateButtonClickStatesEventHandler OnClickOff = null;
         public new event ThreadedTwoStateButtonClickStatesEventHandler OnClick = null;
 
-        public Control Invoker { get; private set; }
 
         public new bool Enabled
         {
             get
             {
-                bool var = false;
-                if (Invoker == null) return base.Enabled;
-                else
-                    Invoker.Invoke((MethodInvoker)(() =>
-                    {
-                        var = base.Enabled;
-                    }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.Enabled; });
             }
             set
             {
-                if (Invoker == null || !Invoker.IsHandleCreated) base.Enabled = value;
-                else
-                    Invoker.Invoke((MethodInvoker)(() =>
-                    {
-                        base.Enabled = value;
-                    }));
+                Invoker.TryInvokeMethodAction(() => { base.Enabled = value; });
             }
         }
 
@@ -60,54 +45,26 @@ namespace Asmodat.FormsControls
         {
             get
             {
-                if (Invoker == null) return base.BackColor;
-
-                Color var = new Color();
-
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    var = base.BackColor;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.BackColor; });
             }
             set
             {
-                if (Invoker == null || !Invoker.IsHandleCreated) base.BackColor = value;
-                else
-                    Invoker.Invoke((MethodInvoker)(() =>
-                    {
-                        base.BackColor = value;
-                    }));
+                Invoker.TryInvokeMethodAction(() => { base.BackColor = value; });
             }
         }
-
 
         public new string Text
         {
             get
             {
-                if (Invoker == null) return base.Text;
-
-                string var = null;
-
-                Invoker.Invoke((MethodInvoker)(() =>
-                {
-                    var = base.Text;
-                }));
-
-                return var;
+                return Invoker.TryInvokeMethodFunction(() => { return base.Text; });
             }
             set
             {
-                if (Invoker == null || !Invoker.IsHandleCreated) base.Text = value;
-                else
-                    Invoker.Invoke((MethodInvoker)(() =>
-                    {
-                        base.Text = value;
-                    }));
+                Invoker.TryInvokeMethodAction(() => { base.Text = value; });
             }
         }
+
 
         
 
