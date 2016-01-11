@@ -103,10 +103,10 @@ namespace Asmodat.FormsControls
                     while (this.Lines.Length >= (maxLines * deleteMultiplayer) && !TickTime.Timeout(start, timeout, TickTime.Unit.ms))
                     {
                         string rtext = this.Text;
-                        int? last1 = Strings.IndexOf(rtext, '\n', -1);
-                        int? last2 = Strings.IndexOf(rtext, '\n', -2);
+                        int last1 = rtext.IndexOfByCount('\n', -1);
+                        int last2 = rtext.IndexOfByCount('\n', -2);
 
-                        if (last1 == null || last2 == null)
+                        if (last1 < 0 || last2 < 0)
                         {
                             Asmodat.Debugging.Output.WriteLine("Not managed outcom in  RichTextBox Abbreviate class !");
                             return;

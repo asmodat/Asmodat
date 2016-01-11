@@ -1,26 +1,44 @@
-﻿using System;
+﻿using Asmodat.Abbreviate;
+using Asmodat.Extensions.Collections.Generic;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using System.Text.RegularExpressions;
-
-
-
-namespace Asmodat.Abbreviate
+namespace Asmodat.Extensions.Objects
 {
-    public static partial class Strings
+    public static partial class stringEx
     {
-
-        public static string ToString(string str, string nullFormat)
+        /// <summary>
+        /// Checks if any of packets is null or empty, if at least one is null, returns true
+        /// </summary>
+        /// <param name="packets">array of strings to check</param>
+        /// <returns></returns>
+        public static bool IsAnyNullOrEmpty(this string[] values)
         {
-            if (System.String.IsNullOrEmpty(str)) return nullFormat;
-            else return str;
+            
+            if (values.IsNullOrEmpty())
+                return false;
+
+            int i = 0;
+            for (; i < values.Length; i++)
+                if (System.String.IsNullOrEmpty(values[i]))
+                    return true;
+
+            return false;
+        }
+
+        public static string ToNullSafeString(string str, string nullFormat)
+        {
+            if (str == null)
+                return nullFormat;
+            else
+                return str;
         }
 
         /// <summary>
@@ -30,27 +48,10 @@ namespace Asmodat.Abbreviate
         /// <param name="sStartTag">Tag indicating start of the string value. [start tag]</param>
         /// <param name="sEndTag">Tag indicating end of the string value. [end tag]</param>
         /// <returns>String value within tags. [value]</returns>
-        public static string Extract(this string sData, string sStartTag, string sEndTag)
+        public static string ExtractTag(this string sData, string sStartTag, string sEndTag)
         {
-            if (sStartTag == sEndTag)
-                return null;
-
-            int iST = sData.IndexOf(sStartTag);
-            int iET = sData.IndexOf(sEndTag);
-
-            if (iST < 0 || iET < 0) return null;
-
-            if(iST > iET)
-            {
-                sData = sData.Remove(0, iET + sEndTag.Length);
-                return Strings.Extract(sData, sStartTag, sEndTag);
-            }
-
-
-            int iStartIndex = iST + sStartTag.Length;
-            int iLength = iET - iStartIndex;
-
-            return sData.Substring(iStartIndex, iLength);
+            string sDataResidue;
+            return sData.ExtractTag(sStartTag, sEndTag, out sDataResidue);
         }
 
         /// <summary>
@@ -61,20 +62,20 @@ namespace Asmodat.Abbreviate
         /// <param name="sEndTag">Tag indicating end of the string value. [end tag]</param>
         /// <param name="sDataResidue">out's Data residiue, that represents data after extracted value (without end tag) [other data right side], (warning !: [other data left side] will be lost)</param>
         /// <returns>String value within tags. [value]</returns>
-        public static string Extract(string sData, string sStartTag, string sEndTag, out string sDataResidue)
+        public static string ExtractTag(this string sData, string sStartTag, string sEndTag, out string sDataResidue)
         {
             sDataResidue = null;
             if (sStartTag == sEndTag) return null;
 
             int iST = sData.IndexOf(sStartTag);
             int iET = sData.IndexOf(sEndTag);
-            
+
             if (iST < 0 || iET < 0) return null;
 
-            if(iST > iET)
+            if (iST > iET)
             {
                 sData = sData.Remove(0, iET + sEndTag.Length);
-                return Strings.Extract(sData, sStartTag, sEndTag, out sDataResidue);
+                return ExtractTag(sData, sStartTag, sEndTag, out sDataResidue);
             }
 
             int iStartIndex = iST + sStartTag.Length;
@@ -87,6 +88,7 @@ namespace Asmodat.Abbreviate
             return sData.Substring(iStartIndex, iLength);
         }
 
+        
         public static string RemoveTags(string sText, string sStartTag, string sEndTag)
         {
             int iStart = sText.IndexOf(sStartTag);
@@ -105,13 +107,17 @@ namespace Asmodat.Abbreviate
             return RemoveTags(sSubOne + sSubTwo, sStartTag, sEndTag);
         }
 
-        public static string WebTextControlSum(Control Cntrl)
+
+
+
+
+        public static string WebTextControlSum(System.Web.UI.Control Cntrl)
         {
             string ssum = "";
 
             if (Cntrl.Controls.Count > 0)
 
-                foreach (Control c in Cntrl.Controls)
+                foreach (System.Web.UI.Control c in Cntrl.Controls)
                 {
                     if (c == null) continue;
                     else if (c.Controls.Count > 0) ssum += WebTextControlSum(c);
@@ -129,99 +135,64 @@ namespace Asmodat.Abbreviate
         /// <param name="sentence">String sentence separated by chars.</param>
         /// <param name="separator">Char that separates diffrent words, if null the default separators is ','</param>
         /// <returns>List of words without separators.</returns>
-        public static string[] ToList(string sentence, string separator = null)
+        public static string[] SplitSafe(this string sentence, string separator)
         {
-            if (System.String.IsNullOrEmpty(sentence)) return null;
-            if (System.String.IsNullOrEmpty(separator)) separator = ",";
+            if (sentence.IsNullOrEmpty()) return null;
+            if (separator.IsNullOrEmpty())
+                return new string[1] { sentence };
             if (separator.Length == 1)
-                return Split(sentence, separator[0]).ToArray(); //sentence.Split(separator[0]);//
+                return sentence.Split(separator[0]); //sentence.Split(separator[0]);//
             else
                 return Regex.Split(sentence, @"\" + separator);
         }
 
-
-
-        public static List<string> Split(string sentence, char separator)
+        public static string[] SplitSafe(this string sentence, char separator)
         {
-            List<string> Data = new List<string>();
-            StringBuilder SBuilder = new StringBuilder();
-
-            foreach (char c in sentence)
-            {
-                if (c == separator)
-                {
-                    if (SBuilder.Length > 0)
-                    {
-                        Data.Add(SBuilder.ToString());
-                        SBuilder.Clear();
-                    }
-                    else Data.Add(null);
-
-                    continue;
-                }
-                SBuilder.Append(c);
-            }
-
-            if (SBuilder.Length > 0)
-                Data.Add(SBuilder.ToString());
-
-
-            return Data;
+            if (sentence.IsNullOrEmpty())
+                return null;
+            else if (!sentence.Contains(separator))
+                return new string[0];
+            else
+                return sentence.Split(separator);
         }
-
-
-        /// <summary>
-        /// Checks if any of packets is null or empty, if at least one is null, returns true
-        /// </summary>
-        /// <param name="packets">array of strings to check</param>
-        /// <returns></returns>
-        public static bool IsNullOrEmpty(string[] packets)
-        {
-            int i;
-            for (i = 0; i < packets.Length; i++)
-                if (System.String.IsNullOrEmpty(packets[i])) return true;
-
-            return false;
-        }
-
-
-     /*   /// <summary>
-        /// Count Substrings
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="sub"></param>
-        /// <returns></returns>
-        public static int Count(string str, string sub)
-        {
-            if (System.String.IsNullOrEmpty(str) || System.String.IsNullOrEmpty(sub))
-                return 0;
-            else if (str == sub)
-                return 1;
-
-            return (str.Length - str.Replace(sub, "").Length) / sub.Length;
-        }
-
-        /// <summary>
-        /// Count Subchars
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="c"></param>
-        /// <returns></returns>
-        public static int Count(string str, char c)
-        {
-            if (System.String.IsNullOrEmpty(str))
-                return 0;
-
-            int count = 0, i = 0, length = str.Length;
-
-            for (; i < length; i++)
-                if (str[i] == c) ++count;
-
-            return count;
-       }*/
-      
     }
 }
+
+/*   /// <summary>
+       /// Count Substrings
+       /// </summary>
+       /// <param name="str"></param>
+       /// <param name="sub"></param>
+       /// <returns></returns>
+       public static int Count(string str, string sub)
+       {
+           if (System.String.IsNullOrEmpty(str) || System.String.IsNullOrEmpty(sub))
+               return 0;
+           else if (str == sub)
+               return 1;
+
+           return (str.Length - str.Replace(sub, "").Length) / sub.Length;
+       }
+
+       /// <summary>
+       /// Count Subchars
+       /// </summary>
+       /// <param name="str"></param>
+       /// <param name="c"></param>
+       /// <returns></returns>
+       public static int Count(string str, char c)
+       {
+           if (System.String.IsNullOrEmpty(str))
+               return 0;
+
+           int count = 0, i = 0, length = str.Length;
+
+           for (; i < length; i++)
+               if (str[i] == c) ++count;
+
+           return count;
+      }*/
+
 //public static List<string> Split(string sentence, char separator)
 //        {
 //            List<string> Data = new List<string>();

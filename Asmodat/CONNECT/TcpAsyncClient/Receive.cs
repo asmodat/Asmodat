@@ -61,7 +61,7 @@ namespace Asmodat.Connect
                 sData += Encoding.ASCII.GetString(baData, 0, iRecivedCount);
 
 
-                sMessage = Strings.Extract(sData, TcpAsyncCommon.SOM, TcpAsyncCommon.EOM, out sMessageResidue);
+                sMessage = sData.ExtractTag(TcpAsyncCommon.SOM, TcpAsyncCommon.EOM, out sMessageResidue);
 
                 if (sMessage == null) continue;
                 else bDataFound = true;

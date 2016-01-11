@@ -289,7 +289,6 @@
     <Compile Include="ABBREVIATE\Serialization\SerializeProperties.cs" />
     <Compile Include="ABBREVIATE\Serialization\XmlSerializer.cs" />
     <Compile Include="ABBREVIATE\Streams.cs" />
-    <Compile Include="ABBREVIATE\Strings\Strings.cs" />
     <Compile Include="ABBREVIATE\Threaded\Dictionary\Get.cs" />
     <Compile Include="ABBREVIATE\Threaded\Dictionary\IO.cs" />
     <Compile Include="ABBREVIATE\Threaded\Dictionary\SerializationDataContract.cs" />
@@ -320,7 +319,6 @@
     <Compile Include="ABBREVIATE\DataBuffer.cs" />
     <Compile Include="ABBREVIATE\DataDictionary.cs" />
     <Compile Include="ABBREVIATE\Registry.cs" />
-    <Compile Include="ABBREVIATE\Strings\String-legacy.cs" />
     <Compile Include="ABBREVIATE\Threaded\Method\ThreadedMethod.cs" />
     <Compile Include="AUDIO\Converter\Save.cs" />
     <Compile Include="AUDIO\Converter\Silence\SilenceSplit.cs" />
@@ -379,6 +377,7 @@
     <Compile Include="EXTENTIONS\Collections\Generic\Array\Array.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\ICollections.cs" />
     <Compile Include="EXTENTIONS\Collections\ArrayList.cs" />
+    <Compile Include="EXTENTIONS\Collections\Generic\List\List.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\Get.cs" />
     <Compile Include="EXTENTIONS\COM\Shell32\Shell.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\Process.cs" />
@@ -408,6 +407,8 @@
     <Compile Include="EXTENTIONS\Objects\bool.cs" />
     <Compile Include="EXTENTIONS\Objects\object.cs" />
     <Compile Include="EXTENTIONS\Objects\Int16.cs" />
+    <Compile Include="EXTENTIONS\Objects\string\legacy2.cs" />
+    <Compile Include="EXTENTIONS\Objects\string\legacy.cs" />
     <Compile Include="EXTENTIONS\Security.Cryptography\MD5.cs" />
     <Compile Include="EXTENTIONS\Threading.Thread.cs" />
     <Compile Include="EXTENTIONS\Objects\char.cs" />

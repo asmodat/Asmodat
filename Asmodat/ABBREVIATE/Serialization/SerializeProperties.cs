@@ -47,7 +47,7 @@ namespace Asmodat.Serialization
         /// <returns>False is serialization failed</returns>
         public static bool Deserialize<Type>(ref Type source, string data, string[] Format, string separator, string dateTimeFormat = "yyyy-MM-ddTHH:mm:ss.fff", bool onFailReturn = true)
         {
-            string[] LSRateProperties = Strings.ToList(data, separator);
+            string[] LSRateProperties = data.SplitSafe(separator);
             int iPropertiesCount = LSRateProperties.Count();
 
             bool success = true;

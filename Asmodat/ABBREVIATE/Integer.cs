@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Text.RegularExpressions;
+using Asmodat.Extensions.Objects;
 
 namespace Asmodat.Abbreviate
 {
@@ -72,7 +73,7 @@ namespace Asmodat.Abbreviate
         {
             List<int> liParts = new List<int>();
 
-            string[] saParts = Strings.ToList(sentence, separator);
+            string[] saParts = sentence.SplitSafe(separator);
 
             foreach (string s in saParts)
             {

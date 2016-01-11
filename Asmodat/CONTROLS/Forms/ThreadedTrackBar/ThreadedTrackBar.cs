@@ -15,12 +15,12 @@ namespace Asmodat.FormsControls
 {
     public partial class ThreadedTrackBar : TrackBar
     {
-
+        /*
         public void Initialize(Control Invoker)
         {
             this.Invoker = Invoker;
         }
-
+        */
        
     }
 }

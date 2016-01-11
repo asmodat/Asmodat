@@ -1,4 +1,5 @@
-﻿using Asmodat.Types;
+﻿using Asmodat.Extensions.Objects;
+using Asmodat.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace Asmodat.Abbreviate
 
             if(AddTimestamp)
             {
-                var list = Strings.Split(path, '.');
+                var list = path.SplitSafe('.');
                 path = list[0] + TickTime.NowTicks + "." + list[1];
             }
 
@@ -39,7 +40,7 @@ namespace Asmodat.Abbreviate
 
             if (AddTimestamp)
             {
-                var list = Strings.Split(path, '.');
+                var list = path.SplitSafe('.');
                 path = list[0] + TickTime.NowTicks + "." + list[1];
             }
 

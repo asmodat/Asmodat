@@ -12,6 +12,7 @@ using System.Reflection;
 
 using System.Data;
 using Asmodat.Types;
+using Asmodat.Extensions.Objects;
 
 namespace Asmodat.Abbreviate
 {
@@ -81,11 +82,11 @@ namespace Asmodat.Abbreviate
                     TickTime start = TickTime.Now;
                     while (RTBox.Lines.Length >= maxLines && !TickTime.Timeout(start, timeout, TickTime.Unit.ms))
                     {
-                        string rtext = RTBox.Text;
-                        int? last1 = Strings.IndexOf(rtext, '\n', -1);
-                        int? last2 = Strings.IndexOf(rtext, '\n', -2);
+                        string rtext = RTBox.Text; 
+                        int last1 = rtext.IndexOfByCount('\n', -1);
+                        int last2 = rtext.IndexOfByCount('\n', -2);
 
-                        if (last1 == null || last2 == null)
+                        if (last1 < 0 || last2 < 0)
                         {
                             Asmodat.Debugging.Output.WriteLine("Not managed outcom in  RichTextBox Abbreviate class !");
                             return;

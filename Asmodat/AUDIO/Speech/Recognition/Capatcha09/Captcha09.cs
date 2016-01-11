@@ -72,7 +72,7 @@ namespace Asmodat.Speech
                 string key = keys[i];
                 string data = (string)values[i];
 
-                var split = Strings.Split(key, '-');
+                var split = key.SplitSafe('-');
                 string name = split[0];
                 int number = int.Parse(split[1]);
 

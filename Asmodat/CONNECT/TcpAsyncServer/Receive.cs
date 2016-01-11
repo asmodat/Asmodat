@@ -20,6 +20,7 @@ using System.Net.Sockets;
 
 using Asmodat.Abbreviate;
 using Asmodat.Extensions.Net.Sockets;
+using Asmodat.Extensions.Objects;
 
 namespace Asmodat.Connect
 {
@@ -105,7 +106,7 @@ namespace Asmodat.Connect
             
             state.sb.Clear();
             //state.buffer = new byte[StateObject.BufferSize];
-            List<string> Packets = Strings.ToList(content, TcpAsyncCommon.EOM).ToList();
+            List<string> Packets = content.SplitSafe(TcpAsyncCommon.EOM).ToList();
 
             if (Packets.Count > 0)
             {

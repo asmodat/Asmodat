@@ -31,60 +31,65 @@ namespace Asmodat.FormsControls
         }
 
 
-       /* public Control Invoker { get; private set; }
+        /* public Control Invoker { get; private set; }
 
-        public void Initialize(Control Invoker)
+         public void Initialize(Control Invoker)
+         {
+             this.Invoker = Invoker;
+
+             if(EnableTextAlign)
+                 DrawMode = DrawMode.OwnerDrawFixed;
+         }*/
+
+
+        /* public void AddItemsEnum<E>(bool append = true, int index = 0)
+         {
+             string[] items = Enums.ToString<E>().ToArray();
+             this.AddItems(append, index, items);
+         }
+
+         public void AddItemsEnumDescriptions<E>(bool append = true, int index = 0)
+         {
+             string[] items = Enums.ToStringDescription<E>().ToArray();
+             this.AddItems(append, index, items);
+         }
+
+         public void AddItemsEnumDescriptions<E>(E[] source, bool append = true, int index = 0)
+         {
+
+             if (source.IsNullOrEmpty())
+                 return;
+             List<string> items = new List<string>();
+             foreach (E e in source)
+                 items.Add(Enums.GetEnumDescription(e));
+
+             this.AddItems(append, index, items.ToArray());
+         }
+
+         public E GetEnum<E, TInvoker>(TInvoker Invoker) where TInvoker : Control
+         {
+             string txt = this.GetText();
+             if (System.String.IsNullOrEmpty(txt))
+                 return default(E);
+
+             return (E)Enum.Parse(typeof(E), txt);
+         }*/
+
+        public new string Text
         {
-            this.Invoker = Invoker;
-
-            if(EnableTextAlign)
-                DrawMode = DrawMode.OwnerDrawFixed;
-        }*/
-
-        
-       /* public void AddItemsEnum<E>(bool append = true, int index = 0)
-        {
-            string[] items = Enums.ToString<E>().ToArray();
-            this.AddItems(append, index, items);
-        }
-
-        public void AddItemsEnumDescriptions<E>(bool append = true, int index = 0)
-        {
-            string[] items = Enums.ToStringDescription<E>().ToArray();
-            this.AddItems(append, index, items);
-        }
-
-        public void AddItemsEnumDescriptions<E>(E[] source, bool append = true, int index = 0)
-        {
-
-            if (source.IsNullOrEmpty())
-                return;
-            List<string> items = new List<string>();
-            foreach (E e in source)
-                items.Add(Enums.GetEnumDescription(e));
-
-            this.AddItems(append, index, items.ToArray());
-        }
-
-        public E GetEnum<E, TInvoker>(TInvoker Invoker) where TInvoker : Control
-        {
-            string txt = this.GetText();
-            if (System.String.IsNullOrEmpty(txt))
-                return default(E);
-
-            return (E)Enum.Parse(typeof(E), txt);
-        }*/
-
-        public string GetText()
-        {
-            string result = null;
-            Invoker.Invoke((MethodInvoker)(() => {  result = this.Text; }));
-            return result;
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.Text; });
+            }
+            set
+            {
+                Invoker.TryInvokeMethodAction(() => { base.Text = value; });
+            }
         }
 
         public void ClearItems()
         {
-            Invoker.TryInvokeMethodAction(() => { this.Items.Clear(); });
+            Invoker.TryInvokeMethodAction(() => { base.Items.Clear(); });
         }
 
 
@@ -108,36 +113,73 @@ namespace Asmodat.FormsControls
         }
 
         //"A chart element with the name 'XETHZCAD' already exists in the 'SeriesCollection
-       /* public void AddItems(bool append = true, int index = 0, params string[] items)
+        /* public void AddItems(bool append = true, int index = 0, params string[] items)
+         {
+             if (items.IsNullOrEmpty())
+                 return;
+
+
+             var item = this.SelectedItem;
+
+             if (Objects.EqualsItems(items, this.Items.Cast<object>().ToArray()))
+                 return;
+
+             if (!append) this.Items.Clear();
+
+             this.Items.AddRange(items);
+
+             if (index >= 0 && index < this.Items.Count)
+                 this.SelectedIndex = index;
+
+             if (item != null && this.Items != null && this.Items.Count > 0 && this.Items.Contains(item))
+                 this.SelectedItem = item;
+
+             /* if (this.IsHandleCreated)
+              Invoker.Invoke((MethodInvoker)(() =>
+              {
+
+              }));
+              /
+
+
+         }*/
+        
+        /// <summary>
+        /// Removes items and sets new ones
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetItems(List<object> values)
         {
-            if (items.IsNullOrEmpty())
+            this.ClearItems();
+
+            if (values.IsNullOrEmpty())
                 return;
 
+            this.SetItems(values.ToArray());
+        }
 
-            var item = this.SelectedItem;
+        /// <summary>
+        /// Removes items and sets new ones
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetItems(params object[] values)
+        {
+            this.ClearItems();
 
-            if (Objects.EqualsItems(items, this.Items.Cast<object>().ToArray()))
+            if (values.IsNullOrEmpty())
+                return;
+        
+            
+            this.AddItems(values);
+        }
+
+        public void AddItems(List<object> values)
+        {
+            if (values.IsNullOrEmpty())
                 return;
 
-            if (!append) this.Items.Clear();
-
-            this.Items.AddRange(items);
-
-            if (index >= 0 && index < this.Items.Count)
-                this.SelectedIndex = index;
-
-            if (item != null && this.Items != null && this.Items.Count > 0 && this.Items.Contains(item))
-                this.SelectedItem = item;
-
-            /* if (this.IsHandleCreated)
-             Invoker.Invoke((MethodInvoker)(() =>
-             {
-
-             }));
-             /
-
-
-        }*/
+            this.AddItems(values.ToArray());
+        }
 
 
         public void AddItems(params object[] values)

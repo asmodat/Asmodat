@@ -1,22 +1,19 @@
-﻿using System;
+﻿using Asmodat.Extensions.Collections.Generic;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using System.Text.RegularExpressions;
-
-
-
-namespace Asmodat.Abbreviate
+namespace Asmodat.Extensions.Objects
 {
-    public static partial class Strings
-    {
 
+
+    public static partial class stringEx
+    {
         /// <summary>
         /// Tests similarity between occurance of separate characters count's 
         /// </summary>
@@ -97,7 +94,7 @@ namespace Asmodat.Abbreviate
 
             return source.Remove(index, replace.Length).Insert(index, replacement);
 
-         }
+        }
 
 
         public static string RemoveNonNumeric(string s)
@@ -108,36 +105,42 @@ namespace Asmodat.Abbreviate
             return Regex.Replace(s, "[^0-9.]", "");
         }
 
-
-        public static int? IndexOf(string s, char c, int number = 1)
+        /// <summary>
+        /// Returns the n'th index occurance  of char from start if n is positive or from end if n is negative
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="c"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static int IndexOfByCount(this string s, char c, int n = 1)
         {
-            if (number == 0)
-                return null;
+           
+            if (n == 0)
+                return -1;
 
-            if (number > 0)
+            if (n > 0)
             {
                 for (int i = 0; i < s.Length; i++)
                 {
                     if (s[i] == c)
                     {
-                        if (--number == 0)
+                        if (--n == 0)
                             return i;
                     }
                 }
             }
 
-            if (number < 0)
+            if (n < 0)
                 for (int i = s.Length - 1; i >= 0; i--)
                 {
                     if (s[i] == c)
                     {
-                        if (++number == 0)
+                        if (++n == 0)
                             return i;
                     }
                 }
 
-            return null;
-
+            return -1;
         }
 
 
@@ -147,15 +150,16 @@ namespace Asmodat.Abbreviate
         /// <param name="str"></param>
         /// <param name="sub"></param>
         /// <returns></returns>
-        public static int Count(string str, string sub)
+        public static int Count(this string str, string sub)
         {
-            if (System.String.IsNullOrEmpty(str) || System.String.IsNullOrEmpty(sub))
+            if (str.IsNullOrEmpty() || sub.IsNullOrEmpty())
                 return 0;
             else if (str == sub)
                 return 1;
-
-            return (str.Length - str.Replace(sub, "").Length) / sub.Length;
+            else
+                return (str.Length - str.Replace(sub, "").Length) / sub.Length;
         }
+
 
         /// <summary>
         /// Count Subchars
@@ -163,19 +167,10 @@ namespace Asmodat.Abbreviate
         /// <param name="str"></param>
         /// <param name="c"></param>
         /// <returns></returns>
-        public static int Count(string str, char c)
+        public static int Count(this string str, char c)
         {
-            string sub = c.ToString();
-            if (System.String.IsNullOrEmpty(str) || System.String.IsNullOrEmpty(sub))
-                return 0;
-            else if (str == sub)
-                return 1;
-
-            return (str.Length - str.Replace(sub, "").Length) / sub.Length;
+            return str.Count(c.ToString());
         }
-
-
-        
 
         /// <summary>
         /// Searches from [start to data.Length) for first index of value inside data
@@ -186,22 +181,17 @@ namespace Asmodat.Abbreviate
         /// <returns></returns>
         public static int FirstIndex(this string data, string value, int start = 0)
         {
-            if (data == null || value == null ||
-                data.Length <= 0 || value.Length <= 0 ||
+            if (data.IsNullOrEmpty() || value.IsNullOrEmpty() ||
                 start < 0 || start > data.Length || value.Length > data.Length)
                 return -1;
 
-            int length = data.Length;
-            int target = value.Length;
-            int count = 0;
-            int i = start;
+            int length = data.Length, target = value.Length;
+            int count = 0, i = start;
             for (; i < length; i++)
             {
                 if (data[i] == value[count])
                 {
-                    ++count;
-
-                    if (count == target)
+                    if (++count == target)
                         return (i - count + 1);
                 }
                 else count = 0;
@@ -219,22 +209,17 @@ namespace Asmodat.Abbreviate
         /// <returns></returns>
         public static int LastIndex(this string data, string value, int start = 0)
         {
-            if (data == null || value == null || 
-                data.Length <= 0 || value.Length <= 0 || 
+            if (data.IsNullOrEmpty() || value.IsNullOrEmpty() ||
                 start < 0 || start > data.Length || value.Length > data.Length)
                 return -1;
 
-            int length = data.Length;
-            int target = value.Length;
-            int count = target - 1;
-            int i = length - 1;
-            for(; i >= start; i--)
+            int length = data.Length, target = value.Length;
+            int count = target - 1, i = length - 1;
+            for (; i >= start; i--)
             {
                 if (data[i] == value[count])
                 {
-                    --count;
-
-                    if (count == -1)
+                    if (--count == -1)
                         return i;
                 }
                 else count = target - 1;
@@ -262,7 +247,6 @@ namespace Asmodat.Abbreviate
         {
             return sData.GetTagValue(sStartTag, sEndTag, false, true);
         }
-
 
         /// <summary>
         /// Extracts String Value enclosed by first opening (start) and first (end) tags.
@@ -302,5 +286,6 @@ namespace Asmodat.Abbreviate
 
             return data.Substring(iStartIndex, iLength);
         }
+
     }
 }

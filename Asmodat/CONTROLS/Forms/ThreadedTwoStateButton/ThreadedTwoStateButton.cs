@@ -52,28 +52,31 @@ namespace Asmodat.FormsControls
         /// </summary>
         public void UpdateState()
         {
-            if (this.On)
+            _Invoker.TryInvokeMethodAction(() =>
             {
-                this.Text = this.TextOn;
+                if (this.On)
+                {
+                    base.Text = this.TextOn;
 
-                if (EnabledBackColor)
-                    this.BackColor = this.BackColorOn;
+                    if (EnabledBackColor)
+                        base.BackColor = this.BackColorOn;
 
-            }
-            else if (this.Off)
-            {
-                this.Text = this.TextOff;
+                }
+                else if (this.Off)
+                {
+                    base.Text = this.TextOff;
 
-                if (EnabledBackColor)
-                    this.BackColor = this.BackColorOff;
-            }
-            else
-            {
-                this.Text = TextNull;
+                    if (EnabledBackColor)
+                        base.BackColor = this.BackColorOff;
+                }
+                else
+                {
+                    base.Text = TextNull;
 
-                if (EnabledBackColor)
-                    this.BackColor = this.BackColorNull;
-            }
+                    if (EnabledBackColor)
+                        base.BackColor = this.BackColorNull;
+                }
+            });
         }
 
 
