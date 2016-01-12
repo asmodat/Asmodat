@@ -10,7 +10,7 @@ using Asmodat.Extensions.Collections.Generic;
 
 namespace Asmodat.Extensions.Objects
 {
-    
+
 
     public static class Int32Ex
     {
@@ -43,6 +43,17 @@ namespace Asmodat.Extensions.Objects
             return sum;
         }
 
+
+        public static bool TryParse(this string value, out Int32 result)
+        {
+            if(value.IsNullOrEmpty())
+            {
+                result = default(Int32);
+                return false;
+            }
+
+            return Int32.TryParse(value, out result);
+        }
 
 
         /// <summary>

@@ -17,6 +17,11 @@ namespace Asmodat.FormsControls
 {
     public partial class ThreadedComboBox : ComboBox
     {
+        public ThreadedComboBox() : base()
+        {
+            if (EnableTextAlign)
+                DrawMode = DrawMode.OwnerDrawFixed;
+        }
 
         private Control _Invoker = null;
         public Control Invoker
@@ -169,7 +174,6 @@ namespace Asmodat.FormsControls
             if (values.IsNullOrEmpty())
                 return;
         
-            
             this.AddItems(values);
         }
 

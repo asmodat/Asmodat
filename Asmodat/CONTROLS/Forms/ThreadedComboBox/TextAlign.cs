@@ -24,13 +24,13 @@ namespace Asmodat.FormsControls
             Right = 2
         }
 
-        public bool EnableTextAlign { get; set; } = true;
+        public bool EnableAlignStyleColors { get; set; } = false;
+        public bool EnableTextAlign { get; set; } = false;
         public TextAlignType TextAlign { get; set; } = TextAlignType.Center;
 
 
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            
             e.DrawBackground();
             string text = string.Empty;
 
@@ -49,20 +49,29 @@ namespace Asmodat.FormsControls
                 case TextAlignType.Right:
                     flags = TextFormatFlags.Right;
                     break;
-
                 default:
                     throw new Exception("ThreadedComboBox udefined Align property.");
             }
 
-            // Color back = e.BackColor;// SystemColors.Control;
-           // Color fore = e.ForeColor;// Color.Black;
+            Color back = e.BackColor;
+            Color fore = e.ForeColor;
+            if (EnableAlignStyleColors)
+            {
+                if (this.DropDownStyle == ComboBoxStyle.DropDownList)
+                {
+                    back = SystemColors.ControlLight;
+                    fore = e.ForeColor;
+                }
 
-           // e.Graphics.FillRectangle(new SolidBrush(back), e.Bounds);
-            TextRenderer.DrawText(e.Graphics, text, e.Font, e.Bounds, e.ForeColor, e.BackColor, flags);
-            //TextRenderer.DrawText(e.Graphics, text, e.Font, e.Bounds, fore, back, flags);
+                if (this.DroppedDown)
+                    back = SystemColors.ControlDark;
+                else if (this.Focused)
+                    fore = Color.Black;
+            }
+
+            e.Graphics.FillRectangle(new SolidBrush(back), e.Bounds);// );
+            TextRenderer.DrawText(e.Graphics, text, e.Font, e.Bounds, fore, back, flags);
             e.DrawFocusRectangle();
-
-           
         }
         
     }

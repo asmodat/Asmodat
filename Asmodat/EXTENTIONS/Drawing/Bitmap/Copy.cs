@@ -114,7 +114,21 @@ namespace Asmodat.Extensions.Drawing
             return new Bitmap(bmp);// bmp.Copy(bmp.ToRectangle());
         }
 
+        public static Bitmap TryCopyDeep(this Bitmap bmp)
+        {
+            try
+            {
+                if (bmp.IsNullOrEmpty())
+                    return null;
 
+                return new Bitmap(bmp);
+            }
+            catch (Exception ex)
+            {
+                ex.WriteToExcpetionBuffer();
+                return null;
+            }
+        }
 
 
 
@@ -135,10 +149,18 @@ namespace Asmodat.Extensions.Drawing
         }
         public static Bitmap TryCopy(this Bitmap bmp)
         {
-            if (bmp.IsNullOrEmpty())
+            try
+            {
+                if (bmp.IsNullOrEmpty())
                 return null;
 
             return bmp.TryCopy(bmp.ToRectangle());
+                }
+            catch (Exception ex)
+            {
+                ex.WriteToExcpetionBuffer();
+                return null;
+            }
         }
         
         public static Bitmap[,] Copy(this Bitmap[,] bitmaps)

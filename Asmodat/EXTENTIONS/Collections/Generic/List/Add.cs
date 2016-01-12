@@ -16,7 +16,20 @@ namespace Asmodat.Extensions.Collections.Generic
 
     public static partial class ListEx
     {
-
+       /* public static bool AddToEnd<TKey>(this List<TKey> source, params TKey[] values)
+        {
+            if (source.IsNullOrEmpty() && values.IsNullOrEmpty())
+                return false;
+            else if (source.IsNullOrEmpty() && !values.IsNullOrEmpty())
+            {
+                source = new List<TKey>();
+                source.AddRange(values);
+            }
+            else if (!source.IsNullOrEmpty() && !values.IsNullOrEmpty())
+                source.AddRange(values);
+            
+            return true;
+        }*/
 
         public static bool AddToEnd<TKey>(this List<TKey> source, List<TKey> values)
         {
@@ -38,7 +51,7 @@ namespace Asmodat.Extensions.Collections.Generic
             else return true;
         }
 
-        public static bool AddToEnd<TKey>(this List<TKey> source, TKey[] values)
+        public static bool AddToEnd<TKey>(this List<TKey> source, params TKey[] values)
         {
             return source.AddToEnd(values.GetList());
         }

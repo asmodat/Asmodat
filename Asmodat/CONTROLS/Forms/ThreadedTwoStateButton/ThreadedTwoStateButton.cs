@@ -117,6 +117,16 @@ namespace Asmodat.FormsControls
             else if (this.Off) this.Off = false;
         }
 
+        public void SwitchOn()
+        {
+            this.On = true;
+        }
+
+        public void SwitchOff()
+        {
+            this.Off = true;
+        }
+
 
         private bool _Off = false;
         public bool Off

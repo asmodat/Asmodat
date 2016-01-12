@@ -137,13 +137,22 @@ namespace Asmodat.Extensions.Objects
         /// <returns>List of words without separators.</returns>
         public static string[] SplitSafe(this string sentence, string separator)
         {
-            if (sentence.IsNullOrEmpty()) return null;
-            if (separator.IsNullOrEmpty())
+            if (sentence.IsNullOrEmpty())
+                return null;
+            else if (separator.IsNullOrEmpty())
                 return new string[1] { sentence };
-            if (separator.Length == 1)
+            else if (separator.Length == 1)
                 return sentence.Split(separator[0]); //sentence.Split(separator[0]);//
+            else if (!sentence.Contains(separator))
+                return new string[0];
             else
-                return Regex.Split(sentence, @"\" + separator);
+            {
+                string[] result = Regex.Split(sentence, @"\" + separator);
+                if(!result.IsNullOrEmpty() && result[result.Length - 1].IsNullOrEmpty())
+                    result = result.SubArray(0, result.Length - 1);
+
+                return result;
+            }
         }
 
         public static string[] SplitSafe(this string sentence, char separator)
