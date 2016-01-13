@@ -20,7 +20,7 @@ namespace Asmodat.Extensions
             return ret;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Compares nullable values, if anu nullable is null or does not have value, it returns false
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -34,7 +34,7 @@ namespace Asmodat.Extensions
 
             return EqualityComparer<T>.Default.Equals(first.Value, second.Value);
         }
-
+        */
 
 
 

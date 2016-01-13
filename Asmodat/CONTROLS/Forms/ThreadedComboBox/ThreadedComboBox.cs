@@ -36,44 +36,31 @@ namespace Asmodat.FormsControls
         }
 
 
-        /* public Control Invoker { get; private set; }
 
-         public void Initialize(Control Invoker)
+         public void AddItemsEnum<E>()
          {
-             this.Invoker = Invoker;
-
-             if(EnableTextAlign)
-                 DrawMode = DrawMode.OwnerDrawFixed;
-         }*/
-
-
-        /* public void AddItemsEnum<E>(bool append = true, int index = 0)
-         {
-             string[] items = Enums.ToString<E>().ToArray();
-             this.AddItems(append, index, items);
+             this.AddItems(Enums.ToString<E>());
          }
 
-         public void AddItemsEnumDescriptions<E>(bool append = true, int index = 0)
+         public void AddItemsEnumDescriptions<E>()
          {
-             string[] items = Enums.ToStringDescription<E>().ToArray();
-             this.AddItems(append, index, items);
+             this.AddItems(Enums.ToStringDescription<E>());
          }
 
-         public void AddItemsEnumDescriptions<E>(E[] source, bool append = true, int index = 0)
+         public void AddItemsEnumDescriptions<E>(E[] source)
          {
-
              if (source.IsNullOrEmpty())
                  return;
              List<string> items = new List<string>();
              foreach (E e in source)
                  items.Add(Enums.GetEnumDescription(e));
 
-             this.AddItems(append, index, items.ToArray());
+             this.AddItems(items);
          }
 
-         public E GetEnum<E, TInvoker>(TInvoker Invoker) where TInvoker : Control
+         /*public E GetEnum<E, TInvoker>(TInvoker Invoker) where TInvoker : Control
          {
-             string txt = this.GetText();
+            string txt = this.Text;
              if (System.String.IsNullOrEmpty(txt))
                  return default(E);
 
@@ -177,7 +164,7 @@ namespace Asmodat.FormsControls
             this.AddItems(values);
         }
 
-        public void AddItems(List<object> values)
+        public void AddItems<T>(List<T> values) where T : class
         {
             if (values.IsNullOrEmpty())
                 return;

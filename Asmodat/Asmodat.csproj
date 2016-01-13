@@ -517,6 +517,7 @@
     <Compile Include="IO\JsonStorage\IO.cs" />
     <Compile Include="IO\JsonStorage\JsonStorage.cs" />
     <Compile Include="IO\JsonStorage\Properties.cs" />
+    <Compile Include="IO\Screen.cs" />
     <Compile Include="IO\ThreadedClipboard.cs" />
     <Compile Include="MATHEMATICS\AExcel\AExcel.cs" />
     <Compile Include="MATHEMATICS\AExcel\NORMSINV.cs" />
@@ -538,6 +539,7 @@
     <Compile Include="Debugging\Log.cs" />
     <Compile Include="IO\DatabseSimpleton\DatabseSimpleton.cs" />
     <Compile Include="IO\IniFiles.cs" />
+    <Compile Include="NATIVES\user32.cs" />
     <Compile Include="NATIVES\gdi32.cs" />
     <Compile Include="NATIVES\kernel32.cs" />
     <Compile Include="NATIVES\msvcrt.cs" />

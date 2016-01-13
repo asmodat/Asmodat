@@ -68,36 +68,3 @@ namespace Asmodat.FormsControls
     }
 }
 
-
-/*
-public new bool Checked
-        {
-            get
-            {
-                return Invoker.InvokeMethodFunction(() => { return base.Checked; });
-
-                bool var = false;
-
-
-                
-
-                if (Invoker == null) return base.Checked;
-                else
-                    Invoker.Invoke((MethodInvoker)(() =>
-                    {
-                        var = base.Checked;
-                    }));
-
-                return var;
-            }
-            set
-            {
-                if (Invoker == null) base.Checked = value;
-                else
-                    Invoker.Invoke((MethodInvoker)(() =>
-                    {
-                        base.Checked = value;
-                    }));
-            }
-        }
-*/

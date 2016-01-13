@@ -34,7 +34,27 @@ namespace Asmodat.Extensions
         }
 
 
+        public static bool TryGetValue<T>(this T? source, out T result) where T : struct
+        {
+            if (source == null || !source.HasValue)
+            {
+                result = default(T);
+                return false;
+            }
+            else
+            {
+                result = source.Value;
+                return true;
+            }
+        }
 
+        public static T TryGetValue<T>(this T? source, T _default = default(T)) where T : struct
+        {
+            if (source == null || !source.HasValue)
+                return _default;
+            else
+                return source.Value;
+        }
 
     }
 }
