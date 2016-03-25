@@ -56,6 +56,21 @@ namespace Asmodat.Extensions.Objects
         }
 
 
+        public static Int32 TryParse(this string value, Int32 _default)
+        {
+            if (value.IsNullOrEmpty())
+                return _default;
+
+            Int32 result;
+
+            if (Int32.TryParse(value, out result))
+                return result;
+
+            return _default;
+        }
+
+
+
         /// <summary>
         /// Returns array of 4 bytes
         /// </summary>

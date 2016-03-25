@@ -346,6 +346,9 @@
     <Compile Include="CONTROLS\Forms\ThreadedLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CONTROLS\Forms\ThreadedButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Cryptography\AES256.cs" />
     <Compile Include="Cryptography\AMUID.cs" />
     <Compile Include="Cryptography\AUID.cs" />
@@ -406,6 +409,7 @@
     <Compile Include="EXTENTIONS\Objects\byte\SumValues.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\checksum.cs" />
     <Compile Include="EXTENTIONS\Objects\bool.cs" />
+    <Compile Include="EXTENTIONS\Objects\double.cs" />
     <Compile Include="EXTENTIONS\Objects\object.cs" />
     <Compile Include="EXTENTIONS\Objects\Int16.cs" />
     <Compile Include="EXTENTIONS\Objects\string\legacy2.cs" />

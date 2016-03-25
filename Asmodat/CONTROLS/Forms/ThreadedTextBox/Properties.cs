@@ -121,5 +121,12 @@ namespace Asmodat.FormsControls
                 Invoker.TryInvokeMethodAction(() => { base.Text = value; });
             }
         }
+
+        public int default_Int32 { get; set; } = 0;
+        public Int32 Int32
+        {
+            get {  return Invoker.TryInvokeMethodFunction(() => { return base.Text.TryParse(default_Int32); }); }
+            set { Invoker.TryInvokeMethodAction(() => { base.Text = value.ToString(); }); }
+        }
     }
 }

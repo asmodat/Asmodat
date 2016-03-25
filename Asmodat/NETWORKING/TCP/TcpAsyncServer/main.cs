@@ -63,6 +63,12 @@ namespace Asmodat.Networking
 
         public int Length { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IP"></param>
+        /// <param name="Port"></param>
+        /// <param name="Length">defines size of the I/O buffers</param>
         public TcpAsyncServer(string IP, int Port, int Length)
         {
             this.IP = IP;
