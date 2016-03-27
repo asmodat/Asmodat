@@ -25,6 +25,18 @@ namespace Asmodat.Extensions.Objects
             return bytes;
         }
 
+        public static byte[] TryGetBytes(this string str, byte[] exception_result = null)
+        {
+            try
+            {
+                return str.GetBytes();
+            }
+            catch
+            {
+                return exception_result;
+            }
+        }
+
         public static string GetString(this byte[] bytes)
         {
             if (bytes == null)

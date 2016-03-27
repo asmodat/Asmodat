@@ -123,10 +123,16 @@ namespace Asmodat.FormsControls
         }
 
         public int default_Int32 { get; set; } = 0;
-        public Int32 Int32
+
+
+        public Int32 GetInt32()
         {
-            get {  return Invoker.TryInvokeMethodFunction(() => { return base.Text.TryParse(default_Int32); }); }
-            set { Invoker.TryInvokeMethodAction(() => { base.Text = value.ToString(); }); }
+            return Invoker.TryInvokeMethodFunction(() => { return base.Text.TryParse(default_Int32); });
+        }
+
+        public void SetInt32(string value)
+        {
+            Invoker.TryInvokeMethodAction(() => { base.Text = value.ToString(); });
         }
     }
 }
