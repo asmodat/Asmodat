@@ -15,7 +15,7 @@ namespace Asmodat.FormsControls
         public LoginControl()
         {
             InitializeComponent();
-            TRTbxLoginMessage.Initialize(this);
+            //TRTbxLoginMessage.Initialize(this);
             //TTbxUsername.Initialize(this);
             //TTbxPassword.Initialize(this);
         }

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Asmodat.Abbreviate;using Asmodat.Extensions.Objects;
+using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
 
 using System.Windows.Forms;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ using Asmodat;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using Asmodat.Types;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
@@ -23,29 +25,23 @@ namespace Asmodat.FormsControls
             this.HScroll += ThreadedRichTextBox_HScroll;
         }
       
-        public void Initialize(Control Invoker)
+        /*public void Initialize(Control Invoker)
         {
             this.Invoker = Invoker;
 
             if (this.Focused) return;
+        }*/
+
+        public bool ScrollTop()
+        {
+            return Invoker.TryInvokeMethodFunction(() => { return FormsControls.PostMessage(this.Handle, FormsControls.WM_VSCROLL, (IntPtr)FormsControls.SB_TOP, IntPtr.Zero); });
+            //Invoker.Invoke((MethodInvoker)(() => { FormsControls.PostMessage(this.Handle, FormsControls.WM_VSCROLL, (IntPtr)FormsControls.SB_TOP, IntPtr.Zero); }));
         }
 
-        public void ScrollTop()
+        public bool ScrolLeft()
         {
-
-            Invoker.Invoke((MethodInvoker)(() =>
-            {
-                FormsControls.PostMessage(this.Handle, FormsControls.WM_VSCROLL, (IntPtr)FormsControls.SB_TOP, IntPtr.Zero);
-            }));
-        }
-
-        public void ScrolLeft()
-        {
-
-            Invoker.Invoke((MethodInvoker)(() =>
-            {
-                FormsControls.PostMessage(this.Handle, FormsControls.WM_HSCROLL, (IntPtr)FormsControls.SB_LEFT, IntPtr.Zero);
-            }));
+            return Invoker.TryInvokeMethodFunction(() => { return FormsControls.PostMessage(this.Handle, FormsControls.WM_HSCROLL, (IntPtr)FormsControls.SB_LEFT, IntPtr.Zero); });
+            //Invoker.Invoke((MethodInvoker)(() =>{ FormsControls.PostMessage(this.Handle, FormsControls.WM_HSCROLL, (IntPtr)FormsControls.SB_LEFT, IntPtr.Zero);}));
         }
 
         private void ThreadedRichTextBox_VScroll(object sender, EventArgs e)
@@ -68,10 +64,7 @@ namespace Asmodat.FormsControls
 
         public new void ScrollToCaret()
         {
-            Invoker.Invoke((MethodInvoker)(() =>
-            {
-                base.ScrollToCaret();
-            }));
+            Invoker.TryInvokeMethodAction(() =>{ base.ScrollToCaret(); });
         }
 
         /// <summary>
