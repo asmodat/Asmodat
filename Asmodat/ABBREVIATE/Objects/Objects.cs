@@ -115,7 +115,6 @@ namespace Asmodat.Abbreviate
                 || value is double
                 || value is decimal
                 || value is BigInteger;
-
         }
 
         

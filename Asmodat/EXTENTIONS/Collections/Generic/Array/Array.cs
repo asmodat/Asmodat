@@ -28,8 +28,6 @@ namespace Asmodat.Extensions.Collections.Generic
         /// <returns></returns>
         public static bool IsNullOrEmpty<TKey>(this TKey[,] source)
         {
-           
-
             if (source == null)
                 return true;
             
@@ -256,12 +254,66 @@ namespace Asmodat.Extensions.Collections.Generic
         }
 
 
+        public static List<T> TryToList<T>(this T[] source)
+        {
+            try
+            {
+                if (source == null)
+                    return null;
+                else
+                    return source.ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+      
+        /// <summary>
+        /// Safely resizes array if neaded
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static T[] ToSafeArray<T>(this T[] source, int length)
+        {
+            return source.TryToList().ToSafeArray(length);
+        }
+
+
+        public static T[] GetSafeRange<T>(this T[] source, int offset)
+        {
+            if (source == null) return null;
+
+            if (offset < 0) offset = 0;
+            if (offset >= source.Length) return new T[0];
+
+            return source.TryToList().GetSafeRange(offset, source.Length - offset).TryToArray();
+        }
+
+        public static T[] GetSafeRange<T>(this T[] source, int offset, int count)
+        {
+            return source.TryToList().GetSafeRange(offset, count).TryToArray();
+        }
+
+
+
+
+        public static TKey[] SubArray<TKey>(this TKey[] source, int offset)
+        {
+            if (source == null || offset < 0) return null;
+
+            return source.SubArray(offset, source.Length - offset);
+        }
+
         public static TKey[] SubArray<TKey>(this TKey[] source, int offset, int count)
         {
             if (source == null || offset < 0 || count < 0 || (offset + count) > source.Length)
                 return null;
 
-            if (count == 0)
+            if (source.Length == 0 || count == 0)
                 return new TKey[0];
 
             TKey[] result = new TKey[count];

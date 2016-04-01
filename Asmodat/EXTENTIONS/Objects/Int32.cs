@@ -69,7 +69,7 @@ namespace Asmodat.Extensions.Objects
             return _default;
         }
 
-
+       
 
         /// <summary>
         /// Returns array of 4 bytes

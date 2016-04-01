@@ -15,18 +15,20 @@ namespace Asmodat.Abbreviate
 {
     public partial class ThreadedSortedList<T> : SortedSet<T>
     {
+        private readonly object locker = new object();
+
         public T this[int index]
         {
-            get { lock (this) return this.ElementAt(index); }
+            get { lock (locker) return this.ElementAt(index); }
         }
 
-        public T[] ValuesArray { get { lock (this) return this.ToArray(); } }
-        public List<T> ValuesList { get { lock (this) return this.ToList(); } }
+        public T[] ValuesArray { get { lock (locker) return this.ToArray(); } }
+        public List<T> ValuesList { get { lock (locker) return this.ToList(); } }
 
 
         public new bool Add(T item) 
         {
-            lock (this)
+            lock (locker)
                 return base.Add(item);
         }
 
@@ -34,7 +36,7 @@ namespace Asmodat.Abbreviate
         {
             if (items == null || items.Length <= 0) return false;
             bool success = true;
-            lock (this)
+            lock (locker)
             {
                 int i = 0;
                 for (; i < items.Length; i++)
@@ -46,7 +48,7 @@ namespace Asmodat.Abbreviate
 
         public new void Clear()
         {
-            lock (this)
+            lock (locker)
                 base.Clear();
         }
     }

@@ -20,7 +20,6 @@ namespace Asmodat.Extensions.Collections.Generic
             else return source.Distinct().ToArray();
         }
 
-
         /// <summary>
         /// Checks if Enumerable is null or it's count is less or equal zero.
         /// </summary>

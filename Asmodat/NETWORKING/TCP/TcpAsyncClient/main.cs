@@ -28,7 +28,7 @@ namespace Asmodat.Networking
     {
         ThreadedTimers Timers = new ThreadedTimers(100);
 
-        public TcpAsyncClient(string sIP, int iPORT, int Length, long timeout_receiver, int SendTimeout_ms)
+        public TcpAsyncClient(string sIP, int iPORT, int Length, long timeout_receiver = 0, int SendTimeout_ms = 0)
         {
 
             this.TimeoutReceived = new TickTimeout(timeout_receiver, TickTime.Unit.ms, timeout_receiver > 0);
@@ -45,7 +45,7 @@ namespace Asmodat.Networking
         public void Start()
         {
             //TimeoutReceived.Reset();
-            Timers.Run(() => Timer_Restart(), 1000, null, true, false);
+            Timers.Run(() => Timer_Restart(), 1000);//, null, true, false);
         }
 
         
@@ -57,6 +57,7 @@ namespace Asmodat.Networking
             bool triggered = TimeoutReceived.IsTriggered;
             if (connected && !triggered)
                 return;
+
 
 
             Timers.Terminate("TimrMain_Send");

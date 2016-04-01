@@ -84,7 +84,6 @@ namespace Asmodat.Abbreviate
             if (Object.ReferenceEquals(source, null))
                 return default(T);
 
-
             if (LoopHandling != null)
                 return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source, Formatting.None, new JsonSerializerSettings() { ReferenceLoopHandling = (ReferenceLoopHandling)LoopHandling }));
             else return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source));

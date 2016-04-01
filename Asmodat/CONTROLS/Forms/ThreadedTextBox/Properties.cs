@@ -112,14 +112,14 @@ namespace Asmodat.FormsControls
         ExceptionBuffer Exceptions = new ExceptionBuffer();
         public new string Text
         {
-            get
-            {
-                return Invoker.TryInvokeMethodFunction(() => { return base.Text; });
-            }
-            set
-            {
-                Invoker.TryInvokeMethodAction(() => { base.Text = value; });
-            }
+            get { return Invoker.TryInvokeMethodFunction(() => { return base.Text; }); }
+            set { Invoker.TryInvokeMethodAction(() => { base.Text = value; }); }
+        }
+
+        public new bool Enabled
+        {
+            get { return Invoker.TryInvokeMethodFunction(() => { return base.Enabled; }); }
+            set { Invoker.TryInvokeMethodAction(() => { base.Enabled = value; }); }
         }
 
         public int default_Int32 { get; set; } = 0;

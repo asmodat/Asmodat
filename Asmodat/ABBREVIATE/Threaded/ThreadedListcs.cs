@@ -15,23 +15,22 @@ namespace Asmodat.Abbreviate
 {
     public partial class ThreadedList<T> : List<T>
     {
+        private readonly object locker = new object();
+
         public new T this[int index]
         {
-           
-             get { lock (this) return this.ElementAt(index); }
-             set { lock (this) base[index] = value; } //fixed ?
-       
+             get { lock (locker) return this.ElementAt(index); }
+             set { lock (locker) base[index] = value; } //fixed ?
         }
 
-        public T[] ValuesArray { get { lock (this) return this.ToArray(); } }
-        public List<T> ValuesList { get { lock (this) return this.ToList(); } }
+        public T[] ValuesArray { get { lock (locker) return this.ToArray(); } }
+        public List<T> ValuesList { get { lock (locker) return this.ToList(); } }
 
 
         public new void Add(T item)
         {
-            lock (this)
+            lock (locker)
                 base.Add(item);
-        
         }
 
         public new void AddRange(IEnumerable<T> collection)
@@ -44,7 +43,7 @@ namespace Asmodat.Abbreviate
             if (index < 0)
                 return;
 
-            lock (this)
+            lock (locker)
             {
                 if (this.Count > index)
                     base.RemoveAt(index);
@@ -56,7 +55,7 @@ namespace Asmodat.Abbreviate
         {
             if (items == null || items.Length <= 0) return;
 
-            lock (this)
+            lock (locker)
             {
                 int i = 0;
                 for (; i < items.Length; i++)
@@ -66,7 +65,7 @@ namespace Asmodat.Abbreviate
 
         public new void Clear()
         {
-            lock (this)
+            lock (locker)
                 base.Clear();
         }
     }

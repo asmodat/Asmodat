@@ -93,7 +93,7 @@ namespace Asmodat.Abbreviate
         }
 
         /// <summary>
-        /// This can be user to return name of parameter, Example:
+        /// This can be used to return name of parameter, Example:
         /// int x = 1;
         /// string foo(int coordinate) { return nameofmember(()=>coordinate); }
         /// void foo2() { if(foo(x) != "x") throw new Exception("this must be x...")}

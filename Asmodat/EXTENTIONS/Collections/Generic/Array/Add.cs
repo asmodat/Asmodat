@@ -21,7 +21,6 @@ namespace Asmodat.Extensions.Collections.Generic
     {
         
 
-
         public static TKey[] AddDistinct<TKey>(this TKey[] source, TKey value)
         {
             if (value == null)
