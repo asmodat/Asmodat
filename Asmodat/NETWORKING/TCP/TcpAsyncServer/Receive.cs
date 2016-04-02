@@ -30,18 +30,7 @@ namespace Asmodat.Networking
 {
 
 
-    public class StateObject : IDisposable
-    {
-        public TickTime Time = TickTime.Default;
-        public string key = null;
-        public Socket workSocket = null;
-        public byte[] residue = null;
-
-        public void Dispose()
-        {
-            workSocket.Cleanup();
-        }
-    }
+    
 
     public partial class TcpAsyncServer
     {

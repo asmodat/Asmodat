@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Asmodat.Abbreviate;using Asmodat.Extensions.Objects;
+using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
 
 using System.Drawing;
 
@@ -60,6 +61,22 @@ namespace Asmodat.Extensions.Collections.Generic
             if (source == null || source.Count() <= value)
                 return true;
             else return false;
+        }
+
+        public static int GetCount<TSource>(this IEnumerable<TSource> source)
+        {
+            //IEnumerableEx.IsNullOrEmpty(source);
+
+            if (source == null || source.LongCount() <= 0)
+                return 0;
+            else return source.Count();
+        }
+
+        public static long GetLongCount<TSource>(this IEnumerable<TSource> source)
+        {
+            if (source == null || source.LongCount() <= 0)
+                return 0;
+            else return source.LongCount();
         }
 
         public static bool IsCountEqual<TSource>(this IEnumerable<TSource> source, int value)

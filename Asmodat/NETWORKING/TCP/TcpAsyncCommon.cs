@@ -18,7 +18,9 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 
-using Asmodat.Abbreviate;using Asmodat.Extensions.Objects;
+using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
+using Asmodat.Extensions.Collections.Generic;
 
 namespace Asmodat.Networking
 {
@@ -38,5 +40,36 @@ namespace Asmodat.Networking
         /// Default Uniqe Idenyfier Key
         /// </summary>
         public const string DefaultUID = "#DefaultID#";
+
+
+        public static byte[] CreatePacket(byte[] data)
+        {
+            if (data.IsNullOrEmpty())
+                return null;
+
+            byte[] data_compressed = data.GZip();
+            byte compression = 0;
+            if (data_compressed.Length < data.Length - 1)
+            {
+                compression = 1;
+                data = data_compressed;
+            }
+
+            byte[] length = Int32Ex.ToBytes(data.Length);
+            Int32 checksum = data.ChecksumInt32();
+            byte[] check = Int32Ex.ToBytes(checksum);
+
+            List<byte> result = new List<byte>();
+            #region packet
+            result.Add(TcpAsyncServer.StartByte);
+            result.Add(compression);
+            result.AddRange(length);
+            result.AddRange(check);
+            result.AddRange(data);
+            result.Add(TcpAsyncServer.EndByte);
+            #endregion
+
+            return result.ToArray();
+        }
     }
 }

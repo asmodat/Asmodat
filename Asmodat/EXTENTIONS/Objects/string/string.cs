@@ -21,6 +21,8 @@ namespace Asmodat.Extensions.Objects
                 return String.Format("{0:X}", str.GetHashCode());
         }
 
+        
+
 
         public static string RemoveFirst(this string str, int count)
         {

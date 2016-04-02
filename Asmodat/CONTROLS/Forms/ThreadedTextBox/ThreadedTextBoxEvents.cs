@@ -4,15 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Windows.Forms;
+using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
 
+using System.Windows.Forms;
+using System.ComponentModel;
+using Asmodat;
+using Asmodat.Extensions.Windows.Forms;
 using Asmodat.Types;
 
 namespace Asmodat.FormsControls
 {
-    public delegate void ThreadedTextBoxEnterClickEventHandler(object source, EventArgs e);
-    public delegate void ThreadedTextBoxDownClickEventHandler(object source, EventArgs e);
-    public delegate void ThreadedTextBoxUpClickEventHandler(object source, EventArgs e);
+    public delegate void ThreadedTextBoxEnterKeyDownEventHandler(object source, KeyEventArgs e);
+    public delegate void ThreadedTextBoxDownKeyDownEventHandler(object source, KeyEventArgs e);
+    public delegate void ThreadedTextBoxUpKeyDownEventHandler(object source, KeyEventArgs e);
+    public delegate void ThreadedTextBoxKeyDownEventHandler(object source, KeyEventArgs e);
 
+    public partial class ThreadedTextBox : TextBox
+    {
+        public event ThreadedTextBoxEnterKeyDownEventHandler OnThreadedEnterKeyDown = null;
+        public event ThreadedTextBoxDownKeyDownEventHandler OnThreadedDownKeyDown = null;
+        public event ThreadedTextBoxUpKeyDownEventHandler OnThreadedUpKeyDown = null;
+        public event ThreadedTextBoxKeyDownEventHandler OnThreadedKeyDown = null;
+    }
 
 }
+/*
+
+*/

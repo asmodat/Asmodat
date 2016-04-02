@@ -150,40 +150,15 @@ namespace Asmodat.Networking
             StateObject state = this.GetState(key);
             Socket handler = this.GetHandler(key);
 
-            if (!handler.IsConnected() || DBuffer == null || DBuffer.IsAllRead)
-                return false;
-
             byte[] data;
-            if (!DBuffer.Read(out data))
+
+            if (!handler.IsConnected() || DBuffer == null || DBuffer.IsAllRead || !DBuffer.Read(out data))
                 return false;
+            
+            byte[] result_data = TcpAsyncCommon.CreatePacket(data);
 
             if (data.IsNullOrEmpty())
                 return false;
-
-            byte[] data_compressed = data.GZip();
-
-            byte compression = 0;
-            if (data_compressed.Length < data.Length - 1)
-            {
-                compression = 1;
-                data = data_compressed;
-            }
-
-
-            byte[] length = Int32Ex.ToBytes(data.Length);
-            Int32 checksum = data.ChecksumInt32();
-            byte[] check = Int32Ex.ToBytes(checksum);
-
-            List<byte> result = new List<byte>();
-            #region packet
-            result.Add(StartByte);
-            result.Add(compression);
-            result.AddRange(length);
-            result.AddRange(check);
-            result.AddRange(data);
-            result.Add(EndByte);
-            #endregion
-            byte[] result_data = result.ToArray();
 
             int sent = 0;
             int size = result_data.Length;

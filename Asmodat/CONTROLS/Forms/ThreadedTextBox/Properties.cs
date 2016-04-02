@@ -94,8 +94,35 @@ namespace Asmodat.FormsControls
             }
         }
 
+        public new bool Focus()
+        {
+            return Invoker.TryInvokeMethodFunction(() => { return base.Focus(); });
+        }
 
-       
+        public new void SelectAll()
+        {
+            if (this.Text.IsNullOrEmpty())
+                return;
+
+            this.SelectionStart = 0;
+            this.SelectionLength = this.Text.Length;
+        }
+
+        public void CarretToEnd()
+        {
+            if (this.Text.IsNullOrEmpty())
+                return;
+
+            this.SelectionStart = this.Text.Length - 1;
+            this.SelectionLength = 0;
+        }
+
+        public void CarretToStart()
+        {
+            this.SelectionStart = 0;
+            this.SelectionLength = 0;
+        }
+
 
         public new string SelectedText
         {

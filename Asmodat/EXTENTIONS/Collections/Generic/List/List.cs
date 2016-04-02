@@ -34,11 +34,11 @@ namespace Asmodat.Extensions.Collections.Generic
 
         public static T[] ToSafeArray<T>(this List<T> source, int length)
         {
-            if (source == null || length < 0)
+            if (length < 0)
                 return null;
 
-            if (length == 0)
-                return new T[0];
+            if (source == null || length == 0)
+                return new T[length];
 
             List<T> subl = source.GetSafeRange(0, length);
 

@@ -108,7 +108,7 @@ namespace Asmodat.Networking
             D3BReceive.Set(key, new BufferedArray<byte[]>(this.Length));
             D3BSend.Set(key, new BufferedArray<byte[]>(this.Length));
 
-            this.Send(key, "#START".GetBytes());
+            //this.Send(key, "#START".GetBytes());
         }
 
 

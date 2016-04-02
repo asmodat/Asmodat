@@ -42,43 +42,25 @@ namespace Asmodat.Networking
         }
 
 
-       
-
         
+
+
+
         private bool Send()
         {
-            if (SLClient == null || DBSend == null || !SLClient.Connected || DBSend.IsAllRead) return false;
-
             byte[] data;
-            if (!DBSend.Read(out data))
+
+            if (SLClient == null || 
+                DBSend == null || 
+                !SLClient.Connected || 
+                DBSend.IsAllRead ||
+                !DBSend.Read(out data)) return false;
+
+
+            byte[] result_data = TcpAsyncCommon.CreatePacket(data);// result.ToArray();
+
+            if (result_data.IsNullOrEmpty())
                 return false;
-
-            if (data.IsNullOrEmpty())
-                return false;
-
-            byte[] data_compressed = data.GZip();
-            byte compression = 0;
-            if (data_compressed.Length < data.Length - 1)
-            {
-                compression = 1;
-                data = data_compressed;
-            }
-
-            byte[] length = Int32Ex.ToBytes(data.Length);
-            Int32 checksum = data.ChecksumInt32();
-            byte[] check = Int32Ex.ToBytes(checksum);
-
-            List<byte> result = new List<byte>();
-            #region packet
-            result.Add(TcpAsyncServer.StartByte);
-            result.Add(compression);
-            result.AddRange(length);
-            result.AddRange(check);
-            result.AddRange(data);
-            result.Add(TcpAsyncServer.EndByte);
-            #endregion
-            byte[] result_data = result.ToArray();
-
 
             int sent = 0;
             int size = result_data.Length;

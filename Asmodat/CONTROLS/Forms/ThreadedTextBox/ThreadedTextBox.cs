@@ -11,11 +11,15 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using Asmodat;
 using Asmodat.Extensions.Windows.Forms;
+using Asmodat.Types;
 
 namespace Asmodat.FormsControls
 {
     public partial class ThreadedTextBox : TextBox
     {
+       
+
+
         public void Initialize()
         {
             if (Autosave_Text)
@@ -24,22 +28,11 @@ namespace Asmodat.FormsControls
             Initialized = true;
             this.TextChanged += ThreadedTextBox_TextChanged_Save;
             this.KeyDown += ThreadedTextBox_KeyDown;
+
+            KeyControlData = new BarrelList<string>(true);
         }
 
-        public bool EnableKeyControl { get; set; } = false;
-
-        ThreadedBuffer<string> buf = new ThreadedBuffer<string>(1024);
-
-        private void ThreadedTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (!this.EnableKeyControl || !this.Enabled) return;
-
-           
-            if(e.IsEnter())
-            {
-
-            }
-        }
+        
 
         private void ThreadedTextBox_TextChanged_Save(object sender, EventArgs e)
         {
