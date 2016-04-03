@@ -109,60 +109,7 @@ namespace Asmodat.Networking
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="packet"></param>
-        /// <param name="start">Is used to quickly find packet start without calculations</param>
-        /// <param name="offest"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public static bool GetPacketLocation(ref byte[] packet, out Int32 offest, out Int32 length, out byte compression)
-        {
-            offest = -1;
-            length = -1;
-            compression = 0;
-
-            if (packet.IsNullOrEmpty())
-                return false;
-
-            byte start = TcpAsyncServer.StartByte;
-            byte end = TcpAsyncServer.EndByte;
-            int packet_length = packet.Length;
-            Int32 _length, _offset;
-            byte _compression;
-
-            for (int i = 0; i < packet_length - 11; i++)
-            {
-                if (packet[i] != start)
-                    continue;
-
-                _compression = packet[i + 1];
-
-                _length = Int32Ex.FromBytes(packet, i + 2);
-                _offset = i + 10;
-
-                if (_length <= 0 || //incorrect value test
-                    (_length + _offset) <= 0 || //overflow test
-                    packet_length <= (_length + _offset) || //invalid size test
-                    packet[_offset + _length] != end)
-                    continue;
-
-                Int32 _checksum = Int32Ex.FromBytes(packet, i + 6);
-                Int32 _checksum_test = packet.ChecksumInt32(_offset, _length);  //(Int32)packet.SumValues(i + 1, 4);
-
-                if (_checksum != _checksum_test || _length <= 0)
-                    continue;
-
-                offest = _offset;
-                length = _length;
-                compression = _compression;
-                return true;
-            }
-
-            return false;
-        }
-
+        public TcpAsyncCommon.PacketMode PacketMode { get; set; } = TcpAsyncCommon.PacketMode.Stop;
 
         private void ReceiveThread2(string key)
         {
@@ -212,7 +159,7 @@ namespace Asmodat.Networking
             int length;
             byte compression;
 
-            if (!TcpAsyncServer.GetPacketLocation(ref packet, out offset, out length, out compression) || (offset + length) > packet.Length)
+            if (!TcpAsyncCommon.RecreatePacket(ref packet, out offset, out length, out compression, PacketMode) || (offset + length) > packet.Length)
             {
                 this.SetResidue(key, packet.Copy());
                 return;

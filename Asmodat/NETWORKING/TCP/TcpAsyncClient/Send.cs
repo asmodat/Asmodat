@@ -57,7 +57,7 @@ namespace Asmodat.Networking
                 !DBSend.Read(out data)) return false;
 
 
-            byte[] result_data = TcpAsyncCommon.CreatePacket(data);// result.ToArray();
+            byte[] result_data = TcpAsyncCommon.CreatePacket(data, PacketMode);// result.ToArray();
 
             if (result_data.IsNullOrEmpty())
                 return false;

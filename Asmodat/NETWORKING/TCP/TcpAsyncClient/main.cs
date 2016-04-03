@@ -28,9 +28,9 @@ namespace Asmodat.Networking
     {
         ThreadedTimers Timers = new ThreadedTimers(100);
 
-        public TcpAsyncClient(string sIP, int iPORT, int Length, long timeout_receiver = 0, int SendTimeout_ms = 0)
+        public TcpAsyncClient(string sIP, int iPORT, int Length, TcpAsyncCommon.PacketMode PacketMode, long timeout_receiver = 0, int SendTimeout_ms = 0)
         {
-
+            this.PacketMode = PacketMode;
             this.TimeoutReceived = new TickTimeout(timeout_receiver, TickTime.Unit.ms, timeout_receiver > 0);
             this.Length = Length;
             ServerIP = sIP;

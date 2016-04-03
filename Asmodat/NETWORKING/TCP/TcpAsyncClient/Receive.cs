@@ -38,6 +38,8 @@ namespace Asmodat.Networking
         public byte[] residue { get; private set; } = null;
         public byte[] buffer_input { get; private set; } = new byte[TcpAsyncServer.PacketSizeTCP];
 
+        public TcpAsyncCommon.PacketMode PacketMode { get; set; } = TcpAsyncCommon.PacketMode.Stop;
+
         private bool Receive()
         {
             List<byte> result_buffer = new List<byte>();
@@ -81,7 +83,7 @@ namespace Asmodat.Networking
             int length;
             byte compression;
 
-            if (!TcpAsyncServer.GetPacketLocation(ref packet, out offset, out length, out compression) || (offset + length) > packet.Length)
+            if (!TcpAsyncCommon.RecreatePacket(ref packet, out offset, out length, out compression, PacketMode) || (offset + length) > packet.Length)
             {
                 residue = packet;
                 return false;

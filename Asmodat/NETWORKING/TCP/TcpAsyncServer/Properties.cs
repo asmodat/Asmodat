@@ -36,8 +36,7 @@ namespace Asmodat.Networking
         public static ManualResetEvent allDone = new ManualResetEvent(false);
 
         ExceptionBuffer Exceptions = new ExceptionBuffer();
-        public static byte StartByte { get; private set; } = 91;
-        public static byte EndByte { get; private set; } = 92;
+        
 
         public static int PacketSizeTCP { get; private set; } = 8192;//100 * 1024 * 1024;// 1400;//8192;//163884;//32768;//65536;//;
 

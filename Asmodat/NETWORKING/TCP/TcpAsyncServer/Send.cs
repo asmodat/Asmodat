@@ -155,7 +155,7 @@ namespace Asmodat.Networking
             if (!handler.IsConnected() || DBuffer == null || DBuffer.IsAllRead || !DBuffer.Read(out data))
                 return false;
             
-            byte[] result_data = TcpAsyncCommon.CreatePacket(data);
+            byte[] result_data = TcpAsyncCommon.CreatePacket(data, PacketMode);
 
             if (data.IsNullOrEmpty())
                 return false;

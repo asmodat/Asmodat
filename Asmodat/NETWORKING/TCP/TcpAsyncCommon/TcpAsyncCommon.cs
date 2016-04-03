@@ -26,6 +26,14 @@ namespace Asmodat.Networking
 {
     public partial class TcpAsyncCommon
     {
+        public enum PacketMode
+        {
+            Raw = 0, //used for test
+            Stop = 1, //used for simple LAN transmission
+            StartSizeStopCompressSum = 2 //used for long complex WAN transmission
+        }
+
+
         /// <summary>
         /// Start Of Message indicator Tag
         /// </summary>
@@ -35,41 +43,16 @@ namespace Asmodat.Networking
         /// </summary>
         public const string EOM = "\n";
 
+        public static readonly byte[] EndBytes = new byte[] { 0 };//16, 19 };
+
+        public static byte StartByte { get; private set; } = 91;
+        public static byte EndByte { get; private set; } = 92;
 
         /// <summary>
         /// Default Uniqe Idenyfier Key
         /// </summary>
         public const string DefaultUID = "#DefaultID#";
 
-
-        public static byte[] CreatePacket(byte[] data)
-        {
-            if (data.IsNullOrEmpty())
-                return null;
-
-            byte[] data_compressed = data.GZip();
-            byte compression = 0;
-            if (data_compressed.Length < data.Length - 1)
-            {
-                compression = 1;
-                data = data_compressed;
-            }
-
-            byte[] length = Int32Ex.ToBytes(data.Length);
-            Int32 checksum = data.ChecksumInt32();
-            byte[] check = Int32Ex.ToBytes(checksum);
-
-            List<byte> result = new List<byte>();
-            #region packet
-            result.Add(TcpAsyncServer.StartByte);
-            result.Add(compression);
-            result.AddRange(length);
-            result.AddRange(check);
-            result.AddRange(data);
-            result.Add(TcpAsyncServer.EndByte);
-            #endregion
-
-            return result.ToArray();
-        }
+        
     }
 }

@@ -560,7 +560,9 @@
     <Compile Include="NETWORKING\TCP\TcpAsyncClient\Receive.cs" />
     <Compile Include="NETWORKING\TCP\TcpAsyncClient\Send.cs" />
     <Compile Include="NETWORKING\TCP\StateObject.cs" />
-    <Compile Include="NETWORKING\TCP\TcpAsyncCommon.cs" />
+    <Compile Include="NETWORKING\TCP\TcpAsyncCommon\Recreate.cs" />
+    <Compile Include="NETWORKING\TCP\TcpAsyncCommon\Create.cs" />
+    <Compile Include="NETWORKING\TCP\TcpAsyncCommon\TcpAsyncCommon.cs" />
     <Compile Include="NETWORKING\TCP\TcpAsyncServer\Data.cs" />
     <Compile Include="NETWORKING\TCP\TcpAsyncServer\GetSet.cs" />
     <Compile Include="NETWORKING\TCP\TcpAsyncServer\Properties.cs" />
