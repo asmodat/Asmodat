@@ -23,8 +23,10 @@ namespace Asmodat.FormsControls
         {
             this.VScroll += ThreadedRichTextBox_VScroll;
             this.HScroll += ThreadedRichTextBox_HScroll;
+            this.KeyDown += ThreadedTextBox_KeyDown;
         }
-      
+        
+
         /*public void Initialize(Control Invoker)
         {
             this.Invoker = Invoker;

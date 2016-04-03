@@ -19,6 +19,7 @@ namespace Asmodat.Extensions.Windows.Forms
     {
         public static bool IsEscape(this KeyEventArgs e) { return(e != null && e.KeyCode == Keys.Escape) ? true : false; }
         public static bool IsEnter(this KeyEventArgs e) { return (e != null && e.KeyCode == Keys.Enter) ?  true : false; }
+        public static bool IsDelete(this KeyEventArgs e) { return (e != null && e.KeyCode == Keys.Delete) ? true : false; }
 
         public static bool IsDown(this KeyEventArgs e) { return (e != null && e.KeyCode == Keys.Down) ? true : false; }
         public static bool IsUp(this KeyEventArgs e) { return (e != null && e.KeyCode == Keys.Up) ? true : false; }

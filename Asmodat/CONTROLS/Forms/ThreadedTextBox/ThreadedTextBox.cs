@@ -17,7 +17,11 @@ namespace Asmodat.FormsControls
 {
     public partial class ThreadedTextBox : TextBox
     {
-       
+        public ThreadedTextBox() : base()
+        {
+            this.KeyDown += ThreadedTextBox_KeyDown;
+            KeyControlData = new BarrelList<string>(true);
+        }
 
 
         public void Initialize()
@@ -27,9 +31,6 @@ namespace Asmodat.FormsControls
 
             Initialized = true;
             this.TextChanged += ThreadedTextBox_TextChanged_Save;
-            this.KeyDown += ThreadedTextBox_KeyDown;
-
-            KeyControlData = new BarrelList<string>(true);
         }
 
         

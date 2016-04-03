@@ -32,7 +32,7 @@ namespace Asmodat.FormsControls
 
             if (e.IsEnter())
             {
-                if (KeyControlData.Value != this.Text)
+                if (KeyControlData.Value != this.Text) //save text
                     KeyControlData.Add(this.Text);
 
                 if(OnThreadedEnterKeyDown != null) this.OnThreadedEnterKeyDown(this, e);
@@ -41,7 +41,7 @@ namespace Asmodat.FormsControls
             {
                 if (KeyControlData.PreviousValue != null && !KeyControlData.IsIndexAtStart)
                 {
-                    this.Text = KeyControlData.ReadPrevious();
+                    this.Text = KeyControlData.ReadPrevious(); //set text to previousvalue
                     this.CarretToEnd();
                 }
 
@@ -51,11 +51,17 @@ namespace Asmodat.FormsControls
             {
                 if (KeyControlData.NextValue != null && !KeyControlData.IsIndexAtTheEnd)
                 {
-                    this.Text = KeyControlData.ReadNext();
+                    this.Text = KeyControlData.ReadNext(); //set text tonext value
                     this.CarretToEnd();
                 }
 
                 if (OnThreadedUpKeyDown != null) this.OnThreadedUpKeyDown(this, e);
+            }
+            else if (e.IsDelete()) //Delete text
+            {
+                this.Text = "";
+
+                if (OnThreadedUpKeyDown != null) this.OnThreadedDeleteKeyDown(this, e);
             }
 
             if (OnThreadedKeyDown != null) this.OnThreadedKeyDown(this, e);
