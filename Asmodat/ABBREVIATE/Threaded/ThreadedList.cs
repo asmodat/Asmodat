@@ -28,6 +28,8 @@ namespace Asmodat.Abbreviate
             tlg.AddRange(list.ToList().Clone());
             return tlg;
         }
+
+        
     }
 
 
@@ -49,6 +51,30 @@ namespace Asmodat.Abbreviate
         {
             lock (locker)
                 base.Add(item);
+        }
+
+        //Clears list and add's new range
+        public void SetRange(params IEnumerable<T>[] collection)
+        {
+            if (collection.IsNullOrEmpty())
+                return;
+
+            this.Clear();
+
+            int i = 0, l = collection.Count();
+            for (; i < l; i++)
+                this.AddRange(collection[i]?.ToArray());
+        }
+
+
+        public void AddRange(params IEnumerable<T>[] collection)
+        {
+            if (collection.IsNullOrEmpty())
+                return;
+
+            int i = 0, l = collection.Count();
+            for(;i<l;i++)
+                this.AddRange(collection[i]?.ToArray());
         }
 
         public new void AddRange(IEnumerable<T> collection)
@@ -83,8 +109,7 @@ namespace Asmodat.Abbreviate
             lock (locker)
                 base.Clear();
         }
-
-       
+        
 
     }
 }

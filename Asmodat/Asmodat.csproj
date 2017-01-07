@@ -540,8 +540,9 @@
     <Compile Include="IO\Devices\Hardware Helper Lib\Private.cs" />
     <Compile Include="IO\Devices\Hardware Helper Lib\Native.cs" />
     <Compile Include="IO\Devices\Hardware Helper Lib\Public.cs" />
+    <Compile Include="IO\Directories\GetFilesAndDirectories.cs" />
     <Compile Include="IO\Files.cs" />
-    <Compile Include="IO\Directories.cs" />
+    <Compile Include="IO\Directories\Directories.cs" />
     <Compile Include="IO\FormsControls\FileTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

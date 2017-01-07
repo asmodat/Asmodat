@@ -223,7 +223,7 @@ namespace Asmodat.IO
         public static string ExeName { get { return Files.GetName(Files.ExePath, false); } }
         public static string ExePath {  get {  return System.Reflection.Assembly.GetEntryAssembly().Location; } }
         public static string ExeRoot { get  { return Path.GetPathRoot(Files.ExePath); } }
-
+        public static string ExeDirectory { get { return GetDirectory(ExePath); } }
         /// <summary>
         /// 
         /// </summary>

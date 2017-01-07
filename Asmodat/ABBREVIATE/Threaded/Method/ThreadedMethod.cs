@@ -36,7 +36,10 @@ namespace Asmodat.Abbreviate
         }
 
 
-
+        public bool Run(Expression<Action> EAMethod)
+        {
+            return this.Run(EAMethod, null, true, false);
+        }
 
         public bool Run(Expression<Action> EAMethod, object ID = null, bool Exceptions = true, bool waitForAccess = false)
         {
