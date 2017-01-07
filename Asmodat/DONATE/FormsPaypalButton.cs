@@ -16,11 +16,11 @@ namespace Asmodat.Donate
         {
             InitializeComponent();
 
-            BtnPayPalDonate.Image = Asmodat.Properties.Resources.paypal_donate_button_100;
-            BtnPayPalDonate.BackgroundImageLayout = ImageLayout.Stretch;
-            BtnPayPalDonate.Width = Asmodat.Properties.Resources.paypal_donate_button_100.Width + 1;
-            BtnPayPalDonate.Height = Asmodat.Properties.Resources.paypal_donate_button_100.Height + 1;
-            BtnPayPalDonate.Text = "";
+            //BtnPayPalDonate.Image = Asmodat.Properties.Resources.paypal_donate_button_100;
+            //BtnPayPalDonate.BackgroundImageLayout = ImageLayout.Stretch;
+            //BtnPayPalDonate.Width = Asmodat.Properties.Resources.paypal_donate_button_100.Width + 1;
+            //BtnPayPalDonate.Height = Asmodat.Properties.Resources.paypal_donate_button_100.Height + 1;
+            //BtnPayPalDonate.Text = "";
         }
 
         private void BtnPayPalDonate_Click(object sender, EventArgs e)

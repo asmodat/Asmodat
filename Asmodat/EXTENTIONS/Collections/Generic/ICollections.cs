@@ -24,9 +24,9 @@ namespace Asmodat.Extensions.Collections.Generic
             return collection.Count == 0;
         }
 
-   
 
         
+
 
     }
 }

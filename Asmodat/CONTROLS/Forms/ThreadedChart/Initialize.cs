@@ -9,22 +9,28 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-using Asmodat.Abbreviate;using Asmodat.Extensions.Objects;
+using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
 using Asmodat.Types;
 
 using System.Threading;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
     public partial class ThreadedChart : UserControl
     {
-        public Control Invoker { get; private set; }
-
-        public void Initialize(Control Invoker)
+        private Control _Invoker = null;
+        public Control Invoker
         {
-            this.Invoker = Invoker;
-        }
+            get
+            {
+                if (_Invoker == null)
+                    _Invoker = this.GetFirstParent();
 
+                return _Invoker;
+            }
+        }
 
         private void Init()
         {

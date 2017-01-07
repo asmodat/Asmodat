@@ -20,7 +20,7 @@ namespace Asmodat.FormsControls
 
 
         public bool EnableKeyControl { get; set; } = false;
-
+       
 
         
         private void ThreadedTextBox_KeyDown(object sender, KeyEventArgs e)

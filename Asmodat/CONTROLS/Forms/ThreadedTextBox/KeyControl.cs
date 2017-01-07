@@ -36,6 +36,12 @@ namespace Asmodat.FormsControls
                     KeyControlData.Add(this.Text);
 
                 if(OnThreadedEnterKeyDown != null) this.OnThreadedEnterKeyDown(this, e);
+
+                #region used for system sound "ding" fix
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                #endregion
+
             }
             else if (e.IsDown())
             {

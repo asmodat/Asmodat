@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Asmodat.Abbreviate;
+using Asmodat.Extensions;
 
 namespace Asmodat.Types
 {
@@ -145,6 +146,88 @@ namespace Asmodat.Types
                     return false;
                 }
             }
+        }
+
+        public bool Read(out T data, out TickTime time)
+        {
+            TickTime first = TickTime.Now;
+            int index = -1;
+
+            lock (locker)
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    if (!Reads[i] && Times[i] < first && Times[i] > TickTime.MinValue)
+                    {
+                        first = Times[i];
+                        index = i;
+                        continue;
+                    }
+                }
+
+                if (index >= 0)
+                {
+                    data = Elements[index];
+                    time = Times[index];
+                    Reads[index] = true;
+                    return true;
+                }
+                else
+                {
+                    data = default(T);
+                    time = TickTime.Default;
+                    return false;
+                }
+            }
+        }
+
+
+        public bool Contains(T data, TickTime? start = null)
+        {
+            TickTime _start;
+            if (start.IsNull())
+                _start = TickTime.MinValue;
+            else
+                _start = start.Value;
+            
+            lock (locker)
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    if (Times[i] > _start && data.Equals(Elements[i]))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool ContainsSubstring(string subData, TickTime? start = null)
+        {
+            TickTime _start;
+            if (start.IsNull())
+                _start = TickTime.MinValue;
+            else
+                _start = start.Value;
+
+            lock (locker)
+            {
+                for (int i = 0; i < Length; i++)
+                {
+                    if (Times[i] < _start || Times[i] == TickTime.MinValue)
+                        continue;
+
+                    if (Elements[i] == null)
+                        continue;
+
+                    string e = Elements[i].ToString();
+
+                    if (e.Contains(subData))
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

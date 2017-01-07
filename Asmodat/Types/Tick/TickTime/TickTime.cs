@@ -141,6 +141,10 @@ namespace Asmodat.Types
 
         [IgnoreDataMember]
         [XmlIgnore]
+        public const string FormatDateTime = "yyyy-MM-dd HH:mm:ss";
+
+        [IgnoreDataMember]
+        [XmlIgnore]
         public const string FormatLongDateTime = "yyyy-MM-dd HH:mm:ss.fff";
 
         [IgnoreDataMember]
@@ -152,6 +156,10 @@ namespace Asmodat.Types
         public const string FormatTime = "HH:mm:ss";
         //hh:mm:ss.fff
 
+        public string ToDateTimeString()
+        {
+            return this.UTC.ToString(FormatDateTime, CultureInfo.InvariantCulture);
+        }
 
         /// <summary>
         /// Converts UTC tick time into LongFormat string: "yy-MM-dd HH:mm:ss.fff"
@@ -262,8 +270,6 @@ namespace Asmodat.Types
                 return (TickTime.Now - this.Ticks);
             }
         }
-
-
 
         [IgnoreDataMember]
         [XmlIgnore]

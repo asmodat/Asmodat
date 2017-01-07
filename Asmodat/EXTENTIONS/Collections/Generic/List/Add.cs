@@ -16,21 +16,27 @@ namespace Asmodat.Extensions.Collections.Generic
 
     public static partial class ListEx
     {
-       /* public static bool AddToEnd<TKey>(this List<TKey> source, params TKey[] values)
-        {
-            if (source.IsNullOrEmpty() && values.IsNullOrEmpty())
-                return false;
-            else if (source.IsNullOrEmpty() && !values.IsNullOrEmpty())
-            {
-                source = new List<TKey>();
-                source.AddRange(values);
-            }
-            else if (!source.IsNullOrEmpty() && !values.IsNullOrEmpty())
-                source.AddRange(values);
-            
-            return true;
-        }*/
+        /* public static bool AddToEnd<TKey>(this List<TKey> source, params TKey[] values)
+         {
+             if (source.IsNullOrEmpty() && values.IsNullOrEmpty())
+                 return false;
+             else if (source.IsNullOrEmpty() && !values.IsNullOrEmpty())
+             {
+                 source = new List<TKey>();
+                 source.AddRange(values);
+             }
+             else if (!source.IsNullOrEmpty() && !values.IsNullOrEmpty())
+                 source.AddRange(values);
 
+             return true;
+         }*/
+
+        public static List<T> Create<T>(int _size, T _default)
+        {
+            if (_size < 0) return null;
+            return Enumerable.Repeat(_default, _size).ToList();
+        }
+        
         public static bool AddToEnd<TKey>(this List<TKey> source, List<TKey> values)
         {
             if (source == null && values == null)

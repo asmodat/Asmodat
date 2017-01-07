@@ -1,8 +1,10 @@
-﻿namespace Asmodat.FormsControls
+﻿using Asmodat.Extensions.Windows.Forms;
+
+namespace Asmodat.FormsControls
 {
     partial class ThreadedDataGridView
     {
-        /// <summary> 
+        /*/// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
@@ -101,6 +103,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView DgvMain;
+    */
+
     }
 }

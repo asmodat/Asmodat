@@ -16,6 +16,8 @@ namespace Asmodat.Extensions.Collections.Generic
 
     public static partial class ListEx
     {
+        
+
         public static T[]  TryToArray<T>(this List<T> source)
         {
             try
@@ -31,6 +33,17 @@ namespace Asmodat.Extensions.Collections.Generic
             }
         }
 
+        public static bool ContainsAll<T>(this List<T> source, List<T> values)
+        {
+            if((source == null && values != null) || (source != null && values == null) || (source.Count < values.Count))
+                return false;
+            
+            foreach(var v in values)
+                if (!source.Contains(v))
+                    return false;
+
+            return true;
+        }
 
         public static T[] ToSafeArray<T>(this List<T> source, int length)
         {
@@ -103,6 +116,18 @@ namespace Asmodat.Extensions.Collections.Generic
             return source.GetRange(offset, count);
         }
 
+
+        public static void RemoveRange<T>(this List<T> collection, List<T> ItemsToRemove)
+        {
+            if (collection.IsNullOrEmpty() || ItemsToRemove.IsNullOrEmpty())
+                return;
+
+
+            for (int i = 0; i < ItemsToRemove.Count; i++)
+            {
+                collection.Remove(ItemsToRemove[i]);
+            }
+        }
 
     }
 }

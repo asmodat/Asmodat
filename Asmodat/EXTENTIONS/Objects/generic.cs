@@ -13,7 +13,24 @@ namespace Asmodat.Extensions.Objects
 
     public static class genericEx
     {
-        
+        /// <summary>
+        /// Returns value if object is Equale
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="_default"></param>
+        /// <returns></returns>
+        public static T ValueOrDefault<T>(this T value, T _default) where T : class
+        {
+            if (value == null)
+                return _default;
+            else
+                return value;
+        }
+
+
+
+
         public static bool IsOneOf<T>(this T val, params T[] ps) where T : IEquatable<T>
         {
             if (ps.IsNullOrEmpty())

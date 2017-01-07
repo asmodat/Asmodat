@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
-    public partial class ThreadedDataGridView : UserControl
+    public partial class ThreadedDataGridView : DataGridView//UserControl
     {
-        public event ThreadedDataGridCellClickEventHandler OnCellClick;
+        public new event ThreadedDataGridCellClickEventHandler OnCellClick;
         public event ThreadedDataGridCellClickEventHandler OnKeyCellClick;
         public event ThreadedDataGridCellClickEventHandler OnProductCellClick;
         public event ThreadedDataGridCellClickEventHandler OnButtonCellClick;
@@ -26,14 +26,14 @@ namespace Asmodat.FormsControls
 
             if (row < 0 || column < 0) return;
 
-            string columnName = this.DgvMain.Columns[column].Name;
-            string rowName = this.DgvMain.Rows[row].HeaderCell.Value.ToString();
+            string columnName = this.Columns[column].Name;
+            string rowName = this.Rows[row]?.HeaderCell?.Value?.ToString();
 
-            object columnTag = this.DgvMain.Columns[column].Tag;
-            object rowTag = this.DgvMain.Rows[row].Tag;
+            object columnTag = this.Columns[column].Tag;
+            object rowTag = this.Rows[row].Tag;
 
 
-            object value = this.DgvMain[column, row].Value;
+            object value = this[column, row].Value;
 
 
             ThreadedDataGridCellClickEvent TDGCCEvent = new ThreadedDataGridCellClickEvent(column, columnName, columnTag,  row, rowName, rowTag, value);
@@ -42,7 +42,7 @@ namespace Asmodat.FormsControls
                 OnCellClick(this, TDGCCEvent);
 
             if (OnButtonCellClick != null)
-            if (this.DgvMain[column, row] is DataGridViewButtonCell)
+            if (this[column, row] is DataGridViewButtonCell)
                 OnButtonCellClick(this, TDGCCEvent);
 
             if (OnKeyCellClick != null && this.GetColumnTag(column) == ThreadedDataGridView.Tags.Key)

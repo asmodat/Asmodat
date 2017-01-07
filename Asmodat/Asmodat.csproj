@@ -53,6 +53,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -306,7 +307,7 @@
     <Compile Include="ABBREVIATE\Threaded\Threaded.cs" />
     <Compile Include="ABBREVIATE\Threaded\Dictionary\ThreadedDictionary.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedBuffer.cs" />
-    <Compile Include="ABBREVIATE\Threaded\ThreadedListcs.cs" />
+    <Compile Include="ABBREVIATE\Threaded\ThreadedList.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedSortedList.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedLocker.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedThreeState.cs" />
@@ -339,6 +340,15 @@
     <Compile Include="AUDIO\Speech\Recognition\Phonems\Grammar.cs" />
     <Compile Include="AUDIO\Speech\Recognition\Phonems\PhonemsRecognition.cs" />
     <Compile Include="AUDIO\Speech\Recognition\CreateGrammar2D.cs" />
+    <Compile Include="CONTROLS\Forms\ThreadedCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CONTROLS\Forms\ThreadedCheckedListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CONTROLS\Forms\ThreadedListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedRichTextBox\Events.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -361,6 +371,11 @@
     <Compile Include="CONTROLS\Forms\ThreadedTextBox\Events.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CONTROLS\WPF\EventHandlers.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedButton\ThreadedButton.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedTabControl.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedLabel\ThreadedLabel.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedTextBox\ThreadedTextBox.cs" />
     <Compile Include="Cryptography\AES256.cs" />
     <Compile Include="Cryptography\AMUID.cs" />
     <Compile Include="Cryptography\AUID.cs" />
@@ -390,11 +405,15 @@
     <Compile Include="EXTENTIONS\AForge.Videos.DirectShow\VideoCapabilites.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\Array\Add.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\Array\Array.cs" />
+    <Compile Include="EXTENTIONS\Collections\Generic\Dictionary\AddOrUpdate.cs" />
+    <Compile Include="EXTENTIONS\Collections\Generic\Dictionary\Dictionary.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\ICollections.cs" />
     <Compile Include="EXTENTIONS\Collections\ArrayList.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\List.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\Get.cs" />
     <Compile Include="EXTENTIONS\COM\Shell32\Shell.cs" />
+    <Compile Include="EXTENTIONS\Data\Entity\DbSetEx.cs" />
+    <Compile Include="EXTENTIONS\Data\SqlClient\SqlConnection.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\Process.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\ProcessStartInfo.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Lock.cs" />
@@ -421,18 +440,19 @@
     <Compile Include="EXTENTIONS\Objects\byte\SumValues.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\checksum.cs" />
     <Compile Include="EXTENTIONS\Objects\bool.cs" />
+    <Compile Include="EXTENTIONS\Objects\DateTime.cs" />
     <Compile Include="EXTENTIONS\Objects\double.cs" />
     <Compile Include="EXTENTIONS\Objects\generic.cs" />
     <Compile Include="EXTENTIONS\Objects\object.cs" />
     <Compile Include="EXTENTIONS\Objects\Int16.cs" />
     <Compile Include="EXTENTIONS\Objects\string\legacy2.cs" />
     <Compile Include="EXTENTIONS\Objects\string\legacy.cs" />
+    <Compile Include="EXTENTIONS\Objects\UInt16.cs" />
+    <Compile Include="EXTENTIONS\Objects\UInt32.cs" />
     <Compile Include="EXTENTIONS\Security.Cryptography\MD5.cs" />
     <Compile Include="EXTENTIONS\Threading.Thread.cs" />
     <Compile Include="EXTENTIONS\Objects\char.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\Add.cs" />
-    <Compile Include="EXTENTIONS\Dictionary\AddOrUpdate.cs" />
-    <Compile Include="EXTENTIONS\Dictionary\Dictionary.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\IEnumerable.cs" />
     <Compile Include="EXTENTIONS\IComparable.cs" />
     <Compile Include="EXTENTIONS\Objects\Int32.cs" />
@@ -446,6 +466,7 @@
     <Compile Include="EXTENTIONS\Drawing\Size.cs" />
     <Compile Include="EXTENTIONS\Objects\ulong.cs" />
     <Compile Include="EXTENTIONS\Web\SessionState\HttpSessionStateEx.cs" />
+    <Compile Include="EXTENTIONS\Windows\Controls\Control.cs" />
     <Compile Include="EXTENTIONS\Windows\Forms\Control\KeyEventArgs.cs" />
     <Compile Include="EXTENTIONS\Windows\Forms\Control\Property.cs" />
     <Compile Include="EXTENTIONS\Windows\Rect.cs" />
@@ -536,7 +557,20 @@
     <Compile Include="IO\JsonStorage\IO.cs" />
     <Compile Include="IO\JsonStorage\JsonStorage.cs" />
     <Compile Include="IO\JsonStorage\Properties.cs" />
+    <Compile Include="IO\KEYBOARD\KeyboardSend.cs" />
     <Compile Include="IO\Screen.cs" />
+    <Compile Include="IO\SerialPort\SerialPort.cs" />
+    <Compile Include="IO\SimpleHID\HIDDevice.cs" />
+    <Compile Include="IO\SimpleHID\HIDDeviceException.cs" />
+    <Compile Include="IO\SimpleHID\HIDInfoSet.cs" />
+    <Compile Include="IO\SimpleHID\HIDManager.cs" />
+    <Compile Include="IO\SimpleHID\NativeMethods.cs" />
+    <Compile Include="IO\SimpleHID\Report\ButtonBaseItem.cs" />
+    <Compile Include="IO\SimpleHID\Report\ButtonItem.cs" />
+    <Compile Include="IO\SimpleHID\Report\RangeItem.cs" />
+    <Compile Include="IO\SimpleHID\Report\ValueBaseItem.cs" />
+    <Compile Include="IO\SimpleHID\Report\ValueItem.cs" />
+    <Compile Include="IO\SimpleHID\Report\ValueRangeItem.cs" />
     <Compile Include="IO\ThreadedClipboard.cs" />
     <Compile Include="MATHEMATICS\AExcel\AExcel.cs" />
     <Compile Include="MATHEMATICS\AExcel\NORMSINV.cs" />
@@ -649,20 +683,20 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedDataGridView\Columns.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedDataGridView\Events.cs" />
     <Compile Include="CONTROLS\Forms\ThreadedDataGridView\Handlers.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedDataGridView\Rows.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedDataGridView\RowsEnumeration.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedDataGridView\ThreadedDataGridView.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CONTROLS\Forms\ThreadedDataGridView\ThreadedDataGridView.Designer.cs">
       <DependentUpon>ThreadedDataGridView.cs</DependentUpon>
@@ -729,11 +763,16 @@
     <Compile Include="IO\Compression\Compression.cs" />
     <Compile Include="AbstractDescriptionProvider.cs" />
     <Compile Include="AUDIO\Speech\Recognition\Numbers.cs" />
+    <Compile Include="SQL\Database\Database.cs" />
+    <Compile Include="SQL\Database\Static\Column.cs" />
+    <Compile Include="SQL\Database\Static\Row.cs" />
+    <Compile Include="SQL\Database\Static\Static.cs" />
     <Compile Include="SystemResources\DrivesInfo.cs" />
     <Compile Include="SystemResources\BaseBoardsInfo.cs" />
     <Compile Include="SystemResources\NetworkAdaptersInfo.cs" />
     <Compile Include="SystemResources\ProcessorsInfo.cs" />
     <Compile Include="Types\Barrel\BarrelList.cs" />
+    <Compile Include="Types\ParamsWrapper.cs" />
     <Compile Include="Types\TasksManager\TaskObject.cs" />
     <Compile Include="Types\TasksManager\TasksManager.cs" />
     <Compile Include="Types\Barrel\BarrelArray.cs" />
@@ -786,7 +825,9 @@
     <EmbeddedResource Include="Resources\paypal-donate-button-100.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.manifest" />
     <None Include="Content\bootstrap-theme.css.map" />
     <None Include="Content\bootstrap.css.map" />
@@ -850,7 +891,6 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\Asmodat Web Exchange\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\Asmodat Web Exchange\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <Import Project="..\..\Asmodat Web Exchange\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\Asmodat Web Exchange\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -60,10 +60,6 @@ namespace Asmodat.Abbreviate
             return this.Run(EAMethod, ID, 0, Exceptions, waitForAccess, false);
         }
 
-
-
-
-
         public bool IsAlive(Expression<Action> EAMethod)
         {
             return IsAlive(Expressions.nameofFull(EAMethod));

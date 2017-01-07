@@ -95,5 +95,13 @@ namespace Asmodat.Extensions.Drawing
         {
             return new Bitmap(size.Width, size.Height);
         }
+
+        public static Bitmap ToBitmap(this Image img)
+        {
+            if (img == null)
+                return null;
+
+            return (Bitmap)img;
+        }
     }
 }

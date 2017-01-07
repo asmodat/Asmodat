@@ -20,7 +20,7 @@ namespace Asmodat.IO
         private bool Load()
         {
             byte[] bytes;
-            lock (Locker.Get("IO"))
+            lock (locker)
                 bytes = System.IO.File.ReadAllBytes(FullPath);
             
             if (bytes == null || bytes.Length <= 0) return false;
@@ -28,7 +28,7 @@ namespace Asmodat.IO
             string data = Compression.UnZipString(bytes);
             if (System.String.IsNullOrEmpty(data)) return false;
 
-            lock (Locker.Get("Data"))
+            lock (locker)
             {
                 Data.XmlDeserialize(data);
 
@@ -46,16 +46,10 @@ namespace Asmodat.IO
 
         public bool Save()
         {
+            if (!Enabled)
+                return false;
 
-            //List<XmlPair<TKey, TValue>> Items;
-            //    lock (Locker.Get("Data"))
-            //    {
-            //        Items = new List<XmlPair<TKey, TValue>>(Data.Count);
-            //        foreach (KeyValuePair<TKey, TValue> KVP in Data)
-            //            Items.Add(new XmlPair<TKey, TValue>(KVP.Key, KVP.Value));
-            //    }
-
-            lock (Locker.Get("IO"))
+            lock (locker)
             {
                 if (Data.Count == 0)
                 {
@@ -67,8 +61,7 @@ namespace Asmodat.IO
                     string data = Data.XmlSerialize(); //Asmodat.Abbreviate.XmlSerialization.Serialize<List<XmlPair<TKey, TValue>>>(Items);
                     byte[] bytes = Compression.Zip(data);
                     if (bytes == null) return false;
-                    lock (Locker.Get("IO"))
-                        System.IO.File.WriteAllBytes(FullPath, bytes);
+                    System.IO.File.WriteAllBytes(FullPath, bytes);
                 }
             }
 

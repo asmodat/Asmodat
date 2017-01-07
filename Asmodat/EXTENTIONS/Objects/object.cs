@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Asmodat.Abbreviate;
+using Newtonsoft.Json;
+using Asmodat.Debugging;
 
 namespace Asmodat.Extensions.Objects
 {
@@ -12,6 +14,8 @@ namespace Asmodat.Extensions.Objects
 
     public static class objectEx
     {
+        public static string TryToString(this object o) { if (o == null) return null; else return o.ToString(); }
+
         public static bool IsNull(this object o) { return o == null ? true : false; }
 
         /// <summary>
@@ -20,6 +24,42 @@ namespace Asmodat.Extensions.Objects
         /// <param name="o"></param>
         /// <returns></returns>
         public static bool IsRefNull(this object o) { return object.ReferenceEquals(null, o) ? true : false; }
+
+
+        
+
+
+        public static string SerializeJson(this object o)
+        {
+            if (o == null)
+                return null;
+            try
+            {
+                return JsonConvert.SerializeObject(o);
+            }
+            catch(Exception ex)
+            {
+                ex.ToOutput();
+            }
+
+            return null;
+        }
+
+        public static T DeserializeJson<T>(this string o)
+        {
+            if (o == null)
+                return default(T);
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(o);
+            }
+            catch (Exception ex)
+            {
+                ex.ToOutput();
+            }
+
+            return default(T);
+        }
 
         public static T TryCast<T>(this object o)
         {
@@ -36,6 +76,22 @@ namespace Asmodat.Extensions.Objects
                 return default(T);
             }
         }
+
+        public static T TryConvert<T>(this object o)
+        {
+            if (o == null)
+                return default(T);
+
+            try
+            {
+                return (T)System.Convert.ChangeType(o, typeof(T));
+            }
+            catch
+            {
+                return default(T);
+            }
+        }
+
 
         public static bool IsNullable<T>(this object o)
         {

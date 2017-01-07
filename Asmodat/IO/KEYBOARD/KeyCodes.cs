@@ -22,6 +22,13 @@ namespace Asmodat
         public enum Key
         {
             A = 65,
+            a = 97,
+            I = 73,
+            i = 105,
+            L = 76,
+            l = 108,
+            m = 109,
+            M = 77,
             O = 79,
             P = 80,
             S = 83,

@@ -9,40 +9,42 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Asmodat.Abbreviate;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
-    public partial class ThreadedDataGridView : UserControl
+    public partial class ThreadedDataGridView : DataGridView// UserControl
     {
         public ThreadedDataGridView()
         {
-            InitializeComponent();
+            //InitializeComponent();
             InitializeRowsEnumeration();
 
-            this.DgvMain.CellClick += DgvMain_CellClick;
+            this.CellClick += DgvMain_CellClick;
         }
 
-
-        public DataGridView DGV
+        private Control _Invoker = null;
+        public Control Invoker
         {
             get
             {
-                return this.DgvMain;
+                if (_Invoker == null)
+                    _Invoker = this.GetFirstParent();
+
+                return _Invoker;
             }
         }
 
-
-       
 
 
         /// <summary>
         /// Columns is a read only DataGridViewColumnCollection
         /// </summary>
-        public DataGridViewColumnCollection Columns
+        public new DataGridViewColumnCollection Columns
         {
             get
             {
-                return this.DgvMain.Columns;
+                return Invoker.TryInvokeMethodFunction(() => { return base.Columns; });
             }
         }
 
@@ -52,10 +54,10 @@ namespace Asmodat.FormsControls
         {
             object val = null;
 
-            if (this.DgvMain.Columns.Count <= col)
+            if (this.Columns.Count <= col)
                 return Tags.Null;
 
-             val = this.DgvMain.Columns[col].Tag;
+             val = this.Columns[col].Tag;
 
 
             if (Enums.Equals(val, Tags.Key))
@@ -65,8 +67,9 @@ namespace Asmodat.FormsControls
         }
 
 
+      
+       
 
-        
 
     }
 

@@ -23,9 +23,10 @@ namespace Asmodat.Abbreviate
     //Action CompiledAction = EAMethod.Compile();
     public partial class ThreadedTimer : IDisposable
     {
-        private  Object Lock = new Object();//static readonly 
+        private Object Lock = new Object();//static readonly 
 
-        public System.Threading.Timer Timer { get; set; }
+        public System.Threading.Timer Timer;
+        public System.Threading.TimerCallback TimerCallback;
         public Action Method { private get; set; }
 
         private double _Timeout = 0;
@@ -89,7 +90,8 @@ namespace Asmodat.Abbreviate
             {
                 if (value)
                     this.Start();
-                else this.Stop();
+                else
+                    this.Stop();
             }
         }
 

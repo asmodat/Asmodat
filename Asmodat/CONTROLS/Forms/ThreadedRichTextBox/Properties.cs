@@ -126,5 +126,26 @@ namespace Asmodat.FormsControls
                 Invoker.TryInvokeMethodAction(() => { base.Text = value; });
             }
         }
+
+
+        public new string Rtf
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.Rtf; });
+            }
+            set
+            {
+                Invoker.TryInvokeMethodAction(() => { base.Rtf = value; });
+            }
+        }
+
+        public new int TextLength
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.TextLength; });
+            }
+        }
     }
 }

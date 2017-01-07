@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-using Asmodat.Abbreviate;using Asmodat.Extensions.Objects;
+using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
@@ -20,15 +22,13 @@ namespace Asmodat.FormsControls
         /// </summary>
         public void ClearPoints()
         {
-            if (!this.IsHandleCreated) return;
-
-            Invoker.Invoke((MethodInvoker)(() =>
+            Invoker.TryInvokeMethodAction(() =>
             {
                 foreach (Series series in ChartMain.Series)
                     series.Points.Clear();
 
                 Reset();
-            }));
+            });
 
             UpdateTime.SetNow();
         }
@@ -39,13 +39,12 @@ namespace Asmodat.FormsControls
         /// <param name="invoked"></param>
         public void ClearSeries()
         {
-            if (!this.IsHandleCreated) return;
 
-            Invoker.Invoke((MethodInvoker)(() =>
+            Invoker.TryInvokeMethodAction(() => 
             {
                 ChartMain.Series.Clear();
                 Reset();
-            }));
+            });
 
             UpdateTime.SetNow();
         }

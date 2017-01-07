@@ -96,6 +96,7 @@ namespace Asmodat.Debugging
             try
             {
                 Log.WriteException(ex, null, stackTrace, callerSearchStart, callerSearchEnd);
+                Log.WriteException(ex.InnerException, null, stackTrace, callerSearchStart, callerSearchEnd);
             }
             catch(Exception x)
             {

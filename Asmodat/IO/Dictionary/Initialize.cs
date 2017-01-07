@@ -30,7 +30,7 @@ namespace Asmodat.IO
             }
         }
         
-        ThreadedLocker Locker = new ThreadedLocker(10);
+        private object locker = new object();
         public ThreadedDictionary<TKey, TValue> Data { get; private set; }
         public string FullPath { get; private set; }
         public string FullDirectory { get; private set; }

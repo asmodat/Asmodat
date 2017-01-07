@@ -3,3 +3,5 @@
  Install-Package Microsoft.Bcl.Async
  Install-Package Microsoft.Net.Http
  Install-Package WriteableBitmapEx
+
+ Install-Package Costura.Fody - to include all dll's

@@ -46,6 +46,16 @@ namespace Asmodat.Extensions.Objects
             else return _default;
         }
 
+        public static int ParseInteger(this string value, int _default)
+        {
+            if (value.IsNullOrWhiteSpace())
+                return _default;
+
+            int val;
+            if (int.TryParse(value, out val)) return val;
+            else return _default;
+        }
+
         public static bool IsNull(this decimal? value)
         {
             if (value == null || !value.HasValue)

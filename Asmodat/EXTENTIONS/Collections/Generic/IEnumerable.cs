@@ -15,6 +15,13 @@ namespace Asmodat.Extensions.Collections.Generic
 
     public static class IEnumerableEx
     {
+        public static IEnumerable<T> Clone<T>(this IEnumerable<T> enumerable) where T : ICloneable
+        {
+            if (enumerable == null) return null;
+            else return enumerable.Select(o => (T)o.Clone());
+        }
+
+
         public static TSource[] DistinctArray<TSource>(this IEnumerable<TSource> source)
         {
             if (source == null) return null;
@@ -25,10 +32,9 @@ namespace Asmodat.Extensions.Collections.Generic
         /// Checks if Enumerable is null or it's count is less or equal zero.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="Tkey"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static bool IsNullOrEmpty<TSource, Tkey>(this IEnumerable<TSource> source)
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
         {
             if (source == null || source.Count() <= 0)
                 return true;
@@ -120,7 +126,6 @@ namespace Asmodat.Extensions.Collections.Generic
             var knownKeys = new HashSet<Tkey>();
             return source.Where(element => knownKeys.Add(keySelector(element)));
         }
-
         
         public static IEnumerable<TSource> SortAscending<TSource, Tkey>(this IEnumerable<TSource> source, Func<TSource, Tkey> keySelector)
         {

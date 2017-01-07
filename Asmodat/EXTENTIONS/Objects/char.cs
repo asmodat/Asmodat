@@ -37,7 +37,28 @@ namespace Asmodat.Extensions.Objects
             return str.ToArray();
         }
 
+        public static string ToHex(this char c)
+        {
+            return System.Convert.ToByte(c).ToString("x2");
+        }
 
+        public static bool IsPrintableASCII(this char c)
+        {
+            if (c >= 32 && c <= 127)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool IsSimpleEscapeSequence(this char c)
+        {
+            if (SimpleEscapeSequences.Contains(c))
+                return true;
+            else
+                return false;
+        }
+
+        public static readonly char[] SimpleEscapeSequences = { '\'', '\"', '\\', '\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v' };
 
 
     }

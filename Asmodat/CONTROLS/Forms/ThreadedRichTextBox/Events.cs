@@ -17,8 +17,8 @@ namespace Asmodat.FormsControls
 {
     public partial class ThreadedRichTextBox : RichTextBox
     {
-        public event KeyDownEventHandler OnThreadedEnterKeyDown = null;
-        public event KeyDownEventHandler OnThreadedDownKeyDown = null;
+        //public event KeyDownEventHandler OnThreadedEnterKeyDown = null;
+        //public event KeyDownEventHandler OnThreadedDownKeyDown = null;
         public event KeyDownEventHandler OnThreadedUpKeyDown = null;
         public event KeyDownEventHandler OnThreadedKeyDown = null;
         public event KeyDownEventHandler OnThreadedDeleteKeyDown = null;

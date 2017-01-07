@@ -38,7 +38,7 @@ namespace Asmodat.Extensions.Net.Sockets
             bool test1 = false, test2 = false;
             try
             {
-                test1 = !socket.Connected;// socket.Poll(1000, SelectMode.SelectRead);
+                test1 = socket.Poll(1000, SelectMode.SelectRead);//!socket.Connected;// 
                 test2 = (socket.Available == 0);
             }
             catch

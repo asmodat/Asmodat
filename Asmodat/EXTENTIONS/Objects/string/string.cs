@@ -21,8 +21,12 @@ namespace Asmodat.Extensions.Objects
                 return String.Format("{0:X}", str.GetHashCode());
         }
 
-        
 
+        public static string RemoveEdge(this string str, int firstCount, int lastCount)
+        {
+            str = str.RemoveFirst(firstCount);
+            return str.RemoveLast(lastCount);
+        }
 
         public static string RemoveFirst(this string str, int count)
         {
@@ -310,6 +314,37 @@ namespace Asmodat.Extensions.Objects
             return string.IsNullOrWhiteSpace(str);
         }
 
+        public static string TryTrim(this string str, char[] charsToTrim = null)
+        {
+            if (charsToTrim.IsNullOrEmpty())
+                charsToTrim = new char[] { ' ' };
+
+            if (str.IsNullOrEmpty())
+                return "";
+            else
+                return str.Trim(charsToTrim) + "";
+        }
+        public static string TryTrimStart(this string str, char[] charsToTrim = null)
+        {
+            if (charsToTrim.IsNullOrEmpty())
+                charsToTrim = new char[] { ' ' };
+
+            if (str.IsNullOrEmpty())
+                return "";
+            else
+                return str.TrimStart(charsToTrim) + "";
+        }
+
+        public static string TryTrimEnd(this string str, char[] charsToTrim = null)
+        {
+            if (charsToTrim.IsNullOrEmpty())
+                charsToTrim = new char[] { ' ' };
+
+            if (str.IsNullOrEmpty())
+                return "";
+            else
+                return str.TrimEnd(charsToTrim) + "";
+        }
 
         public static int CountSubstrings(this string str, string sub)
         {
@@ -380,6 +415,61 @@ namespace Asmodat.Extensions.Objects
 
                 return Encoding.UTF8.GetString(buffer);
             }
+        }
+
+        /// <summary>
+        /// GetRtfUnicodeEscapedString replacement
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string Escaped(this string s)
+        {
+            if (s.IsNullOrEmpty())
+                return s;
+
+            int len = s.Length;
+            StringBuilder sb = new StringBuilder(len);
+            for (int i = 0; i < len; i++)
+            {
+                char c = s[i];
+                if (c >= 0x20 && c < 0x80)
+                {
+                    if (c == '\\' || c == '{' || c == '}')
+                        sb.Append('\\');
+                    
+                    sb.Append(c);
+                }
+                else if (c < 0x20 || (c >= 0x80 && c <= 0xFF))
+                {
+                    sb.Append("\'");
+                    sb.Append(c.ToHex());
+                }
+                else
+                {
+                    sb.Append("\\u");
+                    sb.Append((short)c);
+                    sb.Append("??");//two bytes ignored
+                }
+            }
+            return sb.ToString();
+        }
+
+        public static string RtfUnicodeEscaped(this string s)
+        {
+            if (s.IsNullOrEmpty())
+                return s;
+
+            var sb = new StringBuilder();
+            foreach (var c in s)
+            {
+                if (c == '\\' || c == '{' || c == '}')
+                    sb.Append(@"\" + c);
+                else if (c <= 0x7f)
+                    sb.Append(c);
+                else
+                    sb.Append("\\u" + Convert.ToUInt32(c) + "?");
+            }
+            return sb.ToString();
         }
 
     }

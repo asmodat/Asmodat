@@ -9,70 +9,50 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Asmodat.Abbreviate;
+using Asmodat.Extensions.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
-    public partial class ThreadedDataGridView : UserControl
+    public partial class ThreadedDataGridView : DataGridView//UserControl
     {
-        public int AddRow(object[] values, bool invoke = true)
+        public int AddRow(object[] values)
         {
             int row = -1;
 
             if (values != null && values.Count() > 0 && values.Count() <= this.Columns.Count)
 
-
-               
-
-                if (invoke)
-                    this.Invoke((MethodInvoker)(() =>
-                    {
-                        row = this.DgvMain.Rows.Add();
-
-                        for (int column = 0; column < values.Length; column++)
-                            this.DgvMain[column, row].Value = values[column];
-                    }));
-                else
-                {
-                    row = this.DgvMain.Rows.Add();
+                    row = this.Rows.Add();
 
                     for (int column = 0; column < values.Length; column++)
-                        this.DgvMain[column, row].Value = values[column];
-                }
-
+                        this[column, row].Value = values[column];
             return row;
         }
 
-        public void ClearRows(bool invoke = true)
+        public void ClearRows()
         {
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    this.DgvMain.Rows.Clear();
-                }));
-            else this.DgvMain.Rows.Clear();
+            this.Rows.Clear();
         }
 
-        public int AddOrUpdateRow(object[] values, bool invoke = true)
+        public int AddOrUpdateRow(object[] values)
         {
             int row = -1;
 
             if (values != null && values.Count() > 0)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    row = this.GetEqualRow(values);
+            {
+                row = this.GetEqualRow(values);
 
-                    if (row < 0) row =
-                        this.AddRow(values);
-                    else
-                        for (int column = 0; column < values.Length; column++)
-                            this.DgvMain[column, row].Value = values[column];
-                }));
+                if (row < 0) row =
+                    this.AddRow(values);
+                else
+                    for (int column = 0; column < values.Length; column++)
+                        this[column, row].Value = values[column];
+            }
 
             return row;
         }
 
 
-        public List<int> AddOrUpdateRows(List<object[]> Rows, bool append = false, bool invoke = true)
+        public List<int> AddOrUpdateRows(List<object[]> Rows, bool append = false)
         {
             List<int> Updated = new List<int>();
             if (Rows == null) return Updated;
@@ -87,31 +67,19 @@ namespace Asmodat.FormsControls
             if (append) return Updated;
             else if (Rows.Count == 0)
             {
-                this.ClearRows(invoke);
+                this.ClearRows();
                 return Updated;
             }
 
             List<int> All = Integer.ToList(this.Rows.Count - 1, 0);
 
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
+            foreach (int i in All)
+                if (!Updated.Contains(i))
                 {
-                    foreach (int i in All)
-                        if (!Updated.Contains(i))
-                        {
-                            this.Rows.RemoveAt(i);
-                            Updated.Add(i);
-                        }
-                }));
-            else
-            {
-                foreach (int i in All)
-                    if (!Updated.Contains(i))
-                    {
-                        this.Rows.RemoveAt(i);
-                        Updated.Add(i);
-                    }
-            }
+                    this.Rows.RemoveAt(i);
+                    Updated.Add(i);
+                }
+
 
             return Updated;
         }
@@ -119,26 +87,37 @@ namespace Asmodat.FormsControls
 
         public void ClrearRows(bool invoke = true)
         {
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    this.Rows.Clear();
-                }));
-            else
-            {
-                this.Rows.Clear();
-            }
+            this.Rows.Clear();
         }
 
-        public DataGridViewRowCollection Rows
+        public new DataGridViewRowCollection Rows
         {
             get
             {
-                return this.DgvMain.Rows;
+                return Invoker.TryInvokeMethodFunction(() => { return base.Rows; });
             }
         }
 
 
+        public new DataGridViewCell this[int columnIndex, int rowIndex]
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base[columnIndex,rowIndex]; });
+            }
+            set
+            {
+                Invoker.TryInvokeMethodAction(() => { base[columnIndex, rowIndex] = value; });
+            }
+        }
+
+        public new DataGridViewSelectedRowCollection SelectedRows
+        {
+            get
+            {
+                return Invoker.TryInvokeMethodFunction(() => { return base.SelectedRows; });
+            }
+        }
 
 
         /// <summary>
@@ -163,7 +142,7 @@ namespace Asmodat.FormsControls
                         continue;
 
 
-                    if (!Objects.Equals(this.DgvMain[col, row].Value, values[col]))
+                    if (!Objects.Equals(this[col, row].Value, values[col]))
                     {
                         found = false;
                         break;
@@ -180,12 +159,12 @@ namespace Asmodat.FormsControls
             return match;
         }
 
-        public List<object> GetSelectedRowsValues(Tags tag, bool invoke = true)
+        public List<object> GetSelectedRowsValues(Tags tag)
         {
-            DataGridViewSelectedRowCollection Rows = this.DgvMain.SelectedRows;
+            DataGridViewSelectedRowCollection Rows = this.SelectedRows;
             List<object> Values = new List<object>();
 
-            int col = this.GetColumns(tag, invoke)[0];
+            int col = this.GetColumns(tag)[0];
 
             foreach (DataGridViewRow Row in Rows)
                 Values.Add(Row.Cells[col].Value);
@@ -201,19 +180,12 @@ namespace Asmodat.FormsControls
         /// <param name="tag"></param>
         /// <param name="invoke"></param>
         /// <returns></returns>
-        public List<int> GetColumns(Tags tag, bool invoke = true)
+        public List<int> GetColumns(Tags tag)
         {
             List<int> LColumns = new List<int>();
-
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    for (int i = 0; i < this.DgvMain.Columns.Count; i++)
-                        if (Enums.Equals(DgvMain.Columns[i].Tag, tag)) LColumns.Add(i);
-                }));
-            else
-                for (int i = 0; i < this.DgvMain.Columns.Count; i++)
-                    if (Enums.Equals(DgvMain.Columns[i].Tag, tag)) LColumns.Add(i);
+            
+                for (int i = 0; i < this.Columns.Count; i++)
+                    if (Enums.Equals(this.Columns[i].Tag, tag)) LColumns.Add(i);
 
             return LColumns;
         }

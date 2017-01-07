@@ -110,16 +110,16 @@ namespace Asmodat
 
         public void MouseClick(bool leftButton, bool middleButton, bool rightButton, byte count, int duration, int delay, int delayClick)
         {
-            Thread.Sleep(delay);
+            if(delay > 0) Thread.Sleep(delay);
 
             if (leftButton)
             {
                 for (byte b = 0; b < count; b++)
                 {
-                    Thread.Sleep(delayClick);
+                    if(delayClick > 0) Thread.Sleep(delayClick);
                     Mouse.mouse_event(Mouse.ME_LEFTUP, 0, 0, 0, UIntPtr.Zero);
                     Mouse.mouse_event(Mouse.ME_LEFTDOWN, 0, 0, 0, UIntPtr.Zero);
-                    Thread.Sleep(duration);
+                    if (duration > 0) Thread.Sleep(duration);
                     Mouse.mouse_event(Mouse.ME_LEFTUP, 0, 0, 0, UIntPtr.Zero);
                 }
             }
@@ -128,10 +128,10 @@ namespace Asmodat
             {
                 for (byte b = 0; b < count; b++)
                 {
-                    Thread.Sleep(delayClick);
+                    if (delayClick > 0) Thread.Sleep(delayClick);
                      Mouse.mouse_event(Mouse.MIE_MIDDLEUP, 0, 0, 0, UIntPtr.Zero);
                      Mouse.mouse_event(Mouse.MIE_MIDDLEDOWN, 0, 0, 0, UIntPtr.Zero);
-                    Thread.Sleep(duration);
+                    if (duration > 0) Thread.Sleep(duration);
                      Mouse.mouse_event(Mouse.MIE_MIDDLEUP, 0, 0, 0, UIntPtr.Zero);
                 }
             }
@@ -140,10 +140,10 @@ namespace Asmodat
             {
                 for (byte b = 0; b < count; b++)
                 {
-                    Thread.Sleep(delayClick);
+                    if (delayClick > 0) Thread.Sleep(delayClick);
                      Mouse.mouse_event(Mouse.ME_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
                      Mouse.mouse_event(Mouse.ME_RIGHTDOWN, 0, 0, 0, UIntPtr.Zero);
-                    Thread.Sleep(duration);
+                    if (duration > 0) Thread.Sleep(duration);
                      Mouse.mouse_event(Mouse.ME_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
                 }
             }

@@ -58,10 +58,8 @@ namespace Asmodat.Networking
             if (connected && !triggered)
                 return;
 
-
-
-            Timers.Terminate("TimrMain_Send");
-            Timers.Terminate("TimrMain_Receive");
+            Timers.Terminate(() => TimrMain_Send());
+            Timers.Terminate(() => TimrMain_Receive());
             this.StopClient();
 
             try
@@ -87,8 +85,8 @@ namespace Asmodat.Networking
             }
 
             
-            Timers.Run(() => TimrMain_Send(), 1, "TimrMain_Send", true, false);
-            Timers.Run(() => TimrMain_Receive(), 1, "TimrMain_Receive", true, false);
+            Timers.Run(() => TimrMain_Send(), 1);
+            Timers.Run(() => TimrMain_Receive(), 1);
             this.TimeoutReceived.Reset();
         }
 
@@ -104,19 +102,20 @@ namespace Asmodat.Networking
                 SLClient.Close();
                 SLClient = null;
             }
-            catch
+            catch(Exception ex)
             {
-
+                ex.ToOutput();
             }
         }
 
         
         public void Stop()
         {
-            this.StopClient();
-            
+            Timers.Terminate(() => Timer_Restart());
             Timers.TerminateAll();
 
+            this.StopClient();
+            
             Thread.Sleep(100);
         }
 

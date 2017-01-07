@@ -149,6 +149,18 @@ namespace Asmodat.FormsControls
             set { Invoker.TryInvokeMethodAction(() => { base.Enabled = value; }); }
         }
 
+        public new Color BackColor
+        {
+            get { return Invoker.TryInvokeMethodFunction(() => { return base.BackColor; }); }
+            set { Invoker.TryInvokeMethodAction(() => { base.BackColor = value; }); }
+        }
+
+        public new Color ForeColor
+        {
+            get { return Invoker.TryInvokeMethodFunction(() => { return base.ForeColor; }); }
+            set { Invoker.TryInvokeMethodAction(() => { base.ForeColor = value; }); }
+        }
+
         public int default_Int32 { get; set; } = 0;
 
 

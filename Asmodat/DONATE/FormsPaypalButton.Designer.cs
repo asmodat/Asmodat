@@ -33,23 +33,26 @@
             // 
             // BtnPayPalDonate
             // 
-            this.BtnPayPalDonate.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.BtnPayPalDonate.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.BtnPayPalDonate.BackgroundImage = global::Asmodat.Properties.Resources.paypal_donate_button_100;
+            this.BtnPayPalDonate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.BtnPayPalDonate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BtnPayPalDonate.Location = new System.Drawing.Point(0, 0);
+            this.BtnPayPalDonate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnPayPalDonate.Name = "BtnPayPalDonate";
-            this.BtnPayPalDonate.Size = new System.Drawing.Size(100, 28);
+            this.BtnPayPalDonate.Size = new System.Drawing.Size(135, 36);
             this.BtnPayPalDonate.TabIndex = 0;
-            this.BtnPayPalDonate.Text = "DONATE";
             this.BtnPayPalDonate.UseVisualStyleBackColor = false;
             this.BtnPayPalDonate.Click += new System.EventHandler(this.BtnPayPalDonate_Click);
             // 
             // FormsPaypalButton
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.BtnPayPalDonate);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormsPaypalButton";
-            this.Size = new System.Drawing.Size(101, 29);
+            this.Size = new System.Drawing.Size(135, 36);
             this.ResumeLayout(false);
 
         }

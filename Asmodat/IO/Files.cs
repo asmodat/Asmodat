@@ -119,6 +119,8 @@ namespace Asmodat.IO
         }
 
 
+
+
         public static void Create(string path)
         {
             if (!Files.Exists(path))
@@ -184,7 +186,7 @@ namespace Asmodat.IO
 
         public static string GetFullPath(string path)
         {
-            if (string.IsNullOrEmpty(path))
+            if (path.IsNullOrEmpty())
                 return null;
 
             if (!path.Contains(":"))
@@ -211,31 +213,22 @@ namespace Asmodat.IO
             return name;
         }
 
-
-        public static string ExePath
+        public static string GetNameWithoutExtention(string path)
         {
-            get
-            {
-                return System.Reflection.Assembly.GetEntryAssembly().Location;
-            }
+            return GetName(path, false);
         }
 
-        public static string ExeRoot
-        {
-            get
-            {
-                try
-                {
-                    return Path.GetPathRoot(Files.ExePath);
-                }
-                catch(Exception ex)
-                {
-                    ex.ToOutput();
-                    return null;
-                }
-            }
-        }
 
+        public static string ExeFullName { get { return Files.GetName(Files.ExePath, true);  } }
+        public static string ExeName { get { return Files.GetName(Files.ExePath, false); } }
+        public static string ExePath {  get {  return System.Reflection.Assembly.GetEntryAssembly().Location; } }
+        public static string ExeRoot { get  { return Path.GetPathRoot(Files.ExePath); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string GetDirectory(string path)
         {
             path = Files.GetFullPath(path);
@@ -277,6 +270,39 @@ namespace Asmodat.IO
 
             return success;
         }
+
+
+
+        public static List<string> ReadAllLines(string path)
+        {
+            if (path.IsNullOrEmpty())
+                return null;
+
+            path = Files.GetFullPath(path);
+
+            if (!Files.Exists(path))
+                return null;
+
+            List<string> result = new List<string>();
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (StreamReader reader = new StreamReader(path, System.Text.Encoding.UTF8, true, 128))
+                {
+                    string line;
+                    while((line = reader.ReadLine()) != null)
+                    {
+                        result.Add(line);
+                    }
+
+                    reader.Close();
+                }
+                stream.Flush();
+                stream.Close();
+           }
+
+            return result;
+        }
+
 
     }
 }

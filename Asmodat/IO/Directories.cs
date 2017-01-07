@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 
 using System.IO;
 using Asmodat.Debugging;
+using Asmodat.Extensions.Collections.Generic;
+using Asmodat.Abbreviate;
 
 namespace Asmodat.IO
 {
@@ -51,6 +53,77 @@ namespace Asmodat.IO
                     return null;
                 }
             }
+        }
+
+        public static List<string> GetFiles(string path, string searchPattern = "*.*", bool includeSubdirectories = true)
+        {
+            return includeSubdirectories ?
+                 Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories).ToList<string>() :
+                 Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>();
+        }
+
+        public static List<string> GetDirectories(string path, string searchPattern = "*", bool includeSubdirectories = true)
+        {
+            return includeSubdirectories ?
+                 Directory.GetDirectories(path, searchPattern, SearchOption.AllDirectories).ToList<string>() :
+                 Directory.GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>();
+        }
+
+        public static ThreadedList<string> TryGetDirectories(ThreadedList<string> paths, string searchPattern, bool includeSubdirectories)
+        {
+            paths = paths.IsNullOrEmpty() == true ? new ThreadedList<string>() : paths;
+
+            var _paths = paths.ToArray();
+
+            ThreadedList<string> subPaths = new ThreadedList<string>();
+
+            if (!_paths.IsNullOrEmpty())
+                Parallel.ForEach(_paths, (path) =>
+                {
+                    if (!path.IsNullOrEmpty())
+                        try
+                        {
+                            subPaths.AddRange(Directory.GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>());
+                        }
+                        catch
+                        {
+
+                        }
+                });
+
+            if (includeSubdirectories)
+                paths.AddRange(TryGetDirectories((ThreadedList<string>)subPaths.Clone().ToList(), searchPattern, true));
+            else
+                paths.AddRange(subPaths);
+
+            return paths;
+        }
+
+        public static List<string> TryGetDirectories(string path, string searchPattern, bool includeSubdirectories)
+        {
+            return TryGetDirectories(new ThreadedList<string>() { path }, searchPattern, includeSubdirectories);
+        }
+
+
+        public static List<string> TryGetFiles(string path, string searchPattern, bool includeSubdirectories)
+        {
+            var directories = TryGetDirectories(path, searchPattern, includeSubdirectories);
+            ThreadedList<string> files = new ThreadedList<string>();
+
+            Parallel.ForEach(directories, (directory) =>
+            {
+                if (!path.IsNullOrEmpty())
+                    try
+                    {
+                        files.AddRange(Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>());
+                    }
+                    catch
+                    {
+
+                    }
+            });
+
+            return files.ToList();
         }
 
         /// <summary>

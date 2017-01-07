@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
-    public partial class ThreadedDataGridView : UserControl
+    public partial class ThreadedDataGridView : DataGridView//UserControl
     {
         public bool RowsEnumaration { get; set; }
 
@@ -18,8 +18,8 @@ namespace Asmodat.FormsControls
         {
             RowsEnumaration = true;
 
-            this.DgvMain.RowsAdded += DgvMain_RowsAdded;
-            this.DgvMain.RowsRemoved += DgvMain_RowsRemoved;
+            this.RowsAdded += DgvMain_RowsAdded;
+            this.RowsRemoved += DgvMain_RowsRemoved;
         }
 
 
@@ -37,7 +37,7 @@ namespace Asmodat.FormsControls
 
         private void EnumerateRows()
         {
-            foreach (DataGridViewRow DGVRow in this.DgvMain.Rows)
+            foreach (DataGridViewRow DGVRow in this.Rows)
                 DGVRow.HeaderCell.Value = (DGVRow.Index + 1).ToString();
         }
 

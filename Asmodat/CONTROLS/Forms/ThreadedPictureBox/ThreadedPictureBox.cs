@@ -39,16 +39,7 @@ namespace Asmodat.FormsControls
 
         public new void Update()
         {
-            if (Invoker == null || !this.IsHandleCreated)
-            {
-                base.Update();
-                return;
-            }
-
-            Invoker.Invoke((MethodInvoker)(() =>
-            {
-                base.Update();
-            }));
+            Invoker.TryInvokeMethodAction(() => { base.Update(); });
         }
 
 

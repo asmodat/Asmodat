@@ -45,6 +45,33 @@ namespace Asmodat.Extensions.Objects
             return msvcrtEx.memcmp(arr1, arr2);
         }
 
+        public static bool EqualsSlow(this byte[] arr1, byte[] arr2)
+        {
+            if (arr1 == null && arr2 == null)
+                return true;
+            else if(arr1 == null || arr2 == null || arr1.Length != arr2.Length)
+                return false;
+
+            int i = 0;
+
+            for(;i< arr1.Length; i++)
+                if (arr1[i] != arr2[i])
+                    return false;
+            
+
+            return true;
+        }
+
+        public static bool EqualsSequence(this byte[] arr1, byte[] arr2)
+        {
+            if (arr1 == null && arr2 == null)
+                return true;
+            else if (arr1 == null || arr2 == null || arr1.Length != arr2.Length)
+                return false;
+
+            return arr1.SequenceEqual(arr2);
+        }
+
 
 
         /// <summary>

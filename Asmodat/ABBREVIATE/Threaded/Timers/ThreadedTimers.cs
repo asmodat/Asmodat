@@ -15,6 +15,7 @@ using System.Windows.Forms;
 
 using System.Collections.Concurrent;
 using Asmodat.Extensions.Collections.Generic;
+using Asmodat.Debugging;
 
 namespace Asmodat.Abbreviate
 {
@@ -50,10 +51,6 @@ namespace Asmodat.Abbreviate
             set;
         }
 
-        
-
-        
-
         public ThreadedTimer Timer(Expression<Action> EAMethod)
         {
             return Timer(Expressions.nameofFull(EAMethod));
@@ -66,7 +63,10 @@ namespace Asmodat.Abbreviate
             else return null;
         }
 
-
+        public bool Contains(Expression<Action> EAMethod)
+        {
+            return Contains(Expressions.nameofFull(EAMethod));
+        }
         public bool Contains(string ID)
         {
             return TDSTTimers.ContainsKey(ID);
@@ -84,11 +84,15 @@ namespace Asmodat.Abbreviate
                 {
                     if (TDSTTimers[ID] != null)
                     {
-                        TDSTTimers[ID].Stop(true);
+                        TDSTTimers[ID].Stop();
                         bool isLocked = TDSTTimers[ID].IsBusy;
                     }
                 }
-                catch { }
+                catch(Exception ex)
+                {
+                    ex.ToOutput();
+                }
+                TDSTTimers[ID].Dispose();
                 TDSTTimers[ID] = null;
                 TDSTTimers.Remove(ID);
                 return true;

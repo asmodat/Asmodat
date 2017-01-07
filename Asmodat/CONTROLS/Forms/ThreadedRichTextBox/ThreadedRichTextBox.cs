@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using Asmodat.Types;
 using Asmodat.Extensions.Windows.Forms;
+using Asmodat.Debugging;
 
 namespace Asmodat.FormsControls
 {
@@ -69,6 +70,17 @@ namespace Asmodat.FormsControls
             Invoker.TryInvokeMethodAction(() =>{ base.ScrollToCaret(); });
         }
 
+        public void ScrollToEnd()
+        {
+            Invoker.TryInvokeMethodAction(() => {
+                base.SelectionStart = base.Text.Length;
+                base.ScrollToCaret();
+                base.Refresh();
+            });
+
+            this.AppendText("");
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -84,18 +96,16 @@ namespace Asmodat.FormsControls
                 bool readonlystate = this.ReadOnly;
                 this.ReadOnly = false;
 
-                TickTime start = TickTime.Now;
-
-
-
                 this.SelectionStart = 0;
                 this.SelectionLength = 0;// text.Length - 1;
                 this.ScrollToCaret();
                 this.SelectionColor = color;
                 this.SelectedText = text;
 
+                TickTimeout ttimeout = new TickTimeout(timeout, TickTime.Unit.ms);
+
                 if (this.Lines.Length >= maxLines)
-                    while (this.Lines.Length >= (maxLines * deleteMultiplayer) && !TickTime.Timeout(start, timeout, TickTime.Unit.ms))
+                    while (this.Lines.Length >= (maxLines * deleteMultiplayer) && !ttimeout.IsTriggered)
                     {
                         string rtext = this.Text;
                         int last1 = rtext.IndexOfByCount('\n', -1);
@@ -104,18 +114,21 @@ namespace Asmodat.FormsControls
                         if (last1 < 0 || last2 < 0)
                         {
                             Asmodat.Debugging.Output.WriteLine("Not managed outcom in  RichTextBox Abbreviate class !");
+                            this.ScrollTop();
                             return;
                         }
 
                         this.SelectionStart = (int)last2 + 1;
                         this.SelectionLength = ((int)last1 - (int)last2) + 1;
                         this.SelectedText = "";
+
+                        this.ScrollTop();
                     }
                 
 
                 this.ScrollTop();
 
-                if (TickTime.Timeout(start, timeout, TickTime.Unit.ms))
+                if (ttimeout.IsTriggered)
                     Asmodat.Debugging.Output.WriteLine("Rtbx timeout.");
 
                 this.ReadOnly = readonlystate;
@@ -123,9 +136,48 @@ namespace Asmodat.FormsControls
             }
             catch (Exception ex)
             {
-                Asmodat.Debugging.Output.WriteException(ex);
+                ex.ToOutput();
             }
         }
+        
+
+        public new void AppendText(string text)
+        {
+            Invoker.TryInvokeMethodAction(() => { base.AppendText(text); });
+        }
+
+        public new void Select(int start, int length)
+        {
+            Invoker.TryInvokeMethodAction(() => { base.Select(start, length); });
+        }
+
+        public new int GetFirstCharIndexFromLine(int lineNumber)
+        {
+            return Invoker.TryInvokeMethodFunction(() => { return base.GetFirstCharIndexFromLine(lineNumber); });
+        }
+
+        public void AppendText(string text, Color color, int maxLines, double deleteDivider = 2)
+        {
+            bool readonlystate = this.ReadOnly;
+            this.ReadOnly = false;
+
+            this.SelectionStart = this.TextLength;
+            this.SelectionLength = 0;
+            this.SelectionColor = color;
+            this.AppendText(text);
+            this.SelectionColor = this.ForeColor;
+
+            int lines = this.Lines.Length;
+
+            if (lines > maxLines)
+            {
+                this.Select(0, this.GetFirstCharIndexFromLine((int)(lines/deleteDivider)));
+                this.SelectedText = "";
+            }
+
+            this.ReadOnly = readonlystate;
+        }
+
 
 
         public bool ContainsLine(string text, bool? last = null)

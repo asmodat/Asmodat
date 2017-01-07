@@ -12,6 +12,7 @@ using Asmodat.Types;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using Asmodat.Debugging;
 
 namespace Asmodat.IO
 {
@@ -22,13 +23,22 @@ namespace Asmodat.IO
             this.PaceMaker();
         }
 
-        public FileDictionary(string FullPath, int SaveInterval = 0)
+
+       /// <summary>
+       /// Disables saving and adding new keys, only loading and accessing is available
+       /// </summary>
+        public bool Enabled { get; set; } 
+             
+
+
+        public FileDictionary(string FullPath, int SaveInterval = 0, bool enabled = true)
         {
+            this.Enabled = enabled;
             Data = new ThreadedDictionary<TKey, TValue>();
             this.SaveInterval = SaveInterval;
-            this.FullPath = FullPath;
-            this.FullDirectory = Path.GetDirectoryName(FullPath);
-
+            this.FullPath = Files.GetFullPath(FullPath); //FullPath; 
+            this.FullDirectory = Files.GetDirectory(FullPath);// Path.GetDirectoryName(FullPath);
+            
             this.CheckPermissions();
             this.Load();
 
@@ -51,9 +61,9 @@ namespace Asmodat.IO
             this.Save();
         }
 
-        public void CheckPermissions()
+        public bool CheckPermissions()
         {
-            lock (Locker.Get("IO"))
+            lock (locker)
             {
                 if (!Directory.Exists(FullDirectory))
                     Directory.CreateDirectory(FullDirectory);
@@ -70,30 +80,39 @@ namespace Asmodat.IO
                 try
                 {
                     Permissions.Demand();
+                    return true;
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Cannot access database ! " + e.Message);
+                    e.ToOutput();
+                    return false;
+                    //throw new Exception("Cannot access database ! " + e.Message);
                 }
             }
         }
 
-        public void Add(TKey key, TValue value, bool save = false, bool update = true)
+        public bool Add(TKey key, TValue value, bool save = false, bool update = true)
         {
-            
-                Data.Add(key, value);
+            if (!Enabled)
+                return false;
+
+            Data.Add(key, value);
 
 
             if (save)
                 this.PaceMaker();
+
+            return true;
         }
 
         public TValue Get(TKey key)
         {
             if (Data.ContainsKey(key))
                 return Data[key];
+            else
+                return default(TValue);
 
-            throw new Exception("Key does not exists.");
+           // throw new Exception("Key does not exists.");
         }
 
 
@@ -102,8 +121,8 @@ namespace Asmodat.IO
             if (this.IsSaved) 
                 return;
 
-            CheckPermissions();
-            this.Save();
+            if(CheckPermissions())
+                this.Save();
         }
 
         

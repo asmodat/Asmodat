@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Asmodat.FormsControls
 {
-    public partial class ThreadedDataGridView : UserControl
+    public partial class ThreadedDataGridView : DataGridView//UserControl
     {
         //public const string TagKey = "<KeyTag/>";
 
@@ -37,7 +37,7 @@ namespace Asmodat.FormsControls
         /// </summary>
         /// <param name="NamesAndHeaders"></param>
         /// <param name="invoke"></param>
-        public void AddTextColumns(object[,] NamesHeadersTags, bool invoke = true)
+        public void AddTextColumns(object[,] NamesHeadersTags)
         {
             if (NamesHeadersTags.Length % 3 != 0)
                 throw new ArgumentException("Columns must consist of Name, Header and KeyTag indicator !");
@@ -54,10 +54,10 @@ namespace Asmodat.FormsControls
                 tags.Add(NamesHeadersTags[i, 2]);
             }
 
-            this.AddTextColumns(names.ToArray(), headers.ToArray(), tags.ToArray(), invoke);
+            this.AddTextColumns(names.ToArray(), headers.ToArray(), tags.ToArray());
         }
 
-        public void AddTextColumns(string[] names, string[] headers, object[] tags, bool invoke = true)
+        public void AddTextColumns(string[] names, string[] headers, object[] tags)
         {
             if (names == null) return;
 
@@ -73,11 +73,11 @@ namespace Asmodat.FormsControls
                 if (tags != null && tags.Length > i)
                     tag = tags[i];
 
-                this.AddTextColumns(name, header, tag, invoke);
+                this.AddTextColumns(name, header, tag);
             }
         }
 
-        public void AddTextColumns(string name, string header = null, object tag = null, bool invoke = true)
+        public void AddTextColumns(string name, string header = null, object tag = null)
         {
 
             DataGridViewTextBoxColumn GdvTbxC = new DataGridViewTextBoxColumn();
@@ -88,22 +88,16 @@ namespace Asmodat.FormsControls
             GdvTbxC.Name = name;
             GdvTbxC.Tag = tag;
 
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    this.DgvMain.Columns.Add(GdvTbxC);
-                }));
-            else
-                this.DgvMain.Columns.Add(GdvTbxC);
+                this.Columns.Add(GdvTbxC);
 
-            if (this.GetColumnTagsCount(Tags.Key, invoke) > 1)
+            if (this.GetColumnTagsCount(Tags.Key) > 1)
                 throw new Exception("There can be only one Columne Key Tag");
 
-            if (this.GetColumnTag(this.DgvMain.Columns.Count - 1, false) == Tags.Key)
-                KeyColumnIndex = this.DgvMain.Columns.Count - 1;
+            if (this.GetColumnTag(this.Columns.Count - 1, false) == Tags.Key)
+                KeyColumnIndex = this.Columns.Count - 1;
         }
 
-        public void AddButtonColumns(string name, string header = null, object tag = null, bool invoke = true)
+        public void AddButtonColumns(string name, string header = null, object tag = null)
         {
             DataGridViewButtonColumn GdvBtnC = new DataGridViewButtonColumn();
 
@@ -113,37 +107,20 @@ namespace Asmodat.FormsControls
             GdvBtnC.Tag = tag;
             GdvBtnC.Name = name;
 
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    this.DgvMain.Columns.Add(GdvBtnC);
-                }));
-            else
-            {
-                this.DgvMain.Columns.Add(GdvBtnC);
-            }
+           this.Columns.Add(GdvBtnC);
 
-
-            if (this.GetColumnTagsCount(Tags.Key, invoke) > 1)
+            if (this.GetColumnTagsCount(Tags.Key) > 1)
                 throw new Exception("There can be only one Columne Key Tag");
 
-            if (this.GetColumnTag(this.DgvMain.Columns.Count - 1, false) == Tags.Key)
-                KeyColumnIndex = this.DgvMain.Columns.Count - 1;
+            if (this.GetColumnTag(this.Columns.Count - 1, false) == Tags.Key)
+                KeyColumnIndex = this.Columns.Count - 1;
         }
 
         public int GetColumnTagsCount(Tags tag, bool invoke = true)
         {
             int counter = 0;
 
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                    {
-                        for (int i = 0; i < this.DgvMain.Columns.Count; i++)
-                            if (this.GetColumnTag(i) == tag)
-                                ++counter;
-                    }));
-            else
-                for (int i = 0; i < this.DgvMain.Columns.Count; i++)
+             for (int i = 0; i < this.Columns.Count; i++)
                     if (this.GetColumnTag(i) == tag)
                         ++counter;
 
@@ -164,55 +141,30 @@ namespace Asmodat.FormsControls
         }
 
 
-        public int GetColumn(string name, bool invoke = true)
+        public int GetColumn(string name)
         {
             int col = -1;
 
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    for (int i = 0; i < this.DgvMain.Columns.Count; i++)
-                        if (DgvMain.Columns[i].Name == name) { col = i; break; }
-                }));
-            else
-                for (int i = 0; i < this.DgvMain.Columns.Count; i++)
-                    if (DgvMain.Columns[i].Name == name) { col = i; break; }
+                for (int i = 0; i < this.Columns.Count; i++)
+                    if (this.Columns[i].Name == name) { col = i; break; }
 
             return col;
         }
 
-        public void VisibleColumn(string name, bool visible, bool invoke = true)
+        public void VisibleColumn(string name, bool visible)
         {
-            int col = this.GetColumn(name, invoke);
+            int col = this.GetColumn(name);
 
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    if (col < 0) return;
-                    DgvMain.Columns[col].Visible = visible;
-                }));
-            else
-            {
                 if (col < 0) return;
-                DgvMain.Columns[col].Visible = visible;
-            }
+                this.Columns[col].Visible = visible;
         }
 
-        public void AutosizeColumnMode(string name, DataGridViewAutoSizeColumnMode mode, bool invoke = true)
+        public void AutosizeColumnMode(string name, DataGridViewAutoSizeColumnMode mode)
         {
-            int col = this.GetColumn(name, invoke);
+            int col = this.GetColumn(name);
 
-            if (invoke)
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    if (col < 0) return;
-                    DgvMain.Columns[col].AutoSizeMode = mode;
-                }));
-            else
-            {
                 if (col < 0) return;
-                DgvMain.Columns[col].AutoSizeMode = mode;
-            }
+            this.Columns[col].AutoSizeMode = mode;
         }
 
     }

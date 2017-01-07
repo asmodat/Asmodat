@@ -25,10 +25,12 @@ namespace Asmodat.Abbreviate
     {
         public void Dispose()
         {
-                this.Stop(true);
-                if (this.Timer != null)
-                    this.Timer.Dispose();
-          
+            this.Stop();
+            if (this.Timer != null)
+            {
+                this.Timer.Dispose();
+                this.Timer = null;
+            }
         }
 
         /// <summary>
@@ -66,8 +68,11 @@ namespace Asmodat.Abbreviate
         /// </summary>
         /// <param name="sender">Defoult object sender</param>
         /// <param name="e">Defauld ElapsedEventArgs</param>
-        private void TimerCallback(object sender)
+        private void Peacemaker(object sender)
         {
+            if (!_Enabled)
+                return;
+
             if (Monitor.TryEnter(Lock))
             {
                 try
@@ -87,20 +92,20 @@ namespace Asmodat.Abbreviate
         /// <param name="startThread">Defines if thread sould be started instantly.</param>
         public void Start()
         {
-            //this.Lock = new Object();
-            this.Timer = new System.Threading.Timer(new TimerCallback(TimerCallback), null, 0, this.Interval);
+            TimerCallback = new TimerCallback(Peacemaker);
+            this.Timer = new System.Threading.Timer(TimerCallback, null, 0, this.Interval);
             _Enabled = true;
         }
 
         /// <summary>
-        /// Disables Timer
+        /// Stops Timer
         /// </summary>
-        /// <param name="stopThread">Defines if therad should be stopped instantly.</param>
-
-        public void Stop(bool stopThread = false)
+        public void Stop()
         {
-            if(this.Timer != null) this.Timer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             _Enabled = false;
+
+            if (this.Timer != null) this.Timer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+            if (this.TimerCallback != null) this.TimerCallback = null;
         }
 
         /// <summary>

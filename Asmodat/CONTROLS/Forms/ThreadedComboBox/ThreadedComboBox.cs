@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using Asmodat;
 using Asmodat.Extensions.Windows.Forms;
+using Asmodat.Types;
 
 namespace Asmodat.FormsControls 
 {
@@ -140,31 +141,31 @@ namespace Asmodat.FormsControls
         /// Removes items and sets new ones
         /// </summary>
         /// <param name="values"></param>
-        public void SetItems(List<object> values)
+        public void SetItems<T>(List<T> values)
         {
             this.ClearItems();
 
             if (values.IsNullOrEmpty())
                 return;
 
-            this.SetItems(values.ToArray());
+            this.AddItems(values.ToArray());
         }
 
         /// <summary>
         /// Removes items and sets new ones
         /// </summary>
         /// <param name="values"></param>
-        public void SetItems(params object[] values)
+        public void SetItems<T>(T[] values) where T : class
         {
             this.ClearItems();
 
             if (values.IsNullOrEmpty())
                 return;
-        
-            this.AddItems(values);
+            
+            this.AddItems(values.ToArray());
         }
 
-        public void AddItems<T>(List<T> values) where T : class
+        public void AddItems<T>(List<T> values)
         {
             if (values.IsNullOrEmpty())
                 return;
@@ -173,12 +174,12 @@ namespace Asmodat.FormsControls
         }
 
 
-        public void AddItems(params object[] values)
+        public void AddItems<T>(T[] values)
         {
             if (values.IsNullOrEmpty())
                 return;
 
-             Invoker.TryInvokeMethodAction(() => 
+            Invoker.TryInvokeMethodAction(() => 
              {
                 // int index = this.SelectedIndex;
 
@@ -216,6 +217,40 @@ namespace Asmodat.FormsControls
                 return Invoker.TryInvokeMethodFunction(() => { return base.Items; });
             }
         }
+
+        public List<object> ItemsList()
+        {
+            var items = this.Items;
+            List<object> result = new List<object>();
+
+            if (items == null || items.Count <= 0) return result;
+            for (int i = 0; i < items.Count; i++)
+                result.Add(items[i]);
+            
+            return result;
+        }
+        
+        public bool TrySelectItemByText(string item)
+        {
+            if (item == null)
+                return false;
+
+            var items = this.ItemsList();
+            if (items.IsNullOrEmpty())
+                return false;
+
+            for(int i = 0; i < items.Count; i++)
+            {
+                if(items[i].ToString() == item)
+                {
+                    this.SelectIndex(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         public int Count
         {
@@ -262,13 +297,26 @@ namespace Asmodat.FormsControls
         }
 
 
+        public bool Contains(string text)
+        {
+            return Invoker.TryInvokeMethodFunction(() => 
+                {
+                    if (base.Items == null || base.Items.Count <= 0)
+                        return false;
+
+                    foreach (var i in base.Items)
+                        if (i != null && i.ToString() == text)
+                            return true;
+
+                    return false;
+                });
+            
+        }
+
+
+
         public void SelectIndex(int index)
         {
-            if (this.Invoker == null || !this.IsHandleCreated)
-                return;
-
-            //ObjectCollection
-
             if (this.Items == null || index < 0 || index >= this.Items.Count)
                 return;
 

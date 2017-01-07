@@ -215,18 +215,16 @@ namespace Asmodat.Abbreviate
         /// <returns>Returns fale if kay was not removed, else if removed returns true. </returns>
         public new bool Remove(TKey key)
         {
+            bool result;
             lock (locker)
             {
-                base.Remove(key);
+               result = base.Remove(key);
             }
 
-            if (this.ContainsKey(key))
-                return false;
-            else
-            {
+            if(result)
                 UpdateTime = DateTime.Now;
-                return true;
-            }
+
+            return result;
         }
 
         /// <summary>
