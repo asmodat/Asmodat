@@ -11,9 +11,26 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Collections;
 using Asmodat.Extensions.Collections.Generic;
+using Asmodat.Abbreviate;
 
 namespace Asmodat.Abbreviate
 {
+    public static class ThreadedListEx
+    {
+        public static ThreadedList<T> Clone<T>(this ThreadedList<T> list) where T : ICloneable
+        {
+            if (list == null)
+                return null;
+            else if (list.IsNullOrEmpty())
+                return new ThreadedList<T>();
+
+            ThreadedList<T> tlg = new ThreadedList<T>();
+            tlg.AddRange(list.ToList().Clone());
+            return tlg;
+        }
+    }
+
+
     public partial class ThreadedList<T> : List<T>
     {
         private readonly object locker = new object();
@@ -66,6 +83,8 @@ namespace Asmodat.Abbreviate
             lock (locker)
                 base.Clear();
         }
-        
+
+       
+
     }
 }

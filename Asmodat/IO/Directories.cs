@@ -55,23 +55,24 @@ namespace Asmodat.IO
             }
         }
 
-        public static List<string> GetFiles(string path, string searchPattern = "*.*", bool includeSubdirectories = true)
+        public static string[] GetFiles(string path, string searchPattern = "*.*", bool includeSubdirectories = true)
         {
             return includeSubdirectories ?
-                 Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories).ToList<string>() :
-                 Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>();
+                 Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories):
+                 Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
-        public static List<string> GetDirectories(string path, string searchPattern = "*", bool includeSubdirectories = true)
+        public static string[] GetDirectories(string path, string searchPattern = "*", bool includeSubdirectories = true)
         {
             return includeSubdirectories ?
-                 Directory.GetDirectories(path, searchPattern, SearchOption.AllDirectories).ToList<string>() :
-                 Directory.GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>();
+                 Directory.GetDirectories(path, searchPattern, SearchOption.AllDirectories) :
+                 Directory.GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
-        public static ThreadedList<string> TryGetDirectories(ThreadedList<string> paths, string searchPattern, bool includeSubdirectories)
+        public static string[] TryGetDirectories(ThreadedList<string> paths, string searchPattern = "*", bool includeSubdirectories = true)
         {
-            paths = paths.IsNullOrEmpty() == true ? new ThreadedList<string>() : paths;
+            if (paths.IsNullOrEmpty())
+                return new string[0];
 
             var _paths = paths.ToArray();
 
@@ -83,7 +84,7 @@ namespace Asmodat.IO
                     if (!path.IsNullOrEmpty())
                         try
                         {
-                            subPaths.AddRange(Directory.GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>());
+                            subPaths.AddRange(Directory.GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly));
                         }
                         catch
                         {
@@ -92,22 +93,23 @@ namespace Asmodat.IO
                 });
 
             if (includeSubdirectories)
-                paths.AddRange(TryGetDirectories((ThreadedList<string>)subPaths.Clone().ToList(), searchPattern, true));
+                paths.AddRange(TryGetDirectories(subPaths.Clone(), searchPattern, true));
             else
                 paths.AddRange(subPaths);
 
-            return paths;
+            return paths.ToArray();
         }
 
-        public static List<string> TryGetDirectories(string path, string searchPattern, bool includeSubdirectories)
+        public static string[] TryGetDirectories(string path, string searchPattern = "*", bool includeSubdirectories = true)
         {
             return TryGetDirectories(new ThreadedList<string>() { path }, searchPattern, includeSubdirectories);
         }
 
 
-        public static List<string> TryGetFiles(string path, string searchPattern, bool includeSubdirectories)
+        public static string[] TryGetFiles(string path, string directorySearchPattern = "*", string fileSearchPattern = "*", bool includeSubdirectories = true)
         {
-            var directories = TryGetDirectories(path, searchPattern, includeSubdirectories);
+
+            var directories = TryGetDirectories(path, directorySearchPattern, includeSubdirectories);
             ThreadedList<string> files = new ThreadedList<string>();
 
             Parallel.ForEach(directories, (directory) =>
@@ -115,7 +117,7 @@ namespace Asmodat.IO
                 if (!path.IsNullOrEmpty())
                     try
                     {
-                        files.AddRange(Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly).ToList<string>());
+                        files.AddRange(Directory.GetFiles(directory, fileSearchPattern, SearchOption.TopDirectoryOnly).ToList());
                     }
                     catch
                     {
@@ -123,7 +125,7 @@ namespace Asmodat.IO
                     }
             });
 
-            return files.ToList();
+            return files.ToArray();
         }
 
         /// <summary>
