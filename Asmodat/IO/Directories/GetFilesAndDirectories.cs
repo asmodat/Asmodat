@@ -101,7 +101,7 @@ namespace Asmodat.IO
             if (files == null || paths == null)
                 throw new ArgumentNullException("Files and paths can't be null.");
 
-            if (paths.IsNullOrEmpty())
+            if (paths.Count == 0)
                 return new Tuple<string[], string[]>(files.ToArray(), new string[0]);
 
             var _paths = paths.ToArray();
@@ -115,7 +115,6 @@ namespace Asmodat.IO
                     try { subPaths.AddRange(Directory.GetDirectories(path, directorySearchPattern, SearchOption.TopDirectoryOnly)); } catch  { }
                     try { files.AddRange(Directory.GetFiles(path, fileSearchPattern, SearchOption.TopDirectoryOnly).ToList()); } catch { }
                 });
-
 
             currentPaths?.AddRange(subPaths);
 

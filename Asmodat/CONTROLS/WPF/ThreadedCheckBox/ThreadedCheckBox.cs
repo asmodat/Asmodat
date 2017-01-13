@@ -5,19 +5,14 @@ using System.Windows.Media;
 
 namespace Asmodat.WPFControls
 {
-    public partial class ThreadedButton : Button
+    public partial class ThreadedCheckBox : CheckBox
     {
-
-        public void SetBackgroundToDefault()
+        public new bool? IsChecked
         {
-            this.ClearValue(BackgroundProperty);
+            get { return this.TryInvokeMethodFunction(() => { return base.IsChecked; }); }
+            set { this.TryInvokeMethodAction(() => { base.IsChecked = value; }); }
         }
 
-        public new void ClearValue(DependencyProperty dp)
-        {
-            this.TryInvokeMethodAction(() => { base.ClearValue(dp); });
-        }
-        
         public new object Content
         {
             get { return this.TryInvokeMethodFunction(() => { return base.Content; }); }

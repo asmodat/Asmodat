@@ -99,9 +99,8 @@ namespace Asmodat.Abbreviate
         {
             if (items.IsNullOrEmpty()) return;
 
-            int i = 0;
-            for (; i < items.Length; i++)
-                lock (locker) base.Add(items[i]);
+            lock(locker)
+                base.AddRange(items);
         }
 
         public new void Clear()

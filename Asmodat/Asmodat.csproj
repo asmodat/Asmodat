@@ -375,6 +375,7 @@
     <Compile Include="CONTROLS\WPF\ThreadedButton\ThreadedButton.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedTabControl.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabel\ThreadedLabel.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedCheckBox\ThreadedCheckBox.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedTextBox\ThreadedTextBox.cs" />
     <Compile Include="Cryptography\AES256.cs" />
     <Compile Include="Cryptography\AMUID.cs" />
