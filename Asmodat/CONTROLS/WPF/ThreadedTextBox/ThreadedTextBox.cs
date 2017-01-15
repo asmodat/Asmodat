@@ -19,6 +19,13 @@ namespace Asmodat.WPFControls
             set { this.TryInvokeMethodAction(() => { base.IsEnabled = value; }); }
         }
 
+        public new bool IsReadOnly
+        {
+            get { return this.TryInvokeMethodFunction(() => { return base.IsReadOnly; }); }
+            set { this.TryInvokeMethodAction(() => { base.IsReadOnly = value; }); }
+        }
+
+
         public new Brush Background
         {
             get { return this.TryInvokeMethodFunction(() => { return base.Background; }); }
