@@ -304,5 +304,18 @@ namespace Asmodat.IO
         }
 
 
+        public static bool TryMove(string oldFile, string newFile)
+        {
+            try
+            {
+                System.IO.File.Move(oldFile, newFile);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }

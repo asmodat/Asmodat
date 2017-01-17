@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,45 @@ namespace Asmodat.Extensions.Objects
 
     public static partial class stringEx
     {
+        public static unsafe bool SetUsafe(ref string str, char value, int position)
+        {
+            if (str == null || position >= str.Length) return false;
+
+            try
+            {
+                GCHandle handle;
+                handle = GCHandle.Alloc(str, GCHandleType.Pinned);
+                char* ptr = (char*)handle.AddrOfPinnedObject();
+                ptr[position] = value;
+                handle.Free();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static string SetSafe(this string str, char value, int position)
+        {
+            if (str == null || position >= str.Length) return str;
+
+            char[] arr = str.ToArray();
+            arr[position] = value;
+            return new string(arr);
+        }
+
+
+        public static string TryReverse(this string str)
+        {
+            if (str == null) return null;
+            else if (str.Length <= 1) return str;
+
+            var arr = str.ToCharArray();
+            Array.Reverse(arr);
+            return new string(arr);
+        }
+
         public static string GetHashCodeHexString(this string str)
         {
             if (str.IsNullOrEmpty())

@@ -36,7 +36,36 @@ namespace Asmodat.Extensions.Collections.Generic
             if (_size < 0) return null;
             return Enumerable.Repeat(_default, _size).ToList();
         }
-        
+
+
+        public static bool AddToStart<TKey>(this List<TKey> source, List<TKey> values)
+        {
+            if (source == null && values == null)
+            {
+                return false;
+            }
+            else if (source == null && values != null)
+            {
+                source = new List<TKey>();
+                source.AddRange(values);
+                return true;
+            }
+            else if (source != null && values != null)
+            {
+                source.InsertRange(0, values);
+                return true;
+            }
+            else return true;
+        }
+
+        public static bool AddToStart<TKey>(this List<TKey> source, params TKey[] values)
+        {
+            return source.AddToStart(values?.ToList());
+        }
+
+
+
+
         public static bool AddToEnd<TKey>(this List<TKey> source, List<TKey> values)
         {
             if (source == null && values == null)
@@ -59,7 +88,7 @@ namespace Asmodat.Extensions.Collections.Generic
 
         public static bool AddToEnd<TKey>(this List<TKey> source, params TKey[] values)
         {
-            return source.AddToEnd(values.GetList());
+            return source.AddToEnd(values?.ToList());
         }
 
 

@@ -379,6 +379,7 @@
     <Compile Include="CONTROLS\WPF\ThreadedTextBox\ThreadedTextBox.cs" />
     <Compile Include="Cryptography\AES256.cs" />
     <Compile Include="Cryptography\AMUID.cs" />
+    <Compile Include="Cryptography\AOTXO.cs" />
     <Compile Include="Cryptography\AUID.cs" />
     <Compile Include="Cryptography\AED0x2.cs" />
     <Compile Include="Cryptography\AED0x1s.cs" />
@@ -583,6 +584,7 @@
     <Compile Include="MATHEMATICS\AMath\Filters.cs" />
     <Compile Include="MATHEMATICS\AMath\Exp.cs" />
     <Compile Include="MATHEMATICS\AMath\FourierTransform.cs" />
+    <Compile Include="MATHEMATICS\AMath\Mod.cs" />
     <Compile Include="MATHEMATICS\AMath\Pow.cs" />
     <Compile Include="MATHEMATICS\AMath\Random.cs" />
     <Compile Include="MATHEMATICS\AMath\StandardDeviation.cs" />
