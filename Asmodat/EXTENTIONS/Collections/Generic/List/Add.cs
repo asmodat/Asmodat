@@ -64,7 +64,27 @@ namespace Asmodat.Extensions.Collections.Generic
         }
 
 
+        public static bool AddSubArray<TKey>(this List<TKey> source, TKey[] values, int offset, int count)
+        {
+            var arr = values.SubArray(offset, count);
 
+            if (source == null && arr == null)
+            {
+                return false;
+            }
+            else if (source == null && arr != null)
+            {
+                source = new List<TKey>();
+                source.AddRange(arr);
+                return true;
+            }
+            else if (source != null && arr != null)
+            {
+                source.AddRange(arr);
+                return true;
+            }
+            else return true;
+        }
 
         public static bool AddToEnd<TKey>(this List<TKey> source, List<TKey> values)
         {

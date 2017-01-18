@@ -432,6 +432,7 @@
     <Compile Include="EXTENTIONS\Drawing\Rectangle.cs" />
     <Compile Include="EXTENTIONS\Drawing\Imaging\PixelFormat.cs" />
     <Compile Include="EXTENTIONS\Drawing\Point.cs" />
+    <Compile Include="EXTENTIONS\IO\FileStream.cs" />
     <Compile Include="EXTENTIONS\IO\Stream.cs" />
     <Compile Include="EXTENTIONS\COM\IWshRuntimeLibrary\WshShellClass.cs" />
     <Compile Include="EXTENTIONS\Microsoft\Win32\TaskSheduler.cs" />
