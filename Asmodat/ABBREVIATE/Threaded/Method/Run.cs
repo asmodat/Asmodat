@@ -23,7 +23,7 @@ namespace Asmodat.Abbreviate
     {
         ThreadedDictionary<string, object> Results = new ThreadedDictionary<string, object>();
 
-        public bool RunF<TResult>(Expression<Func<TResult>> expression, string ID, int delay, bool Exceptions, bool waitForAccess, bool invoke)
+        public bool RunF<TResult>(Expression<Func<TResult>> expression, string ID, int delay, bool Exceptions, bool waitForAccess)
         {
             if (expression == null)
                 return false;
@@ -32,7 +32,7 @@ namespace Asmodat.Abbreviate
             while (MaxThreadsCount < TDSThreads.Count)
             {
                 if (!waitForAccess)
-                    return false; ;
+                    return false;
 
                 Thread.Sleep(AccessWait);
                 this.TerminateAllCompleated();
@@ -55,15 +55,10 @@ namespace Asmodat.Abbreviate
                 Results.Add(ID, default(TResult));
 
                 if (Exceptions)
-                {
-                    if (invoke) TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); TResult result = Function.Invoke(); Results[ID] = result; }));
-                    else TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; }));
-                }
+                    TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; }));
                 else
-                {
-                    if (invoke) TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); TResult result = Function.Invoke(); Results[ID] = result; } catch { } }));
-                    else TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; } catch { } }));
-                }
+                    TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; } catch { } }));
+                
 
                 TDSTMFlags.Add(ID, new ThreadedMethodFlags { IsAborting = false });
 
@@ -79,10 +74,9 @@ namespace Asmodat.Abbreviate
             return true;
         }
 
-        public bool Run(Expression<Action> EAMethod, string ID, int delay, bool Exceptions, bool waitForAccess, bool invoke)
+        public bool Run(Expression<Action> EAMethod, string ID, int delay, bool Exceptions, bool waitForAccess)
         {
             if (EAMethod == null) return false;
-
 
             while (MaxThreadsCount < TDSThreads.Count)
             {
@@ -109,15 +103,9 @@ namespace Asmodat.Abbreviate
                     Action Action = EAMethod.Compile();
 
                     if (Exceptions)
-                    {
-                        if (invoke) TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); Action.Invoke(); }));
-                        else TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); Action(); }));
-                    }
+                        TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); Action(); }));
                     else
-                    {
-                        if (invoke) TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); Action.Invoke(); } catch { } }));
-                        else TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); Action(); } catch { } }));
-                    }
+                        TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); Action(); } catch { } }));
 
                     TDSTMFlags.Add(ID, new ThreadedMethodFlags { IsAborting = false });
 

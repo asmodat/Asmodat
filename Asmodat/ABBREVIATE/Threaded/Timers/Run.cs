@@ -38,7 +38,7 @@ namespace Asmodat.Abbreviate
                 Threads = new ThreadedMethod(this.MaxThreadsCount, ThreadPriority.Lowest, 1);
 
 
-            Threads.Run(() => this.Run(EAMethod, interval, ID, waitForAccess), ID, delay, true, true, false);
+            Threads.Run(() => this.Run(EAMethod, interval, ID, waitForAccess), ID, delay, true, true);
 
             return false;
         }

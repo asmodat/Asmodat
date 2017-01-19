@@ -19,6 +19,36 @@ namespace Asmodat.Extensions.IO
 
     public static class FileStreamEx
     {
+        
+        public static bool TryWrite(this FileStream stream, byte[] data, long? position = null, int offset = 0, int? count = null)
+        {
+            if (stream == null || 
+                position < 0 || offset < 0 ||
+                (count != null && (count < 0 || (offset + count) > data.Length)) ||
+                (position != null && position.Value > stream.Length))
+                return false;
+
+            try
+            {
+                if(position != null)
+                    stream.Position = position.Value;
+
+                if (data.Length == 0)
+                    return true;
+                else
+                {
+                    if(count == null)
+                        stream.Write(data, offset, data.Length);
+                    else
+                        stream.Write(data, offset, count.Value);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
 
         public static byte[] TryRead(this FileStream stream, long position, int count)
         {
@@ -31,16 +61,30 @@ namespace Asmodat.Extensions.IO
             {
                 stream.Position = position;
 
-                byte[] buffer = new byte[bufferSize];
+                byte[] buffer;
+                if (count <= bufferSize)
+                {
+                    buffer = new byte[count];
+                    if (stream.Read(buffer, 0, count) == count)
+                        return buffer;
+                    else
+                        return null;
+                }
+                else
+                    buffer = new byte[bufferSize];
+
                 int read = 0;
                 while(data.Count < count)
                 {
                     read = stream.Read(buffer, 0, bufferSize);
                     if (read > 0)
+                    {
                         data.AddSubArray(buffer, 0, read);
+                        stream.Position = position + data.Count;
+                    }
                 }
 
-                return data.ToArray();
+                return data.GetRange(0, count)?.ToArray();
             }
             catch
             {

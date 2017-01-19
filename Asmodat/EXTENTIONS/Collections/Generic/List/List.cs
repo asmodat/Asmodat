@@ -16,7 +16,6 @@ namespace Asmodat.Extensions.Collections.Generic
 
     public static partial class ListEx
     {
-        
 
         public static T[]  TryToArray<T>(this List<T> source)
         {

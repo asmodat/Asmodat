@@ -32,7 +32,7 @@ namespace Asmodat.Abbreviate
             if (ID != null)
                 ids = ID.ToString();
 
-            return this.RunF<TResult>(expression, ids, 0, Exceptions, waitForAccess, false);
+            return this.RunF<TResult>(expression, ids, 0, Exceptions, waitForAccess);
         }
 
 
@@ -47,7 +47,7 @@ namespace Asmodat.Abbreviate
             if (ID != null)
                 ids = ID.ToString();
 
-            return this.Run(EAMethod, ids, 0, Exceptions, waitForAccess, false);
+            return this.Run(EAMethod, ids, 0, Exceptions, waitForAccess);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Asmodat.Abbreviate
         /// <returns>Returns true is delegate was started, else false</returns>
         public bool Run(Expression<Action> EAMethod, string ID = null, bool Exceptions = true, bool waitForAccess = false)
         {
-            return this.Run(EAMethod, ID, 0, Exceptions, waitForAccess, false);
+            return this.Run(EAMethod, ID, 0, Exceptions, waitForAccess);
         }
 
         public bool IsAlive(Expression<Action> EAMethod)
