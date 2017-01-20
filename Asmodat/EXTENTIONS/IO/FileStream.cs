@@ -23,6 +23,7 @@ namespace Asmodat.Extensions.IO
         public static bool TryWrite(this FileStream stream, byte[] data, long? position = null, int offset = 0, int? count = null)
         {
             if (stream == null || 
+                data == null ||
                 position < 0 || offset < 0 ||
                 (count != null && (count < 0 || (offset + count) > data.Length)) ||
                 (position != null && position.Value > stream.Length))

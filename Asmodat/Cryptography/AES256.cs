@@ -24,11 +24,6 @@ namespace Asmodat.Cryptography
             {
                 using (RijndaelManaged aes = new RijndaelManaged())
                 {
-                    
-                    //aes.KeySize = 256;
-                    //aes.BlockSize = 128;
-                    
-
                     aes.KeySize = aes.LegalKeySizes[0].MaxSize;
                     aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
 
@@ -59,8 +54,6 @@ namespace Asmodat.Cryptography
             {
                 using (RijndaelManaged aes = new RijndaelManaged())
                 {
-                    //aes.KeySize = 256;
-                    //aes.BlockSize = 128;
                     aes.KeySize = aes.LegalKeySizes[0].MaxSize;
                     aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
 
@@ -113,8 +106,6 @@ namespace Asmodat.Cryptography
 
         public string Decrypt(string str, string pwd)
         {
-            
-
             byte[] bytes = Convert.FromBase64String(str);
             byte[] password = Encoding.UTF8.GetBytes(pwd);
             byte[] decrypted;
@@ -134,12 +125,7 @@ namespace Asmodat.Cryptography
             for (int i = SaltSize; i < decrypted.Length; i++)
                 result[i - SaltSize] = decrypted[i];
 
-            string output = Encoding.UTF8.GetString(result);
-
-            output = output.LengthDecode();
-
-            return output;
-
+            return Encoding.UTF8.GetString(result).LengthDecode();
         }
 
         public int SaltSize { get; private set; } = 4;

@@ -14,6 +14,14 @@ namespace Asmodat.Extensions.Objects
 
     public static partial class stringEx
     {
+        
+
+
+
+
+
+
+
         public static unsafe bool SetUsafe(ref string str, char value, int position)
         {
             if (str == null || position >= str.Length) return false;
@@ -215,7 +223,7 @@ namespace Asmodat.Extensions.Objects
             if (length == 0) return "";
 
             if (str.Length < length + 4)
-                throw new Exception("Decoding failed, str is to short.");
+                return null;
 
             return str.RemoveFirst(4).GetFirst(length);
         }

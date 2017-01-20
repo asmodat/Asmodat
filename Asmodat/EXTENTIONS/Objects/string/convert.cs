@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Asmodat.Extensions.Collections.Generic;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -12,6 +13,44 @@ namespace Asmodat.Extensions.Objects
 
     public static partial class stringEx
     {
+        /// <summary>
+        /// encodes string into [length][data] array
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static byte[] GetBytesEncoded(this string str)
+        {
+            if (str == null)
+                return null;
+
+            List<byte> buff = new List<byte>();
+            buff.AddRange(str.GetBytes());
+            buff.AddToStart(Int32Ex.ToBytes(buff.Count)); //save mode
+            return buff.ToArray();
+        }
+
+        /// <summary>
+        /// decodes bytes into string from [some offset bytes][length][data][other bytes] array
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public static string GetStringDecoded(this byte[] array, int offset)
+        {
+            if (array == null)
+                return null;
+
+            int length = Int32Ex.FromBytes(array, offset);
+            if (length < 0 || length > array.Length + 4 + offset)
+                return null;
+
+            return stringEx.GetString(array.SubArray(4 + offset, length));
+        }
+
+
+
+
+
         public static byte[] GetBytes(this string str)
         {
             if (str == null)
