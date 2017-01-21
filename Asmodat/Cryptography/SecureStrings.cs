@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Asmodat.Extensions.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,10 +14,12 @@ namespace Asmodat.Cryptography
 
         public static SecureString Reverse(this SecureString ss)
         {
-            SecureString ssc = new SecureString();
+            if (ss == null)
+                return null;
+            else if (ss.Length <= 1)
+                return ss.Copy();
 
-            if (ss.IsNull())
-                return ssc;
+            SecureString ssc = new SecureString();
 
             int length = ss.Length;
             IntPtr ptr = Marshal.SecureStringToBSTR(ss);
@@ -43,21 +46,11 @@ namespace Asmodat.Cryptography
             return ssc;
         }
 
-        //()
-
-        public static bool IsNull(this SecureString ss)
-        {
-            if (ss == null || ss.Length <= 0)
-                return true;
-
-            else return false;
-        }
-
-
         public static SecureString RemoveFirst(this SecureString str, int count)
         {
-            
-            if (str.IsNull() || count >= str.Length)
+            if (str == null)  return null;
+
+            if (count >= str.Length)
                 return new SecureString();
 
             SecureString ss = str.Copy();
@@ -68,10 +61,19 @@ namespace Asmodat.Cryptography
             return ss;
         }
 
+        public static bool IsNull(this SecureString ss)
+        {
+            return (ss == null || ss.Length < 0) ? true : false;
+        }
+
+        public static bool IsNullOrEmpty(this SecureString ss)
+        {
+            return (ss == null || ss.Length <= 0) ? true : false;
+        }
 
         public static bool IsNullOrWhiteSpace(this SecureString ss)
         {
-            if (ss.IsNull())
+            if (ss.IsNullOrEmpty())
                 return true;
 
             char c;
@@ -88,14 +90,18 @@ namespace Asmodat.Cryptography
 
         public static SecureString Add(this SecureString ss, string str)
         {
-            if(ss.IsNull())
-                ss = new SecureString();
+            if (ss == null && str == null)
+                return null;
+            else if (str.IsNullOrEmpty())
+                return ss.Copy();
+
+            SecureString ssn = new SecureString();
 
             if (str != null && str.Length > 0)
                 foreach (char c in str.ToArray())
-                    ss.AppendChar(c);
+                    ssn.AppendChar(c);
 
-            return ss;
+            return ssn;
         }
 
         
@@ -154,9 +160,11 @@ namespace Asmodat.Cryptography
 
         public static SecureString Secure(this string str)
         {
+            if (str == null)
+                return null;
 
             SecureString ss = new SecureString();
-            if (str != null && str.Length > 0)
+            if (!str.IsNullOrEmpty())
             {
                 int i = 0;
                 char[] array = str.ToArray();
@@ -169,8 +177,10 @@ namespace Asmodat.Cryptography
 
         public static string Release(this SecureString ss)
         {
-            if (ss.IsNull())
+            if (ss == null)
                 return null;
+            else if (ss.Length == 0)
+                return "";
 
             IntPtr ptr = IntPtr.Zero;
             try
@@ -182,15 +192,15 @@ namespace Asmodat.Cryptography
             {
                 Marshal.ZeroFreeCoTaskMemUnicode(ptr);
             }
-
-            
         }
 
 
         public static string ToString(this SecureString ss)
         {
-            if (ss.IsNull())
+            if (ss == null)
                 return null;
+            else if (ss.Length == 0)
+                return "";
 
             return ss.ToString();
         }

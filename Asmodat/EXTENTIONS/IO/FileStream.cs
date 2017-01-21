@@ -55,6 +55,8 @@ namespace Asmodat.Extensions.IO
         {
             if (stream == null || position < 0 || count < 0 || !stream.CanRead || stream.Length < (position + count))
                 return null;
+            else if (count == 0)
+                return new byte[0];
 
             List<byte> data = new List<byte>();
             int bufferSize = 4096;

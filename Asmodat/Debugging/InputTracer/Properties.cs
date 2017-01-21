@@ -140,16 +140,7 @@ namespace Asmodat.Debugging
 
         public bool IsFull { get; private set; } = false;
 
-        public int Length
-        {
-            get
-            {
-                if (Data.IsNull())
-                    return 0;
-
-                else return Data.Length;
-            }
-        }
+        public int Length { get { return Data.IsNullOrEmpty() ? 0 : Data.Length; } }
         public string Path { get; private set; }
 
 
