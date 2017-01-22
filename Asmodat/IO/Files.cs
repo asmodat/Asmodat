@@ -159,10 +159,13 @@ namespace Asmodat.IO
             return data;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>True if file does not exist or was deleted without exception</returns>
         public static bool Delete(string path)
         {
-
             path = GetFullPath(path);
 
             if (path == null)
@@ -176,7 +179,7 @@ namespace Asmodat.IO
             }
             catch(Exception ex)
             {
-                Output.WriteException(ex);
+                ex.ToOutput();
                 return false;
             }
 

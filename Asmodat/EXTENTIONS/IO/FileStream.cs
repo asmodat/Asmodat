@@ -19,7 +19,31 @@ namespace Asmodat.Extensions.IO
 
     public static class FileStreamEx
     {
-        
+        public static byte[] TryReadAll(string file)
+        {
+            byte[] data = null;
+            FileStream stream = null;
+            try
+            {
+                stream = FileInfoEx.TryOpen(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                if (stream == null || !stream.CanRead)
+                    return null;
+                else if (stream.Length == 0)
+                    return new byte[0];
+
+                 data = TryRead(stream, 0, stream.Length);
+            }
+            finally
+            {
+                stream?.Flush();
+                stream?.Close();
+            }
+
+            return data;
+        }
+
+
         public static bool TryWrite(this FileStream stream, byte[] data, long? position = null, int offset = 0, int? count = null)
         {
             if (stream == null || 
@@ -51,14 +75,14 @@ namespace Asmodat.Extensions.IO
             return true;
         }
 
-        public static byte[] TryRead(this FileStream stream, long position, int count)
+        public static byte[] TryRead(this FileStream stream, long position, long count)
         {
             if (stream == null || position < 0 || count < 0 || !stream.CanRead || stream.Length < (position + count))
                 return null;
             else if (count == 0)
                 return new byte[0];
 
-            List<byte> data = new List<byte>();
+            
             int bufferSize = 4096;
             try
             {
@@ -68,7 +92,7 @@ namespace Asmodat.Extensions.IO
                 if (count <= bufferSize)
                 {
                     buffer = new byte[count];
-                    if (stream.Read(buffer, 0, count) == count)
+                    if (stream.Read(buffer, 0, (int)count) == count)
                         return buffer;
                     else
                         return null;
@@ -76,18 +100,24 @@ namespace Asmodat.Extensions.IO
                 else
                     buffer = new byte[bufferSize];
 
-                int read = 0;
-                while(data.Count < count)
+                byte[] data = new byte[count];
+                int read = 0, leng;
+                while(stream.Position < count)
                 {
-                    read = stream.Read(buffer, 0, bufferSize);
+                    if (stream.Position - position + bufferSize > count)
+                        leng = (int)(count - (stream.Position - position));
+                    else
+                        leng = bufferSize;
+
+                    read = stream.Read(buffer, 0, leng);
                     if (read > 0)
                     {
-                        data.AddSubArray(buffer, 0, read);
-                        stream.Position = position + data.Count;
+                        Array.Copy(buffer, 0, data, stream.Position - position, read);
+                        stream.Position += read;
                     }
                 }
 
-                return data.GetRange(0, count)?.ToArray();
+                return data;
             }
             catch
             {

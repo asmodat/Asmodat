@@ -107,6 +107,41 @@ namespace Asmodat.IO
             return path;
         }
 
+        /// <summary>
+        /// Checks if given path is a root drive
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>null if can't say / invalid path, true if is root directory, false is has a parent</returns>
+        public static bool? IsRoot(string path)
+        {
+            if (path.IsNullOrEmpty() || !Directory.Exists(path))
+                return null;
+
+            DirectoryInfo di = new DirectoryInfo(path);
+            return di.Parent == null ? true : false;
+        }
+
+        public static string GetParent(string path)
+        {
+            return (path.IsNullOrEmpty() || !Directory.Exists(path)) ? null : new DirectoryInfo(path)?.Parent?.FullName;
+        }
+
+        public static bool TryMove(string sourceDirName, string destDirName)
+        {
+            if (sourceDirName.IsNullOrEmpty() || destDirName.IsNullOrEmpty() || !Directory.Exists(sourceDirName))
+                return false;
+            try
+            {
+                Directory.Move(sourceDirName, destDirName);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 
         public static void TryEmpty(string path)
         {

@@ -109,5 +109,10 @@ namespace Asmodat.Extensions.IO
             }
         }
 
+        public static FileStream TryOpen(string file, FileMode mode, FileAccess access, FileShare share)
+        {
+            return file.IsNullOrEmpty() ? null : (new FileInfo(file)).TryOpen(mode, access, share);
+        }
+
     }
 }
