@@ -107,13 +107,10 @@ namespace Asmodat.IO
 
         public static bool Exists(string path)
         {
-
             path = GetFullPath(path);
 
-            if (path == null)
+            if (path.IsNullOrEmpty())
                 return false;
-
-
 
             return System.IO.File.Exists(path);
         }
@@ -309,13 +306,17 @@ namespace Asmodat.IO
 
         public static bool TryMove(string oldFile, string newFile)
         {
+            if (Files.Exists(oldFile))
+                return false;
+
             try
             {
                 System.IO.File.Move(oldFile, newFile);
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                ex.ToOutput();
                 return false;
             }
         }

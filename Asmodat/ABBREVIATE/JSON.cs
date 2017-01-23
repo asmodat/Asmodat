@@ -8,7 +8,7 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace Asmodat.JavaScript
+namespace Asmodat.Abbreviate
 {
     public partial class JSON
     {

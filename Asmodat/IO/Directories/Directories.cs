@@ -9,6 +9,12 @@ using System.IO;
 using Asmodat.Debugging;
 using Asmodat.Extensions.Collections.Generic;
 using Asmodat.Abbreviate;
+using Asmodat.Extensions.Objects;
+using System.Diagnostics;
+
+using SHDocVw;
+using System.Web;
+using System.Threading;
 
 namespace Asmodat.IO
 {
@@ -126,7 +132,52 @@ namespace Asmodat.IO
             return (path.IsNullOrEmpty() || !Directory.Exists(path)) ? null : new DirectoryInfo(path)?.Parent?.FullName;
         }
 
-        public static bool TryMove(string sourceDirName, string destDirName)
+
+        public static string GetName(string folder)
+        {
+            if (folder.IsNullOrEmpty())
+                return null;
+
+            return Path.GetFileName(folder);
+        }
+
+        /// <summary>
+        /// This method tries to close all oppened explorer instanes that contain folder path
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns>Returns false if error occured, or true if there were no explorer instances or instanses were closed</returns>
+        public static bool TryCloseExplorerInstances(string folder)
+        {
+            bool success = false;
+            try
+            {
+                string origin = new System.Uri(folder).AbsoluteUri.ToLower();
+                ShellWindows sw = new SHDocVw.ShellWindows();
+                foreach (InternetExplorer ie in sw)
+                {
+                    if (ie == null || ie.LocationURL.IsNullOrEmpty())
+                        continue;
+
+                    string location = new System.Uri(ie.LocationURL).AbsoluteUri.ToLower();
+                    if (location.Contains(origin))//type.Equals("explorer") && 
+                    {
+                        ie.Quit();
+                        Thread.Sleep(50);
+                    }
+                }
+
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                ex.ToOutput();
+                success = false;
+            }
+
+            return success;
+        }
+
+        public static bool TryMove(string sourceDirName, string destDirName, bool force = false)
         {
             if (sourceDirName.IsNullOrEmpty() || destDirName.IsNullOrEmpty() || !Directory.Exists(sourceDirName))
                 return false;
@@ -136,6 +187,22 @@ namespace Asmodat.IO
             }
             catch
             {
+                if (force)
+                    try
+                    {
+                        if (TryCloseExplorerInstances(sourceDirName))
+                            Thread.Sleep(50);
+                        Directory.Move(sourceDirName, destDirName);
+                        return true;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.ToOutput();
+                        return false;
+                    }
+
+
                 return false;
             }
 
@@ -178,8 +245,10 @@ namespace Asmodat.IO
                     Output.WriteException(ex);
                 }
             }
-
         }
+
+        
+
 
     }
 }

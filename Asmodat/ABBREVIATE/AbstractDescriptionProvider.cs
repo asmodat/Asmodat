@@ -9,7 +9,7 @@ using System.ComponentModel;
 namespace Asmodat
 {
     /// <summary>
-    /// This clase can be used to firce compile to use abstract class
+    /// This clase can be used to force compile to use abstract class
     /// 
     /// using Asmodat
     /// using System.ComponentModel;

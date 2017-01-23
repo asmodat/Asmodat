@@ -635,13 +635,12 @@
     <Compile Include="NETWORKING\Mail\EMail\Mails\Properties.cs" />
     <Compile Include="NETWORKING\Mail\EMail\Mails\Mails.cs" />
     <Compile Include="NETWORKING\cURL.cs" />
-    <Compile Include="DONATE\FormsPaypalButton.cs">
+    <Compile Include="CONTROLS\Forms\FormsPaypalButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DONATE\FormsPaypalButton.Designer.cs">
+    <Compile Include="CONTROLS\Forms\FormsPaypalButton.Designer.cs">
       <DependentUpon>FormsPaypalButton.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dropbox\Storage.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="CONNECT\TcpAsyncCommon.cs" />
     <Compile Include="CONNECT\TcpAsyncServer\GetSet.cs" />
@@ -740,7 +739,7 @@
     <Compile Include="IO\List\FileList.cs" />
     <Compile Include="IO\List\Initialize.cs" />
     <Compile Include="IO\List\Serialization.cs" />
-    <Compile Include="JavaScript\JSON.cs" />
+    <Compile Include="ABBREVIATE\JSON.cs" />
     <Compile Include="IO\KEYBOARD\KeyboardImport.cs" />
     <Compile Include="IO\KEYBOARD\KeyboardUsing.cs" />
     <Compile Include="IO\KEYBOARD\KeyboardDirectX.cs" />
@@ -750,8 +749,8 @@
     <Compile Include="NETWORKING\InternetExplorer\Proxy.cs" />
     <Compile Include="NETWORKING\NetworkTester.cs" />
     <Compile Include="NETWORKING\WMITasks.cs" />
-    <Compile Include="NOTIFICATIONS\FormsInfo.cs" />
-    <Compile Include="Performance.cs" />
+    <Compile Include="CONTROLS\Forms\FormsInfo.cs" />
+    <Compile Include="ABBREVIATE\Performance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CONNECT\TcpAsyncClient\Data.cs" />
     <Compile Include="CONNECT\TcpAsyncClient\main.cs" />
@@ -767,7 +766,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="IO\Compression\Compression.cs" />
-    <Compile Include="AbstractDescriptionProvider.cs" />
+    <Compile Include="ABBREVIATE\AbstractDescriptionProvider.cs" />
     <Compile Include="AUDIO\Speech\Recognition\Numbers.cs" />
     <Compile Include="SQL\Database\Database.cs" />
     <Compile Include="SQL\Database\Static\Column.cs" />
@@ -813,7 +812,7 @@
     <EmbeddedResource Include="CONTROLS\Forms\LoginControl\LoginControl.resx">
       <DependentUpon>LoginControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DONATE\FormsPaypalButton.resx">
+    <EmbeddedResource Include="CONTROLS\Forms\FormsPaypalButton.resx">
       <DependentUpon>FormsPaypalButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CONTROLS\Forms\ThreadedChart\ThreadedChart.resx">
@@ -851,6 +850,15 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="SHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="Shell32">
       <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
