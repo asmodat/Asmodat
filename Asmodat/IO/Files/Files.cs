@@ -83,14 +83,17 @@ namespace Asmodat.IO
         }
 
         /// <summary>
-        /// Returns extension with dot: .extentionname
+        /// Returns extension with dot: .extentionname, or empty string in case there is no extention
         /// </summary>
         /// <param name="path">path to file</param>
         /// <returns></returns>
         public static string GetExtension(string path)
         {
-            if (path.IsNullOrWhiteSpace() || !path.Contains(".")) return null;
-            //string _path = Files.GetFullPath(path);
+            if (path.IsNullOrWhiteSpace())
+                return null;
+            else if (!path.Contains("."))
+                return "";
+
             FileInfo info = new FileInfo(path);
             return info.Extension;
         }
@@ -190,7 +193,7 @@ namespace Asmodat.IO
                 return null;
 
             if (!path.Contains(":"))
-                path = Directories.Current + "\\" + path;
+                path = Paths.Combine(Directories.Current,path);
 
             return path;
         }
@@ -236,10 +239,7 @@ namespace Asmodat.IO
             if (string.IsNullOrEmpty(path))
                 return null;
 
-            if (path.Contains("."))
-                path = Path.GetDirectoryName(path);
-
-            return path;
+            return Path.GetDirectoryName(path);
         }
 
 
@@ -306,7 +306,7 @@ namespace Asmodat.IO
 
         public static bool TryMove(string oldFile, string newFile)
         {
-            if (Files.Exists(oldFile))
+            if (!Files.Exists(oldFile) || newFile.IsNullOrEmpty())
                 return false;
 
             try

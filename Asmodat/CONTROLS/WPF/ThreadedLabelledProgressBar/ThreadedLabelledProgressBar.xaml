@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="Asmodat.WPFControls.ThreadedLabelledProgressBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Asmodat.WPFControls"
+             mc:Ignorable="d" Height="28" Width="200">
+    <Grid>
+        <local:ThreadedProgressBar Minimum="0" Maximum="100" Value="50" x:Name="PB" />
+        <local:ThreadedLabel x:Name="TL" HorizontalAlignment="Center" VerticalAlignment="Center" Content="No status."/>
+    </Grid>
+</UserControl>

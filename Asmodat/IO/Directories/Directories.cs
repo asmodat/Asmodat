@@ -151,18 +151,18 @@ namespace Asmodat.IO
             bool success = false;
             try
             {
-                string origin = new System.Uri(folder).AbsoluteUri.ToLower();
+                string origin = new System.Uri(folder).AbsoluteUri.ToLower(); //folder must be converted to Uri
                 ShellWindows sw = new SHDocVw.ShellWindows();
                 foreach (InternetExplorer ie in sw)
                 {
                     if (ie == null || ie.LocationURL.IsNullOrEmpty())
                         continue;
 
-                    string location = new System.Uri(ie.LocationURL).AbsoluteUri.ToLower();
-                    if (location.Contains(origin))//type.Equals("explorer") && 
+                    string location = new System.Uri(ie.LocationURL).AbsoluteUri.ToLower(); //location must be converter to Uri in order to match origin
+                    if (location.Contains(origin))//type.Equals("explorer") && //checking type might be required in some cases, if at leats works for "explorer" 
                     {
                         ie.Quit();
-                        Thread.Sleep(50);
+                        Thread.Sleep(200);
                     }
                 }
 
@@ -190,8 +190,7 @@ namespace Asmodat.IO
                 if (force)
                     try
                     {
-                        if (TryCloseExplorerInstances(sourceDirName))
-                            Thread.Sleep(50);
+                        TryCloseExplorerInstances(sourceDirName);
                         Directory.Move(sourceDirName, destDirName);
                         return true;
 

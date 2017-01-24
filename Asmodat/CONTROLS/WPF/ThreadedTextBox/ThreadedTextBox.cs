@@ -37,5 +37,20 @@ namespace Asmodat.WPFControls
             get { return this.TryInvokeMethodFunction(() => { return base.FontSize; }); }
             set { this.TryInvokeMethodAction(() => { base.FontSize = value; }); }
         }
+
+
+        public new VerticalAlignment VerticalAlignment
+        {
+            get { return this.TryInvokeMethodFunction(() => { return base.VerticalAlignment; }); }
+            set { this.TryInvokeMethodAction(() => { base.VerticalAlignment = value; }); }
+        }
+
+        public new HorizontalAlignment HorizontalAlignment
+        {
+            get { return this.TryInvokeMethodFunction(() => { return base.HorizontalAlignment; }); }
+            set { this.TryInvokeMethodAction(() => { base.HorizontalAlignment = value; }); }
+        }
+
+        
     }
 }

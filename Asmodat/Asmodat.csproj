@@ -373,6 +373,12 @@
     </Compile>
     <Compile Include="CONTROLS\WPF\EventHandlers.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedButton\ThreadedButton.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\LabelProperties.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ThreadedLabelledProgressBar.xaml.cs">
+      <DependentUpon>ThreadedLabelledProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ProgresBarProperties.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedProgressBar\ThreadedProgressBar.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedTabControl.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabel\ThreadedLabel.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedCheckBox\ThreadedCheckBox.cs" />
@@ -545,7 +551,9 @@
     <Compile Include="IO\Devices\Hardware Helper Lib\Native.cs" />
     <Compile Include="IO\Devices\Hardware Helper Lib\Public.cs" />
     <Compile Include="IO\Directories\GetFilesAndDirectories.cs" />
-    <Compile Include="IO\Files.cs" />
+    <Compile Include="IO\Files\LockingProcesses.cs" />
+    <Compile Include="IO\Paths.cs" />
+    <Compile Include="IO\Files\Files.cs" />
     <Compile Include="IO\Directories\Directories.cs" />
     <Compile Include="IO\FormsControls\FileTextBox.cs">
       <SubType>Component</SubType>
@@ -598,6 +606,7 @@
     <Compile Include="Debugging\Log.cs" />
     <Compile Include="IO\DatabseSimpleton\DatabseSimpleton.cs" />
     <Compile Include="IO\IniFiles.cs" />
+    <Compile Include="NATIVES\rstrtmgr.cs" />
     <Compile Include="NATIVES\user32.cs" />
     <Compile Include="NATIVES\gdi32.cs" />
     <Compile Include="NATIVES\kernel32.cs" />
@@ -734,8 +743,8 @@
     <Compile Include="IO\Dictionary\FileDictionary.cs" />
     <Compile Include="IO\Dictionary\Initialize.cs" />
     <Compile Include="IO\Dictionary\Serialization.cs" />
-    <Compile Include="IO\Files\File.cs" />
-    <Compile Include="IO\Files\Static.cs" />
+    <Compile Include="IO\File\File.cs" />
+    <Compile Include="IO\File\Static.cs" />
     <Compile Include="IO\List\FileList.cs" />
     <Compile Include="IO\List\Initialize.cs" />
     <Compile Include="IO\List\Serialization.cs" />
@@ -886,6 +895,12 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="EXTENTIONS\AllExtentions.txt" />
     <Content Include="note.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ThreadedLabelledProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -14,12 +14,30 @@ namespace Asmodat.Extensions.Objects
 
     public static partial class stringEx
     {
-        
+        /// <summary>
+        /// Determines wheter or not string ends with any of specified values
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static bool EndsWithAny(this string str, params string[] values)
+        {
+            if (str == null || values.IsNullOrEmpty())
+                return false;
 
+            int i = 0, l = values.Length, strLength = str.Length;
+            string s;
+            for (; i < l; i++)
+            {
+                s = values[i];
+                if (s == null || s.Length > strLength)
+                    continue;
 
-
-
-
+                if (str.EndsWith(s))
+                    return true;
+            }
+            return false;
+        }
 
 
         public static unsafe bool SetUsafe(ref string str, char value, int position)

@@ -25,6 +25,22 @@ namespace Asmodat.Extensions.Diagnostics
                 return false;
         }
 
+        //Tries to kill process without rising exceptions
+        public static void TryKill(this Process process)
+        {
+            if (process == null)
+                return;
+            try
+            {
+                process?.Kill();
+            }
+            catch
+            {
+
+            }
+        }
+
+
         public static string GetStandardOutput(this Process process)
         {
             if (process.IsNull())
