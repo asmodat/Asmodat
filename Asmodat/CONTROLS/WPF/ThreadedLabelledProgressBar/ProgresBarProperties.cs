@@ -9,6 +9,12 @@ namespace Asmodat.WPFControls
     {
         public ThreadedProgressBar ProgressBar { get { return this.PB; } set { this.PB = value; } }
 
+        public double Value
+        {
+            get { return this.TryInvokeMethodFunction(() => { return PB.Value; }); }
+            set { this.TryInvokeMethodAction(() => { PB.Value = value; }); }
+        }
+
         public double SmallChange
         {
             get { return this.TryInvokeMethodFunction(() => { return PB.SmallChange; }); }

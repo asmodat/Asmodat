@@ -9,6 +9,10 @@ namespace Asmodat.WPFControls
     {
         public ThreadedLabel Label { get { return this.TL; } set { this.TL = value; } }
 
-
+        public string Text
+        {
+            get { return this.TryInvokeMethodFunction(() => { return TL.Content?.ToString(); }); }
+            set { this.TryInvokeMethodAction(() => { TL.Content = value; }); }
+        }
     }
 }

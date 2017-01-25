@@ -2,6 +2,8 @@
 using Asmodat.Extensions.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System;
 
 namespace Asmodat.WPFControls
 {
@@ -34,6 +36,21 @@ namespace Asmodat.WPFControls
         {
             get { return this.TryInvokeMethodFunction(() => { return base.Background; }); }
             set { this.TryInvokeMethodAction(() => { base.Background = value; }); }
+        }
+
+        public ImageBrush ImageBrush
+        {
+            get { return (this.Background is ImageBrush) ? (ImageBrush)this.Background : null; }
+            set { this.Background = value; }
+        }
+
+        /// <summary>
+        /// Use example: someControlName.ImageBrushSource = new BitmapImage(new Uri("pack://application:,,,/someImagesFolder/someimage.png"));
+        /// </summary>
+        public ImageSource ImageBrushSource
+        {
+            get { return this.ImageBrush?.ImageSource; }
+            set { if (this.ImageBrush != null) this.ImageBrush.ImageSource = value; }
         }
 
         public new double FontSize

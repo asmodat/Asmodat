@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Asmodat.WPFControls"
-             mc:Ignorable="d" Height="28" Width="200">
+             mc:Ignorable="d" Height="26" Width="150">
     <Grid>
-        <local:ThreadedProgressBar Minimum="0" Maximum="100" Value="50" x:Name="PB" />
+        <local:ThreadedProgressBar Minimum="0" Maximum="100" Value="0" x:Name="PB" />
         <local:ThreadedLabel x:Name="TL" HorizontalAlignment="Center" VerticalAlignment="Center" Content="No status."/>
     </Grid>
 </UserControl>
