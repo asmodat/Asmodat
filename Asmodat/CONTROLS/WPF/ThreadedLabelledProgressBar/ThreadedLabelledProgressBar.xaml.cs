@@ -24,6 +24,7 @@ namespace Asmodat.WPFControls
         public ThreadedLabelledProgressBar()
         {
             InitializeComponent();
+            
         }
 
         public new bool IsEnabled

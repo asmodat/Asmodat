@@ -40,8 +40,8 @@ namespace Asmodat.WPFControls
 
         public ImageBrush ImageBrush
         {
-            get { return (this.Background is ImageBrush) ? (ImageBrush)this.Background : null; }
-            set { this.Background = value; }
+            get { return this.TryInvokeMethodFunction(() => { return (base.Background is ImageBrush) ? (ImageBrush)base.Background : null; }); }
+            set { this.TryInvokeMethodAction(() => { base.Background = value; }); }
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace Asmodat.WPFControls
         /// </summary>
         public ImageSource ImageBrushSource
         {
-            get { return this.ImageBrush?.ImageSource; }
-            set { if (this.ImageBrush != null) this.ImageBrush.ImageSource = value; }
+            get { return this.TryInvokeMethodFunction(() => { return ((ImageBrush)base.Background)?.ImageSource; });  }
+            set { this.TryInvokeMethodAction(() => { if (base.Background is ImageBrush) ((ImageBrush)base.Background).ImageSource = value; });  }
         }
 
         public new double FontSize

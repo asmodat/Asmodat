@@ -378,6 +378,9 @@
       <DependentUpon>ThreadedLabelledProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ProgresBarProperties.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedPasswordTextBox\ThreadedPasswordTextBox.xaml.cs">
+      <DependentUpon>ThreadedPasswordTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLS\WPF\ThreadedProgressBar\ThreadedProgressBar.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedTabControl.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabel\ThreadedLabel.cs" />
@@ -898,6 +901,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ThreadedLabelledProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CONTROLS\WPF\ThreadedPasswordTextBox\ThreadedPasswordTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
