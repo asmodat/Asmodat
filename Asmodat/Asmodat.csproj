@@ -371,6 +371,9 @@
     <Compile Include="CONTROLS\Forms\ThreadedTextBox\Events.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CONTROLS\WPF\DonateButtonPaypal.xaml.cs">
+      <DependentUpon>DonateButtonPaypal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLS\WPF\EventHandlers.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedButton\ThreadedButton.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\LabelProperties.cs" />
@@ -839,7 +842,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\paypal-donate-button-100.jpg" />
+    <Resource Include="Resources\paypal-donate-button-100.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -900,6 +903,10 @@
     <Content Include="note.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CONTROLS\WPF\DonateButtonPaypal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ThreadedLabelledProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

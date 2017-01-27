@@ -106,6 +106,9 @@ namespace Asmodat.Cryptography
 
         public string Decrypt(string str, string pwd)
         {
+            if (str.IsNullOrEmpty() || pwd.IsNullOrEmpty())
+                return null;
+
             byte[] bytes = Convert.FromBase64String(str);
             byte[] password = Encoding.UTF8.GetBytes(pwd);
             byte[] decrypted;

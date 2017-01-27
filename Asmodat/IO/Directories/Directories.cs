@@ -132,7 +132,11 @@ namespace Asmodat.IO
             return (path.IsNullOrEmpty() || !Directory.Exists(path)) ? null : new DirectoryInfo(path)?.Parent?.FullName;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns>Returns name of specifeid folder path.</returns>
         public static string GetName(string folder)
         {
             if (folder.IsNullOrEmpty())
