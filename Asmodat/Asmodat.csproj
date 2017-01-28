@@ -371,7 +371,13 @@
     <Compile Include="CONTROLS\Forms\ThreadedTextBox\Events.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CONTROLS\WPF\DonateButtonPaypal.xaml.cs">
+    <Compile Include="CONTROLS\WPF\Donate\DonateButtonEthereum.xaml.cs">
+      <DependentUpon>DonateButtonEthereum.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLS\WPF\Donate\DonateButtonBitcoin.xaml.cs">
+      <DependentUpon>DonateButtonBitcoin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CONTROLS\WPF\Donate\DonateButtonPaypal.xaml.cs">
       <DependentUpon>DonateButtonPaypal.xaml</DependentUpon>
     </Compile>
     <Compile Include="CONTROLS\WPF\EventHandlers.cs" />
@@ -901,9 +907,19 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="EXTENTIONS\AllExtentions.txt" />
     <Content Include="note.txt" />
+    <Resource Include="Resources\eth-logo-400.png" />
+    <Resource Include="Resources\btc-logo-400.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CONTROLS\WPF\DonateButtonPaypal.xaml">
+    <Page Include="CONTROLS\WPF\Donate\DonateButtonEthereum.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CONTROLS\WPF\Donate\DonateButtonBitcoin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CONTROLS\WPF\Donate\DonateButtonPaypal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

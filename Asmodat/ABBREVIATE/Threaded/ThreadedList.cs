@@ -53,6 +53,26 @@ namespace Asmodat.Abbreviate
                 base.Add(item);
         }
 
+        /// <summary>
+        /// Adds new value to dictionary it dictionary does not cointains this item already
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>true if vale was added to dictionary else false if already exists.</returns>
+        public bool AddDistinct(T item)
+        {
+            bool exists = true;
+            lock (locker)
+            {
+                if (!base.Contains(item))
+                    base.Add(item);
+                else
+                    exists = false;
+            }
+
+            return exists;
+        }
+
+
         //Clears list and add's new range
         public void SetRange(params IEnumerable<T>[] collection)
         {

@@ -15,9 +15,7 @@ using System.Windows.Shapes;
 
 namespace Asmodat.WPFControls
 {
-    /// <summary>
-    /// Interaction logic for DonateButtonPaypal.xaml
-    /// </summary>
+    
     public partial class DonateButtonPaypal : UserControl
     {
         public DonateButtonPaypal()
