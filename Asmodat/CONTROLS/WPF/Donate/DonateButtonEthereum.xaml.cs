@@ -30,9 +30,7 @@ namespace Asmodat.WPFControls
 
 0x5A946c1259E707c4B58a5fa4E44a26eAE9CacC2E
 
-Thank you for your support, evry single finney helps, and motivates me to create this applications big time.
-
-If you have a great idea, how to improve this program, or you wish for a new feature, please send me an email: asmodat@gmail.com",
+Thank you for your support, evry single finney helps, and motivates me to create this applications big time.",
 "Ethereum (ETH) donation wallet.", MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)

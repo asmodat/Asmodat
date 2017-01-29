@@ -371,6 +371,9 @@
     <Compile Include="CONTROLS\Forms\ThreadedTextBox\Events.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CONTROLS\WPF\Donate\DonateButtonMonero.xaml.cs">
+      <DependentUpon>DonateButtonMonero.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLS\WPF\Donate\DonateButtonEthereum.xaml.cs">
       <DependentUpon>DonateButtonEthereum.xaml</DependentUpon>
     </Compile>
@@ -907,10 +910,16 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="EXTENTIONS\AllExtentions.txt" />
     <Content Include="note.txt" />
+    <Resource Include="Resources\paypal-donate-517.png" />
+    <Resource Include="Resources\monero-logo-500.png" />
     <Resource Include="Resources\eth-logo-400.png" />
     <Resource Include="Resources\btc-logo-400.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CONTROLS\WPF\Donate\DonateButtonMonero.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CONTROLS\WPF\Donate\DonateButtonEthereum.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

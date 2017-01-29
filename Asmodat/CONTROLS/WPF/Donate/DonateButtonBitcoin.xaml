@@ -4,14 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Asmodat.WPFControls"
-             mc:Ignorable="d" Height="30" Width="30">
-    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch"> 
-    <Grid>
-            <local:ThreadedButton x:Name="TBtnDonate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <local:ThreadedButton.Background>
-                    <ImageBrush RenderOptions.BitmapScalingMode="HighQuality"  Stretch="Uniform" ImageSource="/Asmodat;component/Resources/btc-logo-400.png"/>
-                </local:ThreadedButton.Background>
-            </local:ThreadedButton>
-        </Grid>
-    </DockPanel>
+             mc:Ignorable="d">
+    <local:ThreadedButton x:Name="TBtnDonate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="33" MinHeight="33">
+        <local:ThreadedButton.Background>
+            <ImageBrush RenderOptions.BitmapScalingMode="HighQuality"  Stretch="Uniform" ImageSource="/Asmodat;component/Resources/btc-logo-400.png"/>
+        </local:ThreadedButton.Background>
+    </local:ThreadedButton>
 </UserControl>

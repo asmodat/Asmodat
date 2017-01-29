@@ -83,6 +83,26 @@ namespace Asmodat.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap monero_logo_500 {
+            get {
+                object obj = ResourceManager.GetObject("monero_logo_500", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap paypal_donate_517 {
+            get {
+                object obj = ResourceManager.GetObject("paypal_donate_517", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap paypal_donate_button_100 {
             get {
                 object obj = ResourceManager.GetObject("paypal_donate_button_100", resourceCulture);

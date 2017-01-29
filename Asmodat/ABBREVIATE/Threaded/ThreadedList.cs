@@ -54,10 +54,11 @@ namespace Asmodat.Abbreviate
         }
 
         /// <summary>
-        /// Adds new value to dictionary it dictionary does not cointains this item already
+        /// Adds new value to dictionary if dictionary does not cointains this item already.
+        /// base.Contains(item) is used as comparator, for diffrent comparator please create a difrent method.
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns>true if vale was added to dictionary else false if already exists.</returns>
+        /// <param name="item">Unique item that shuld exist inside dictionary.</param>
+        /// <returns>true if vale was added to dictionary, false if it already existed inside dictionary</returns>
         public bool AddDistinct(T item)
         {
             bool exists = true;

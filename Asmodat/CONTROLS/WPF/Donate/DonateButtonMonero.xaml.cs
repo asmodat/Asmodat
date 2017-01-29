@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 
 namespace Asmodat.WPFControls
 {
-    public partial class DonateButtonBitcoin : UserControl
+    public partial class DonateButtonMonero : UserControl
     {
-        public DonateButtonBitcoin()
+        public DonateButtonMonero()
         {
             InitializeComponent();
             TBtnDonate.Click += TBtnDonate_Click;
@@ -26,15 +26,15 @@ namespace Asmodat.WPFControls
         private void TBtnDonate_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show(
-@"Do you want to copy this bitcoin donation addres to your clipboard ?
+@"Do you want to copy this monero donation addres to your clipboard ?
 
-1G8txscQs54oLDXBzDtxDDhZ2P5noiYvfd
+4AsrE9PyZJ68bEYgArLJg13xceLyPJqMk4n9LVYBNaRMXcwS3o3p87ZUgAyjGpksyVAuEDxe4q9rcfJCVrv5GNzB2VzUcSV
 
-Thank you for your support, evry single satoshi helps, and motivates me to create this applications big time.",
-"Bitcoin (BTC) donation wallet.", MessageBoxButton.YesNo);
+Thank you for your support, evry single decinero helps, and motivates me to create this applications big time.",
+"Monero (XMR) donation wallet.", MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
-                Clipboard.SetText("1G8txscQs54oLDXBzDtxDDhZ2P5noiYvfd");
+                Clipboard.SetText("4AsrE9PyZJ68bEYgArLJg13xceLyPJqMk4n9LVYBNaRMXcwS3o3p87ZUgAyjGpksyVAuEDxe4q9rcfJCVrv5GNzB2VzUcSV");
         }
     }
 }
