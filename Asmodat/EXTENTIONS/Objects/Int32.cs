@@ -89,6 +89,26 @@ namespace Asmodat.Extensions.Objects
             return result;
         }
 
+
+        public static bool TryFromBytes(out Int32 result, byte[] value, int startindex = 0)
+        {
+            result = 0;
+
+            if (value == null || value.Length < 4 + startindex)
+                return false;
+
+            try
+            {
+               result = BitConverter.ToInt32(value, startindex);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         public static string ToStringValue(Int32 value)
         {
             byte[] bytes = Int32Ex.ToBytes(value);

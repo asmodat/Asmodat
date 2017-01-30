@@ -10,6 +10,7 @@ using System.IO;
 
 using Asmodat.Extensions.Objects;
 using Asmodat.Debugging;
+using Asmodat.Extensions.Collections.Generic;
 
 namespace Asmodat.Cryptography
 {
@@ -76,8 +77,41 @@ namespace Asmodat.Cryptography
             return decrypted;
         }
 
+
+        public byte[] Encrypt(byte[] bytes, string pwd)
+        {
+            if (bytes.IsNullOrEmpty() || pwd.IsNullOrEmpty())
+                return null;
+
+            bytes = bytes.EncodeWithLength();
+            byte[] password = Encoding.UTF8.GetBytes(pwd);
+
+            password = SHA256.Create().ComputeHash(password);
+            byte[] saltBytes = GetRandomBytes();
+
+            byte[] result = new byte[saltBytes.Length + bytes.Length];
+            for (int i = 0; i < saltBytes.Length; i++) result[i] = saltBytes[i];
+            for (int i = 0; i < bytes.Length; i++) result[i + saltBytes.Length] = bytes[i];
+
+            try
+            {
+                return AES_Encrypt(result, password);
+            }
+            catch (Exception ex)
+            {
+                ex.ToOutput();
+                return null;
+            }
+        }
+
+
+
+
         public string Encrypt(string str, string pwd)
         {
+            if (str.IsNullOrEmpty() || pwd.IsNullOrEmpty())
+                return null;
+
             str = str.LengthEncode();
 
             byte[] bytes = Encoding.UTF8.GetBytes(str);
@@ -130,6 +164,35 @@ namespace Asmodat.Cryptography
 
             return Encoding.UTF8.GetString(result).LengthDecode();
         }
+
+
+        public byte[] Decrypt(byte[] bytes, string pwd)
+        {
+            if (bytes.IsNullOrEmpty() || pwd.IsNullOrEmpty())
+                return null;
+
+            byte[] password = Encoding.UTF8.GetBytes(pwd);
+            byte[] decrypted;
+
+            try
+            {
+                password = SHA256.Create().ComputeHash(password);
+                decrypted = AES_Decrypt(bytes, password);
+            }
+            catch (Exception ex)
+            {
+                ex.ToOutput();
+                return null;
+            }
+
+            byte[] result = new byte[bytes.Length - SaltSize];
+            for (int i = SaltSize; i < decrypted.Length; i++)
+                result[i - SaltSize] = decrypted[i];
+
+            return result.DecodeWithLength(0);
+        }
+
+
 
         public int SaltSize { get; private set; } = 4;
 

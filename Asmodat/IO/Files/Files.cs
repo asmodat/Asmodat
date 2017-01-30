@@ -118,9 +118,6 @@ namespace Asmodat.IO
             return System.IO.File.Exists(path);
         }
 
-
-
-
         public static void Create(string path)
         {
             if (!Files.Exists(path))

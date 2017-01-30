@@ -165,5 +165,29 @@ namespace AsmodatMath
         }
 
 
+
+        public static byte[] RandomBytes(int count)
+        {
+            if (count < 0) return null;
+            else if (count == 0) return new byte[0];
+
+            byte[] result = new byte[count];
+
+            lock (_random_sync)
+            {
+                if (_random == null)
+                {
+                    byte[] cryptoresult = new byte[4];
+                    new RNGCryptoServiceProvider().GetBytes(cryptoresult);//RNGCryptoServiceProvider RNGCSProvider = 
+                    int seed = BitConverter.ToInt32(cryptoresult, 0);
+                    _random = new Random(seed);
+                }
+                
+                _random.NextBytes(result);
+            }
+
+            return result;
+        }
+
     }
 }

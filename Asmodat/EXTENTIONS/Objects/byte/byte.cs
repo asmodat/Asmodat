@@ -207,5 +207,43 @@ namespace Asmodat.Extensions.Objects
         }
 
 
+        /// <summary>
+        /// Encodes length into array - encodes bytes into [length][data] array
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static byte[] EncodeWithLength(this byte[] data)
+        {
+            if (data == null)
+                return null;
+
+            List<byte> buff = new List<byte>();
+            buff.AddRange(Int32Ex.ToBytes(data.Length));
+            buff.AddRange(data);
+            return buff.ToArray();
+        }
+
+        /// <summary>
+        /// Decodes array using encoded length - decodes bytes into bytes from [some offset bytes][length][data][other bytes] array
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public static byte[] DecodeWithLength(this byte[] array, int offset)
+        {
+            if (array == null || array.Length < 4)
+                return null;
+
+            int length = Int32Ex.FromBytes(array, offset);
+            if (length < 0 || length > array.Length + 4 + offset)
+                return null;
+            else if (length == 0)
+                return new byte[0];
+
+            return array.SubArray(4 + offset, length);
+        }
+
+
+
     }
 }

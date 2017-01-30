@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Asmodat.Extensions.Collections.Generic;
+using Asmodat.Debugging;
 
 namespace Asmodat.Extensions.IO
 {
@@ -119,10 +120,46 @@ namespace Asmodat.Extensions.IO
 
                 return data;
             }
-            catch
+            catch(Exception ex)
             {
+                ex.ToOutput();
                 return null;
             }
         }
+
+        public static bool TryFlush(this FileStream stream)
+        {
+            if (stream == null)
+                return false;
+
+            try
+            {
+                stream.Flush();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool TryClose(this FileStream stream)
+        {
+            if (stream == null)
+                return false;
+
+            try
+            {
+                stream.Close();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

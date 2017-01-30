@@ -1,7 +1,9 @@
-﻿using Asmodat.Extensions.Windows.Controls;
+﻿using Asmodat.Cryptography;
+using Asmodat.Extensions.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,6 +54,10 @@ namespace Asmodat.WPFControls
             set { this.TryInvokeMethodAction(() => { TB.Text = value; PB.Password = value; }); }
         }
 
+        public SecureString SecurePassword
+        {
+            get { return this.TryInvokeMethodFunction(() => { return PB.SecurePassword; }); }
+        }
 
         public string Password
         {
