@@ -83,7 +83,6 @@ namespace Asmodat.Extensions.IO
             else if (count == 0)
                 return new byte[0];
 
-            
             int bufferSize = 4096;
             try
             {
@@ -102,20 +101,22 @@ namespace Asmodat.Extensions.IO
                     buffer = new byte[bufferSize];
 
                 byte[] data = new byte[count];
-                int read = 0, leng;
-                while(stream.Position < count)
+                int leng;
+                long read = 0;
+                while(read < count)
                 {
-                    if (stream.Position - position + bufferSize > count)
-                        leng = (int)(count - (stream.Position - position));
+                    if (read + bufferSize > count)
+                        leng = (int)(count - read);
                     else
                         leng = bufferSize;
 
-                    read = stream.Read(buffer, 0, leng);
-                    if (read > 0)
+                    if (stream.Read(buffer, 0, leng) > 0)
                     {
-                        Array.Copy(buffer, 0, data, stream.Position - position, read);
-                        stream.Position += read;
+                        Array.Copy(buffer, 0, data, read, leng);
+                        read += leng;
                     }
+                    else
+                        stream.Position = read;
                 }
 
                 return data;
