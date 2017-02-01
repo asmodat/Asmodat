@@ -431,16 +431,23 @@ namespace Asmodat.Extensions.Objects
             return count;
         }
 
-
-
-
-
+        /// <summary>
+        /// UTF8 + Gzip encoding
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string GZip(this string str)
         {
-            if (str == null)
+            return GZip(str, Encoding.UTF8);
+        }
+
+
+        public static string GZip(this string str, Encoding encoding)
+        {
+            if (str == null || encoding == null)
                 return null;
 
-            byte[] buffer = Encoding.UTF8.GetBytes(str);
+            byte[] buffer = encoding.GetBytes(str);
             MemoryStream memory = new MemoryStream();
             using (GZipStream stream = new GZipStream(memory, CompressionMode.Compress, true))
             {
@@ -459,9 +466,19 @@ namespace Asmodat.Extensions.Objects
             return result;
         }
 
+        /// <summary>
+        /// UTF8 + Gzip decoding
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string UnGZip(this string str)
         {
-            if (str == null)
+            return UnGZip(str, Encoding.UTF8);
+        }
+
+        public static string UnGZip(this string str, Encoding encoding)
+        {
+            if (str == null || encoding == null)
                 return null;
 
             byte[] zipbuffer = Convert.FromBase64String(str);
@@ -479,7 +496,7 @@ namespace Asmodat.Extensions.Objects
                     stream.Read(buffer, 0, buffer.Length);
                 }
 
-                return Encoding.UTF8.GetString(buffer);
+                return encoding.GetString(buffer);
             }
         }
 

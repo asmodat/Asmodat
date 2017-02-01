@@ -22,7 +22,7 @@ namespace Asmodat.Extensions.IO
     {
         public static byte[] TryReadAll(string file)
         {
-            byte[] data = null;
+            byte[] data;
             FileStream stream = null;
             try
             {
@@ -33,7 +33,7 @@ namespace Asmodat.Extensions.IO
                 else if (stream.Length == 0)
                     return new byte[0];
 
-                 data = TryRead(stream, 0, stream.Length);
+                TryRead(stream, out data, 0, stream.Length);
             }
             finally
             {
@@ -44,10 +44,22 @@ namespace Asmodat.Extensions.IO
             return data;
         }
 
-
-        public static bool TryWrite(this FileStream stream, byte[] data, long? position = null, int offset = 0, int? count = null)
+        public static bool TryWrite(this FileStream stream, List<byte> data, long? position = null, long offset = 0, long? count = null)
         {
-            if (stream == null || 
+            if (data == null)
+                return false;
+
+            return TryWrite(stream, data.ToArray(), position, offset, count);
+        }
+
+        public static bool TryWrite(this FileStream stream, byte[] data, long? position = null, long offset = 0, long? count = null)
+        {
+            return TryWrite(stream, ref data, position, offset, count);
+        }
+
+        public static bool TryWrite(this FileStream stream, ref byte[] data, long? position = null, long offset = 0, long? count = null)
+        {
+            if (stream == null ||
                 data == null ||
                 position < 0 || offset < 0 ||
                 (count != null && (count < 0 || (offset + count) > data.Length)) ||
@@ -56,54 +68,125 @@ namespace Asmodat.Extensions.IO
 
             try
             {
-                if(position != null)
+                if (position != null)
                     stream.Position = position.Value;
 
-                if (data.Length == 0)
-                    return true;
-                else
+                if (data.Length == 0) return true;
+
+                if (count == null)
+                    count = data.Length;
+
+                //stream.Write(data, (int)offset, (int)count.Value);
+                int bufferSize = 4096; long cnt;
+
+                if (offset + count.Value < int.MaxValue) //buffor not neaded simply write
                 {
-                    if(count == null)
-                        stream.Write(data, offset, data.Length);
-                    else
-                        stream.Write(data, offset, count.Value);
+                    while (offset < count.Value)
+                    {
+                        cnt = (count.Value - offset) > bufferSize ? bufferSize : (count.Value - offset);
+                        stream.Write(data, (int)offset, (int)cnt);
+                        offset += cnt;
+                    }
                 }
+                else //first copy data to buffer then to stream
+                {
+                    byte[] buffer = new byte[bufferSize];
+                    while (offset < count.Value)
+                    {
+                        cnt = (count.Value - offset) > bufferSize ? bufferSize : (count.Value - offset);
+                        Array.Copy(data, offset, buffer, 0, cnt);
+                        stream.Write(buffer, 0, (int)cnt);
+                        offset += cnt;
+                    }
+                }
+
             }
-            catch
+            catch (Exception ex)
             {
+                ex.ToOutput();
                 return false;
             }
             return true;
         }
 
+        /// <summary>
+        /// Reads entire stream form 0 to stream.Length
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static byte[] TryReadAll(this FileStream stream)
+        {
+            if (stream == null)
+                return null;
+
+            byte[] data;
+            if (TryReadAll(stream, out data))
+                return data;
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// Reads entire stream form 0 to stream.Length
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool TryReadAll(this FileStream stream, out byte[] data)
+        {
+            if (stream == null)
+            {
+                data = null;
+                return false;
+            }
+
+            return TryRead(stream, out data, 0, stream.Length);
+        }
+
         public static byte[] TryRead(this FileStream stream, long position, long count)
         {
-            if (stream == null || position < 0 || count < 0 || !stream.CanRead || stream.Length < (position + count))
+            byte[] data;
+            if (TryRead(stream, out data, position, count))
+                return data;
+            else
                 return null;
+        }
+
+        public static bool TryRead(this FileStream stream, out byte[] data,  long position, long count)
+        {
+            if (stream == null || position < 0 || count < 0 || !stream.CanRead || stream.Length < (position + count))
+            {
+                data = null;
+                return false;
+            }
             else if (count == 0)
-                return new byte[0];
+            {
+                data = new byte[0];
+                return true; //must be true - it is success
+            }
 
             int bufferSize = 4096;
             try
             {
                 stream.Position = position;
 
-                byte[] buffer;
                 if (count <= bufferSize)
                 {
-                    buffer = new byte[count];
-                    if (stream.Read(buffer, 0, (int)count) == count)
-                        return buffer;
+                    data = new byte[count];
+                    if (stream.Read(data, 0, (int)count) == count)
+                        return true;
                     else
-                        return null;
+                    {
+                        data = null;
+                        return false;
+                    }
                 }
-                else
-                    buffer = new byte[bufferSize];
 
-                byte[] data = new byte[count];
+                byte[] buffer = new byte[bufferSize];
+                data = new byte[count];
                 int leng;
                 long read = 0;
-                while(read < count)
+                while (read < count)
                 {
                     if (read + bufferSize > count)
                         leng = (int)(count - read);
@@ -119,14 +202,19 @@ namespace Asmodat.Extensions.IO
                         stream.Position = read;
                 }
 
-                return data;
+                return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ex.ToOutput();
-                return null;
+                data = null;
+                return false;
             }
         }
+
+
+
+
 
         public static bool TryFlush(this FileStream stream)
         {
