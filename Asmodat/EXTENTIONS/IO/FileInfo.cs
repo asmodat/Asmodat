@@ -97,7 +97,7 @@ namespace Asmodat.Extensions.IO
 
         public static FileStream TryOpen(this FileInfo fileInfo, FileMode mode, FileAccess access, FileShare share)
         {
-            if (fileInfo == null || !fileInfo.Exists) return null;
+            if (fileInfo == null || (!fileInfo.Exists && (mode == FileMode.Open || mode == FileMode.Append || mode == FileMode.Truncate))) return null;
 
             try
             {
@@ -113,6 +113,5 @@ namespace Asmodat.Extensions.IO
         {
             return file.IsNullOrEmpty() ? null : (new FileInfo(file)).TryOpen(mode, access, share);
         }
-
     }
 }

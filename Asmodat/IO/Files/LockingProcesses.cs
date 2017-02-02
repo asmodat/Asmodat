@@ -13,14 +13,32 @@ using Asmodat.Natives;
 using Asmodat.Extensions.Collections.Generic;
 using Asmodat.Extensions.Diagnostics;
 using System.Threading;
+using Asmodat.Extensions.IO;
 
 namespace Asmodat.IO
 {
     public static partial class Files
     {
+        public static bool IsLocked(string path)
+        {
+            FileStream stream = FileInfoEx.TryOpen(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+
+            try
+            {
+                if (stream == null || !stream.CanRead || !stream.CanWrite)
+                    return true;
+                else
+                    return false;
+            }
+            finally
+            {
+                stream.TryClose();
+            }
+        }
+
         public static void TryKillLockingProcesses(string path, int sleepAfterKillTimeout = 500)
         {
-            if (!Exists(path))
+            if (!IsLocked(path) || !Exists(path))
                 return;
 
             var prosesses = TryGetLockingProcesses(path);

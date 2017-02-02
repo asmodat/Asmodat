@@ -127,6 +127,25 @@ namespace Asmodat.IO
             }
         }
 
+        public static bool TryCopy(string source, string destination)
+        {
+            if (!Exists(source) || Exists(destination))
+                return false;
+
+            try
+            {
+                System.IO.File.Copy(source, destination);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+
         public static void SaveText(string path, string data, bool gzip = true)
         {
             if (!Files.Exists(path))

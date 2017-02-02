@@ -20,6 +20,9 @@ namespace Asmodat.Extensions.IO
 
     public static class FileStreamEx
     {
+
+
+
         public static byte[] TryReadAll(string file)
         {
             byte[] data;
@@ -43,6 +46,7 @@ namespace Asmodat.Extensions.IO
 
             return data;
         }
+
 
         public static bool TryWrite(this FileStream stream, List<byte> data, long? position = null, long offset = 0, long? count = null)
         {

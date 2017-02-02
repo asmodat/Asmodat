@@ -17,6 +17,28 @@ namespace Asmodat.Extensions.Objects
             return bytes;
         }
 
+        public static bool TryFromBytes(out Int64 result, byte[] value, int startindex = 0)
+        {
+            if (value == null || value.LongLength < 8 + startindex)
+            {
+                result = 0;
+                return false;
+            }
+
+            try
+            {
+                result = BitConverter.ToInt64(value, startindex);
+            }
+            catch
+            {
+                result = 0;
+                return false;
+            }
+  
+            return true;
+        }
+
+
         public static Int64 FromBytes(byte[] value, int startindex = 0)
         {
             if (value == null || value.Length < 8 + startindex) throw new Exception("Array is not ULong value");
