@@ -385,6 +385,7 @@
     </Compile>
     <Compile Include="CONTROLS\WPF\EventHandlers.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedButton\ThreadedButton.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedListBox\ThreadedListBox.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\LabelProperties.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ThreadedLabelledProgressBar.xaml.cs">
       <DependentUpon>ThreadedLabelledProgressBar.xaml</DependentUpon>
