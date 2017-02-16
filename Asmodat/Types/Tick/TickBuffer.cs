@@ -17,6 +17,8 @@ namespace Asmodat.Types
             this.Clear();
         }
 
+        public T[] Values { get { Cleanup(); _TickerRead.SetNow(); return Buffer.ValuesArray; } }
+        public TickTime[] Keys { get { Cleanup(); _TickerRead.SetNow(); return Buffer.KeysArray; } }
 
         ThreadedDictionary<TickTime, T> Buffer = new ThreadedDictionary<TickTime, T>();
 
@@ -49,8 +51,13 @@ namespace Asmodat.Types
             }
         }
 
-
-        public TickBuffer(int size, long timeout, TickTime.Unit unit = TickTime.Unit.ms)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="size">if size is less then zero - infinite size</param>
+        /// <param name="timeout">if timeout is less then zero - infinite timeout</param>
+        /// <param name="unit"></param>
+        public TickBuffer(int size = -1, long timeout = 1, TickTime.Unit unit = TickTime.Unit.ms)
         {
             this.Size = size;
             this.Timeout = timeout;
@@ -59,17 +66,21 @@ namespace Asmodat.Types
 
         public void Cleanup()
         {
-            var keys = Buffer.KeysArray;
+            if (Size < 0 && Timeout < 0)
+                return; //no nead for cleanup
+
+            while (Size >= 0 || Buffer.Count > Size)
+                if (Buffer.Remove(Buffer.Keys.First()))
+                    _TickerCleanup.SetNow();
+
+            var keys = Keys;
             if (keys.IsNullOrEmpty())
                 return;
 
             foreach (var v in keys)
-            {
                 if (v.Timeout(Timeout, TimeoutUnit))
-                    Buffer.Remove(v);
-            }
-
-            _TickerCleanup.SetNow();
+                    if (Buffer.Remove(v))
+                        _TickerCleanup.SetNow();
         }
 
         public void Write(T data)
@@ -80,22 +91,10 @@ namespace Asmodat.Types
 
         public void Write(T data, TickTime time)
         {
-
-            if (Size > 0 && Buffer.Count > Size)
-                this.Cleanup();
+            Cleanup();
 
             Buffer.Add(time.Copy(), data);
             _TickerWrite.SetNow();
-        }
-
-
-        public T[] ReadAllValues()
-        {
-            this.Cleanup();
-            T[] result = Buffer.ValuesArray;
-            _TickerRead.SetNow();
-
-            return result;
         }
 
         public T ReadLast()

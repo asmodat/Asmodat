@@ -109,7 +109,7 @@ namespace Asmodat.Networking
         {
             get
             {
-                var all = BandwidthBuffer.ReadAllValues();
+                var all = BandwidthBuffer.Values;// .ReadAllValues();
                 if (all.IsNullOrEmpty())
                     return 0;
 
