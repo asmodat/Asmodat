@@ -460,6 +460,7 @@
     <Compile Include="EXTENTIONS\COM\IWshRuntimeLibrary\WshShellClass.cs" />
     <Compile Include="EXTENTIONS\Microsoft\Win32\TaskSheduler.cs" />
     <Compile Include="EXTENTIONS\Microsoft\Win32\RegistryKey.cs" />
+    <Compile Include="EXTENTIONS\Net.Sockets\TcpClient.cs" />
     <Compile Include="EXTENTIONS\Net.Sockets\Socket.cs" />
     <Compile Include="EXTENTIONS\Enum.cs" />
     <Compile Include="EXTENTIONS\Objects\byte\compression.cs" />

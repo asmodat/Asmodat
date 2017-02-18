@@ -17,8 +17,8 @@ namespace Asmodat.Types
             this.Clear();
         }
 
-        public T[] Values { get { Cleanup(); _TickerRead.SetNow(); return Buffer.ValuesArray; } }
-        public TickTime[] Keys { get { Cleanup(); _TickerRead.SetNow(); return Buffer.KeysArray; } }
+        public T[] Values { get { _TickerRead.SetNow(); return Buffer.ValuesArray; } }
+        public TickTime[] Keys { get { _TickerRead.SetNow(); return Buffer.KeysArray; } }
 
         ThreadedDictionary<TickTime, T> Buffer = new ThreadedDictionary<TickTime, T>();
 
@@ -69,7 +69,7 @@ namespace Asmodat.Types
             if (Size < 0 && Timeout < 0)
                 return; //no nead for cleanup
 
-            while (Size >= 0 || Buffer.Count > Size)
+            while (Size >= 0 && Buffer.Count > Size)
                 if (Buffer.Remove(Buffer.Keys.First()))
                     _TickerCleanup.SetNow();
 

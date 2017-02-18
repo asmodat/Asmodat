@@ -79,12 +79,13 @@ namespace Asmodat.Networking
         /// <param name="ip"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public static bool PingHost(string ip, int port)
+        public static bool PingTcp(string ip, int port)
         {
             try
             {
-                TcpClient client = new TcpClient(ip, port);
-                return true;
+                using (TcpClient client = new TcpClient(ip, port))
+                    return true;
+
             }
             catch
             {
