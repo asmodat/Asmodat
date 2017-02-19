@@ -12,7 +12,7 @@ using AFV = AForge.Video;
 using AFVDS = AForge.Video.DirectShow;
 using Asmodat.Extensions.Objects;
 
-namespace Asmodat.Extentions.AForge.Videos.DirectShow
+namespace Asmodat.Extensions.AForge.Videos.DirectShow
 {
     public static partial class FilterInfoCollectionEx
     {

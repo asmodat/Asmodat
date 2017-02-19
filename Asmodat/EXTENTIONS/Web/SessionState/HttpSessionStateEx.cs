@@ -9,7 +9,7 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Asmodat.Extentions.Web.SessionState
+namespace Asmodat.Extensions.Web.SessionState
 {
     
     public static class HttpSessionStateEx

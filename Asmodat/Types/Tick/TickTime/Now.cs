@@ -124,7 +124,9 @@ namespace Asmodat.Types
         private static long _LastTimeStamp = DateTime.UtcNow.Ticks;
 
        
-
+        /// <summary>
+        /// Tick time now provides current atomic precition UTC time
+        /// </summary>
         [IgnoreDataMember]
         [XmlIgnore]
         public static TickTime Now

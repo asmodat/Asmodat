@@ -11,7 +11,7 @@ using  AForge.Video.DirectShow;
 using AFV = AForge.Video;
 using AFVDS = AForge.Video.DirectShow;
 
-namespace Asmodat.Extentions.AForge.Videos.DirectShow
+namespace Asmodat.Extensions.AForge.Videos.DirectShow
 {
     public static partial class VideoCapabilitesEx
     {

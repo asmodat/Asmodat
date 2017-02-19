@@ -13,7 +13,7 @@ using AFVDS = AForge.Video.DirectShow;
 
 using Asmodat.Debugging;
 
-namespace Asmodat.Extentions.AForge.Videos.DirectShow
+namespace Asmodat.Extensions.AForge.Videos.DirectShow
 {
     public static partial class VideoCaptureDeviceEx
     {
