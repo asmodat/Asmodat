@@ -12,9 +12,6 @@ namespace Asmodat.Types
 {
     public partial class BufferedArray<T> where T : class
     {
-        
-
-
         public BufferedArray(int Length)
         {
             if (Length <= 0)

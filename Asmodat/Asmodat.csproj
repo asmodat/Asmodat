@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Asmodat</RootNamespace>
     <AssemblyName>Asmodat</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;__DEMO__, __DEMO_EXPERIMENTAL__</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;__DEMO__,__DEMO_EXPERIMENTAL__</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -132,14 +132,6 @@
     </Reference>
     <Reference Include="Emgu.Util">
       <HintPath>..\..\..\Liblaries\NuGet\EmguCV\emgucv-windows-universal 3.0.0.2157\bin\Emgu.Util.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\Asmodat Web Exchange\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\Asmodat Web Exchange\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis, Version=1.9.2.27817, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\..\Asmodat Web Exchange\packages\Google.Apis.1.9.2\lib\net40\Google.Apis.dll</HintPath>
@@ -436,7 +428,6 @@
     <Compile Include="EXTENTIONS\Collections\Generic\List\List.cs" />
     <Compile Include="EXTENTIONS\Collections\Generic\List\Get.cs" />
     <Compile Include="EXTENTIONS\COM\Shell32\Shell.cs" />
-    <Compile Include="EXTENTIONS\Data\Entity\DbSetEx.cs" />
     <Compile Include="EXTENTIONS\Data\SqlClient\SqlConnection.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\Process.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\ProcessStartInfo.cs" />
@@ -804,6 +795,7 @@
     <Compile Include="SystemResources\NetworkAdaptersInfo.cs" />
     <Compile Include="SystemResources\ProcessorsInfo.cs" />
     <Compile Include="Types\Barrel\BarrelList.cs" />
+    <Compile Include="Types\ConcurrentFixedQueue.cs" />
     <Compile Include="Types\ParamsWrapper.cs" />
     <Compile Include="Types\TasksManager\TaskObject.cs" />
     <Compile Include="Types\TasksManager\TasksManager.cs" />

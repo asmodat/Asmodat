@@ -17,10 +17,6 @@ using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 
-using System.Data.Entity;
-using System.Data.Entity.Utilities;
-using System.Data.Entity.Core;
-using System.Data.Entity.Core.Objects;
 //using System.Data.Entity.Core.Objects.
 
 
