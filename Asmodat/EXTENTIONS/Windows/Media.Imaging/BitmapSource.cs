@@ -157,9 +157,11 @@ namespace Asmodat.Extensions.Windows.Media.Imaging
             if (fontSize <= 0)
                 fontSize = 1;
 
+            #pragma warning disable 618
             FormattedText ftxt =
-                new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                new Typeface("Thoma"), fontSize, System.Windows.Media.Brushes.Red);//, new Point(0, 0));
+                 new FormattedText(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
+                 new Typeface("Thoma"), fontSize, System.Windows.Media.Brushes.Red);
+            #pragma warning restore 618
 
             DrawingVisual visual = new DrawingVisual();
             using (DrawingContext context = visual.RenderOpen())

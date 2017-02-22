@@ -25,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -300,7 +301,7 @@
     <Compile Include="ABBREVIATE\Threaded\Dictionary\ThreadedDictionary.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedBuffer.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedList.cs" />
-    <Compile Include="ABBREVIATE\Threaded\ThreadedSortedList.cs" />
+    <Compile Include="ABBREVIATE\Threaded\ThreadedSortedSet.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedLocker.cs" />
     <Compile Include="ABBREVIATE\Threaded\ThreadedThreeState.cs" />
     <Compile Include="ABBREVIATE\Threaded\Timers\Run.cs" />
