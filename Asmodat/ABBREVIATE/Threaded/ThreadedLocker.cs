@@ -47,7 +47,7 @@ namespace Asmodat.Abbreviate
                 {
                     if (lockIndexer >= _MaxLocks) throw new Exception("ThreadedLocker.Get exception, locks limit exhausted, maximum of " + _MaxLocks + "locks");
 
-                    Data.Add(ID, lockIndexer);
+                    Data.Add(ID, lockIndexer, true);
                     Locks[lockIndexer] = new object();
                     ++lockIndexer;
                 }

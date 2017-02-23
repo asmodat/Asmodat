@@ -26,7 +26,7 @@ namespace Asmodat.Types
         public new void Enqueue(T obj)
         {
             base.Enqueue(obj);
-
+            
             if (this.Size > 0)
                 lock (locker)
                 {
@@ -36,6 +36,27 @@ namespace Asmodat.Types
                         base.TryDequeue(out outObj);
                     }
                 }
+        }
+
+        public T TryDequeue(T _default = default(T))
+        {
+            T outObj;
+            return base.TryDequeue(out outObj) ? outObj: _default;
+        }
+
+
+        public T[] DequeueAll()
+        {
+            List<T> list = new List<T>();
+
+            while(base.Count > 0)
+            {
+                T outObj;
+                if (base.TryDequeue(out outObj))
+                    list.Add(outObj);
+            }
+
+            return list.ToArray();
         }
     }
 }

@@ -93,7 +93,7 @@ namespace Asmodat.Types
         {
             Cleanup();
 
-            Buffer.Add(time.Copy(), data);
+            Buffer.Add(time.Copy(), data, true);
             _TickerWrite.SetNow();
         }
 

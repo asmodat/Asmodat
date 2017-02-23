@@ -90,7 +90,7 @@ namespace Asmodat.Abbreviate
 
             TTimer = new ThreadedTimer(EAMethod, interval, autostart);
 
-            TDSTTimers.Add(ID, TTimer);
+            TDSTTimers.Add(ID, TTimer, true);
             TDSTTimers[ID].Start();
 
             return true;

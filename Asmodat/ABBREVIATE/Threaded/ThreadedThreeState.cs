@@ -50,7 +50,7 @@ namespace Asmodat.Abbreviate
                 {
                     if (indexer >= _MaxStates) throw new Exception("ThreadedThreeStates.Get exception, states limit exhausted, maximum of " + _MaxStates + "states");
 
-                    Data.Add(ID, indexer);
+                    Data.Add(ID, indexer, true);
                     States[indexer] = ThreeState.Null;
                     ++indexer;
                 }
@@ -69,7 +69,7 @@ namespace Asmodat.Abbreviate
                 {
                     if (indexer >= _MaxStates) throw new Exception("ThreadedThreeStates.Get exception, states limit exhausted, maximum of " + _MaxStates + "states");
 
-                    Data.Add(ID, indexer);
+                    Data.Add(ID, indexer, true);
                     States[indexer] = value;
                     ++indexer;
                 }

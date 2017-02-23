@@ -107,7 +107,7 @@ namespace Asmodat.Types
                 Action action = method.Compile();
                 TaskObject taskObject = new TaskObject(action);
                 
-                Data.Add(ID, taskObject);
+                Data.Add(ID, taskObject, true);
 
                 Data[ID].Run();
                 return true;

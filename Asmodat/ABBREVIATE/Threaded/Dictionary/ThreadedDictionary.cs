@@ -34,38 +34,14 @@ namespace Asmodat.Abbreviate
         }
 
         
-#if (DEBUG)
+
         [XmlIgnore]
         public new TValue this[TKey key]
         {
-            get
-            {
-                try
-                {
-                    lock (locker)
-                    {
-                        if (!base.ContainsKey(key))
-                            return default(TValue);
-
-                        return base[key];
-
-                    }
-                }
-                catch// (ThreadInterruptedException tex)
-                {
-                    return default(TValue);
-                }
-            }
-            set { this.Add(key, value); }
+            get { lock (this) { return base[key]; } }
+            set { lock (this) { base[key] = value; } }
         }
-#else
-        [XmlIgnore]
-        public new TValue this[TKey key]
-        {
-            get { lock (this) return base[key]; }
-            set { this.Add(key, value); }
-        }
-#endif
+
         public int? CountValues<T>(TKey key)
         {
                 lock (locker)
@@ -153,27 +129,40 @@ namespace Asmodat.Abbreviate
         [XmlIgnore]
         public bool IsValid{ get; set; }
 
-
-
         /// <summary>
-        /// this mehod adds kay and value or updates valueif key already exists
+        /// Adds specific key to sorted dictionary
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         public new void Add(TKey key, TValue value)
         {
+            lock (locker)  { base.Add(key, value);  }
+            UpdateTime = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Adds or updates value depending on parameters
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        public bool Add(TKey key, TValue value, bool update)
+        {
             lock (locker)
             {
-                if (!base.ContainsKey(key))
-                    base.Add(key, value);
-                else base[key] = value;
+                if (base.ContainsKey(key))
+                {
+                    if (update)
+                        base[key] = value;
+                    else
+                        return false;
+                }
+                else base.Add(key, value);
             }
 
-
-            /*if (this.ContainsKey(key)) { lock (this) { base[key] = value; } }
-            else lock (this) { base.Add(key, value); }*/
-
             UpdateTime = DateTime.Now;
+            return true;
         }
 
 
@@ -204,7 +193,6 @@ namespace Asmodat.Abbreviate
         /// <returns></returns>
         public new bool ContainsKey(TKey key)
         {
-            //if (key == null) return false;
             lock (locker) { return base.ContainsKey(key); }
         }
 

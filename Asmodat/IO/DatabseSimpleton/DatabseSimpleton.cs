@@ -166,12 +166,8 @@ namespace Asmodat.IO
         {
             if (string.IsNullOrEmpty(key))
                 return;
-            else if (!Data.Data.ContainsKey(key))
-                Data.Data.Add(key, value);
             else
-                Data.Data[key] = value;
-
-
+                Data.Data.Add(key, value, true);
 
             if (InstantSaving)
                 Data.Save();

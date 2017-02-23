@@ -54,7 +54,7 @@ namespace Asmodat.Abbreviate
             if (Data.ContainsKey(ID))  Data[ID].Restart();
             else
             {
-                Data.Add(ID, new Stopwatch());
+                Data.Add(ID, new Stopwatch(), true);
                 Data[ID].Start();
             }
         }

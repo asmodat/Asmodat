@@ -26,14 +26,9 @@ namespace Asmodat.Abbreviate
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        public bool DateSet(string ID = null)
+        public void DateSet(string ID)
         {
-            ID = this.ValidateID(ID);
-
-            if (DataDate.ContainsKey(ID)) DataDate[ID] = DateTime.Now;
-            else DataDate.Add(ID, DateTime.Now);
-            
-            return false;
+            DataDate.Add(this.ValidateID(ID), DateTime.Now, true);
         }
 
         /// <summary>

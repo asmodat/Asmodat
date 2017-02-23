@@ -91,13 +91,12 @@ namespace Asmodat.IO
             }
         }
 
-        public bool Add(TKey key, TValue value, bool save = false, bool update = true)
+        public bool Add(TKey key, TValue value, bool save, bool update)
         {
             if (!Enabled)
                 return false;
 
-            Data.Add(key, value);
-
+            Data.Add(key, value, update);
 
             if (save)
                 this.PaceMaker();

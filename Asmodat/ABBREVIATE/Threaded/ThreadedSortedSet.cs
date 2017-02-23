@@ -25,30 +25,22 @@ namespace Asmodat.Abbreviate
         public T[] ValuesArray { get { lock (locker) return this.ToArray(); } }
         public List<T> ValuesList { get { lock (locker) return this.ToList(); } }
 
-
+        /// <summary>
+        /// Set only adds unique values
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>true if value was added, false if value already existed</returns>
         public new bool Add(T item) 
         {
             lock (locker)
                 return base.Add(item);
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns>true if item was added or existed else false</returns>
-        public bool AddDistinct(T item)
-        {
-            lock (locker)
-            {
-                if (base.Contains(item))
-                    return true;
-                else
-                    return base.Add(item);
-            }
-        }
-
-
+        /// <param name="items"></param>
+        /// <returns>true if all values were added (were uniqe) else false</returns>
         public bool AddRange(params T[] items)
         {
             if (items == null || items.Length <= 0) return false;
@@ -63,9 +55,7 @@ namespace Asmodat.Abbreviate
 
             return success;
         }
-
         
-
 
         public new bool Contains(T item)
         {

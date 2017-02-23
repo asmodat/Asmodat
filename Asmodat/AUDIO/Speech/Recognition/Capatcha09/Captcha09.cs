@@ -80,7 +80,7 @@ namespace Asmodat.Speech
                 buffor.XmlDeserialize(data);
 
                 if (!Data.ContainsKey(number))
-                    Data.Add(number, new ThreadedList<Dictionary<string, double>>());
+                    Data.Add(number, new ThreadedList<Dictionary<string, double>>(), true);
 
                 Data[number].Add((Dictionary<string, double>)buffor);
 

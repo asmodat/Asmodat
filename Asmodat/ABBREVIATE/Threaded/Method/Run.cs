@@ -52,15 +52,15 @@ namespace Asmodat.Abbreviate
                 this.Terminate(ID);
 
                 Func<TResult> Function = expression.Compile();
-                Results.Add(ID, default(TResult));
+                Results.Add(ID, default(TResult), true);
 
                 if (Exceptions)
-                    TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; }));
+                    TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; }), true);
                 else
-                    TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; } catch { } }));
+                    TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); TResult result = Function(); Results[ID] = result; } catch { } }), true);
                 
 
-                TDSTMFlags.Add(ID, new ThreadedMethodFlags { IsAborting = false });
+                TDSTMFlags.Add(ID, new ThreadedMethodFlags { IsAborting = false }, true);
 
                 TDSThreads[ID].Priority = Priority;
                 TDSThreads[ID].IsBackground = true;
@@ -103,11 +103,11 @@ namespace Asmodat.Abbreviate
                     Action Action = EAMethod.Compile();
 
                     if (Exceptions)
-                        TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); Action(); }));
+                        TDSThreads.Add(ID, new Thread(() => { if (delay > 0) Thread.Sleep(delay); Action(); }), true);
                     else
-                        TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); Action(); } catch { } }));
+                        TDSThreads.Add(ID, new Thread(() => { try { if (delay > 0) Thread.Sleep(delay); Action(); } catch { } }), true);
 
-                    TDSTMFlags.Add(ID, new ThreadedMethodFlags { IsAborting = false });
+                    TDSTMFlags.Add(ID, new ThreadedMethodFlags { IsAborting = false }, true);
 
                     TDSThreads[ID].Priority = Priority;
                     TDSThreads[ID].IsBackground = true;
