@@ -12,7 +12,7 @@ namespace Asmodat.WPFControls
 
         public void SetBackgroundToDefault()
         {
-            this.TryInvokeMethodAction(() => { base.ClearValue(BackgroundProperty); });
+            this.ClearValue(BackgroundProperty);
         }
 
         public new void ClearValue(DependencyProperty dp)
