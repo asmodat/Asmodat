@@ -38,53 +38,31 @@ namespace Asmodat.Types
             }
         }
 
+        public double Microseconds { get { return this.TotalMicroseconds; } }
+        public long Miliseconds { get { return (long)this.TotalMiliseconds; } }
+        public long Seconds { get { return (long)this.TotalSeconds; } }
+        public long Minutes { get { return (long)this.TotalMinutes; } }
+        public long Hours { get { return (long)this.TotalHours; } }
+        public long Days { get { return (long)this.TotalDays; } }
+        public long Weeks { get { return (long)this.TotalWeeks; } }
 
-        public long TotalMiliseconds
+        public double TotalMicroseconds { get { return this.Total(Unit.us); } }
+        public double TotalMiliseconds { get { return this.Total(Unit.ms); } }
+        public double TotalSeconds { get { return this.Total(Unit.s); } }
+        public double TotalMinutes { get { return this.Total(Unit.m); } }
+        public double TotalHours { get { return this.Total(Unit.h); } }
+        public double TotalDays { get { return this.Total(Unit.d); } }
+        public double TotalWeeks { get { return this.Total(Unit.w); } }
+
+
+        /// <summary>
+        /// Determines how many units of time passed since begining of time
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        public double Total(Unit unit)
         {
-            get
-            {
-                if (Ticks <= 0)
-                    return 0;
-
-
-                return Ticks / (long)Unit.ms;
-            }
-        }
-
-        public long TotalSeconds
-        {
-            get
-            {
-                if (Ticks <= 0)
-                    return 0;
-
-
-                return Ticks / (long)Unit.s;
-            }
-        }
-
-        public long TotalMinutes
-        {
-            get
-            {
-                if (Ticks <= 0)
-                    return 0;
-
-
-                return Ticks / (long)Unit.m;
-            }
-        }
-
-        public long TotalHours
-        {
-            get
-            {
-                if (Ticks <= 0)
-                    return 0;
-
-
-                return Ticks / (long)Unit.h;
-            }
+            return Ticks <= 0 ? 0 : (double)((double)Ticks / (double)unit);
         }
 
 
@@ -294,8 +272,12 @@ namespace Asmodat.Types
         [IgnoreDataMember]
         [XmlIgnore]
         public static TickTime h { get { return TickTime.m * 60; ; } }
-
-        
+        [IgnoreDataMember]
+        [XmlIgnore]
+        public static TickTime d { get { return TickTime.h * 24; ; } }
+        [IgnoreDataMember]
+        [XmlIgnore]
+        public static TickTime w { get { return TickTime.d * 7; ; } }
 
 
         public int CompareTo(object obj)

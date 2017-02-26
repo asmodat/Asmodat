@@ -802,6 +802,7 @@
     <Compile Include="Types\TasksManager\TaskObject.cs" />
     <Compile Include="Types\TasksManager\TasksManager.cs" />
     <Compile Include="Types\Barrel\BarrelArray.cs" />
+    <Compile Include="Types\Tick\TickStopWatch.cs" />
     <Compile Include="Types\Tick\TickBuffer.cs" />
     <Compile Include="Types\BufferedArray.cs" />
     <Compile Include="Types\Locker\LockerObject.cs" />
