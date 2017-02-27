@@ -12,8 +12,9 @@ using Asmodat.Abbreviate;
 using System.Threading;
 using System.Runtime.Serialization;
 using System.Globalization;
-
-
+using Asmodat.Extensions.Collections.Generic;
+using Asmodat.Extensions;
+using Asmodat.Types;
 
 namespace Asmodat.Types
 {
@@ -63,6 +64,31 @@ namespace Asmodat.Types
         public double Total(Unit unit)
         {
             return Ticks <= 0 ? 0 : (double)((double)Ticks / (double)unit);
+        }
+
+
+        public string TotalString(bool addPrefixZeros, params Unit[] units)
+        {
+            units = units?.Distinct()?.ToArray();
+            if (units.IsNullOrEmpty())
+                return null;
+
+            string result = "";
+            long value;
+            foreach (var u in units)
+            {
+                value = (long)Total(u);
+
+                if (!result.IsNullOrEmpty()) //first value should not be limited
+                    value %= (long)u.GetBase();
+
+                if (!addPrefixZeros && value == 0 && result.IsNullOrEmpty()) //remove prefix zeros if specified
+                    continue;
+
+                result += $"{value}{u.ToString()} ";
+            }
+            
+            return result.Trim();
         }
 
 
@@ -174,7 +200,12 @@ namespace Asmodat.Types
         {
             return new TickTime(DateTime.ParseExact(date, format, CultureInfo.InvariantCulture));
         }
-     
+
+        
+
+        
+
+
         public enum Unit : long
         {
             us = 10,

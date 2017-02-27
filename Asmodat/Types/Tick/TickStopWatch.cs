@@ -47,7 +47,8 @@ namespace Asmodat.Types
 
 
         public double Total(Unit unit) { return (new TickTime(Ticks)).Total(unit); }
-        
+
+        public string TotalString(bool addPrefixZeros, params Unit[] units) { return (new TickTime(Ticks)).TotalString(addPrefixZeros, units); }
 
 
 
