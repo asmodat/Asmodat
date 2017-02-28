@@ -14,22 +14,13 @@ namespace Asmodat.Abbreviate
 {
     public partial class ThreadedDictionary<TKey, TValue> : SortedDictionary<TKey, TValue>
     {
-        //public TValue[] ValuesArray { get { lock (this) return base.Values.ToArray(); } }
-
-        public TValue GetValue(TKey key)
-        {
-            lock (locker)
-            {
-                if (base.ContainsKey(key))
-                {
-                    return base[key];
-                }
-            }
-
-            return default(TValue);
-        }
-
-        public TValue TryGetValue(TKey key, TValue _default = default(TValue))
+        /// <summary>
+        /// Returns value from dictionary, firstly checking if it exists, if not, then default value is returned
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="_default"></param>
+        /// <returns></returns>
+        public TValue GetValue(TKey key, TValue _default = default(TValue))
         {
             lock (locker)
             {
@@ -41,18 +32,40 @@ namespace Asmodat.Abbreviate
 
             return _default;
         }
-      
+
+        /// <summary>
+        /// Returns value from dictionary, firstly checking if it exists, if not, then default value is returned
+        /// Does not rise any exceptions like GetValue
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="_default"></param>
+        /// <returns></returns>
+        public TValue TryGetValue(TKey key, TValue _default = default(TValue))
+        {
+            try
+            {
+                lock (locker)
+                {
+                    return base.ContainsKey(key) ? base[key] : _default;
+                }
+            }
+            catch
+            {
+                return _default;
+            }
+        }
+
 
         public TValue[] GetValuesArray(TKey key)
-        { 
-             lock (locker)
+        {
+            lock (locker)
             {
                 if (this.ContainsKey(key))
                 {
                     return base.Values.ToArray();
                 }
             }
-             return null;
+            return null;
         }
 
         /// <summary>

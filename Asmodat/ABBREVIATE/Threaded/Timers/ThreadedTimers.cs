@@ -26,14 +26,16 @@ namespace Asmodat.Abbreviate
         /// </summary>
         public void Dispose()
         {
-            if (TDSTTimers != null)
+            if (Workers != null)
             {
                 TerminateAll();
-                TDSTTimers = null;
+                Workers = null;
             }
         }
 
-        private ThreadedDictionary<string, ThreadedTimer> TDSTTimers = new ThreadedDictionary<string, ThreadedTimer>();
+        private readonly object locker = new object();
+
+        public ThreadedDictionary<string, ThreadedTimer> Workers { get; private set; }
 
         /// <summary>
         /// This constructor allows you to create instance of Threaded Timers that can be used to run and manage multible asychnonic timer at once.
@@ -43,6 +45,7 @@ namespace Asmodat.Abbreviate
         public ThreadedTimers(int maxThreadsCount = int.MaxValue)
         {
             MaxThreadsCount = maxThreadsCount;
+            Workers = new ThreadedDictionary<string, ThreadedTimer>();
         }
 
         public int MaxThreadsCount
@@ -58,9 +61,10 @@ namespace Asmodat.Abbreviate
 
         public ThreadedTimer Timer(string ID)
         {
-            if (TDSTTimers.ContainsKey(ID))
-                return TDSTTimers[ID];
-            else return null;
+            lock (locker)
+            {
+                return Workers.ContainsKey(ID) ? Workers[ID] : null;
+            }
         }
 
         public bool Contains(Expression<Action> EAMethod)
@@ -69,7 +73,7 @@ namespace Asmodat.Abbreviate
         }
         public bool Contains(string ID)
         {
-            return TDSTTimers.ContainsKey(ID);
+                return Workers.ContainsKey(ID);
         }
 
         public bool Terminate(Expression<Action> EAMethod)
@@ -78,34 +82,37 @@ namespace Asmodat.Abbreviate
         }
         public bool Terminate(string ID)
         {
-            if (TDSTTimers.ContainsKey(ID))
+            lock (locker)
             {
+                if (!Workers.ContainsKey(ID))
+                    return false;
+
                 try
                 {
-                    if (TDSTTimers[ID] != null)
+                    if (Workers[ID] != null)
                     {
-                        TDSTTimers[ID].Stop();
-                        bool isLocked = TDSTTimers[ID].IsBusy;
+                        Workers[ID].Enabled = false;
+                        Workers[ID].Stop();
+                        bool isLocked = Workers[ID].IsBusy;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ex.ToOutput();
                 }
-                TDSTTimers[ID].Dispose();
-                TDSTTimers[ID] = null;
-                TDSTTimers.Remove(ID);
+
+                Workers[ID].Dispose();
+                Workers[ID] = null;
+                Workers.Remove(ID);
                 return true;
             }
-            else return false;
         }
 
         public void TerminateAll()
         {
-            if (TDSTTimers.IsNullOrEmpty())
-                return;
+            Methods.TerminateAll();
 
-            string[] saTKeys = TDSTTimers.KeysArray;
+            string[] saTKeys = Workers?.KeysArray;
 
             if (saTKeys.IsNullOrEmpty())
                 return;

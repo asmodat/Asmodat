@@ -46,8 +46,8 @@ namespace Asmodat.FormsControls
             ChartMain.MouseDown += ChartMain_MouseDown;
             ChartMain.MouseUp += ChartMain_MouseUp;
 
-            Timers.Run(() => this.PeacemakerCursor(), 10, 1000, null, true);//
-            Timers.Run(() => this.PeacemakerLabels(), 100, 1000, null, true);
+            Timers.RunParallel(() => this.PeacemakerCursor(), 10, 1000, null, true);//
+            Timers.RunParallel(() => this.PeacemakerLabels(), 100, 1000, null, true);
 
             Started = true;
         }

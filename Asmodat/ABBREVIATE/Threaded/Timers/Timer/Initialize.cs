@@ -23,7 +23,7 @@ namespace Asmodat.Abbreviate
     //Action CompiledAction = EAMethod.Compile();
     public partial class ThreadedTimer : IDisposable
     {
-        private Object Lock = new Object();//static readonly 
+        private readonly object locker = new object();//static readonly 
 
         public System.Threading.Timer Timer;
         public System.Threading.TimerCallback TimerCallback;

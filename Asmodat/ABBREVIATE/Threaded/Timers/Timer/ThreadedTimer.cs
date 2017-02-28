@@ -57,7 +57,7 @@ namespace Asmodat.Abbreviate
         {
             get
             {
-                return Monitor.IsEntered(Lock);
+                return Monitor.IsEntered(locker);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Asmodat.Abbreviate
             if (!_Enabled)
                 return;
 
-            if (Monitor.TryEnter(Lock))
+            if (Monitor.TryEnter(locker))
             {
                 try
                 {
@@ -81,7 +81,7 @@ namespace Asmodat.Abbreviate
                 }
                 finally
                 {
-                    Monitor.Exit(Lock);
+                    Monitor.Exit(locker);
                 }
             }
         }
@@ -103,7 +103,6 @@ namespace Asmodat.Abbreviate
         public void Stop()
         {
             _Enabled = false;
-
             if (this.Timer != null) this.Timer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
             if (this.TimerCallback != null) this.TimerCallback = null;
         }
