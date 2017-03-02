@@ -20,6 +20,26 @@ namespace Asmodat.Extensions
             return ret;
         }
 
+        public static List<T> ToList<T>()
+        {
+            Type enumList = typeof(T);
+
+            if (!enumList.IsEnum)
+                return null;
+
+            List<T> LTypes = new List<T>();
+
+            foreach (T value in (T[])Enum.GetValues(enumList))
+                LTypes.Add(value);
+
+            return LTypes;
+        }
+
+        public static T[] ToArray<T>()
+        {
+            return EnumEx.ToList<T>()?.ToArray();
+        }
+
         /*/// <summary>
         /// Compares nullable values, if anu nullable is null or does not have value, it returns false
         /// </summary>

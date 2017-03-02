@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Asmodat.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace Asmodat.Abbreviate
             return Enum.GetNames(typeof(T)).Length;
         }
 
-        public static List<T> ToList<T>()//(Enum source)
+      /*  public static List<T> ToList<T>()//(Enum source)
         {
             List<T> LTypes = new List<T>();
             Type enumList = typeof(T);
@@ -56,7 +57,7 @@ namespace Asmodat.Abbreviate
         public static T[] ToArray<T>()
         {
             return Enums.ToList<T>().ToArray();
-        }
+        }*/
 
         public static List<string> ToString<T>()//(Enum source)
         {
@@ -112,7 +113,7 @@ namespace Asmodat.Abbreviate
             if(description == null)
                 throw new Exception("Description cannot be null.");
 
-            foreach (TDestination _enum in Enums.ToArray<TDestination>())
+            foreach (TDestination _enum in EnumEx.ToArray<TDestination>())
             {
                 if (_enum.GetEnumDescription() == description)
                     return _enum;
@@ -139,8 +140,8 @@ namespace Asmodat.Abbreviate
         {
             Dictionary<TSource, TDestination> DictionaryMap = new Dictionary<TSource, TDestination>();
 
-            List<TSource> SourceList = Enums.ToList<TSource>();
-            List<TDestination> DestinationList = Enums.ToList<TDestination>();
+            List<TSource> SourceList = EnumEx.ToList<TSource>();
+            List<TDestination> DestinationList = EnumEx.ToList<TDestination>();
 
             foreach (TSource key in SourceList)
             {
@@ -178,21 +179,3 @@ namespace Asmodat.Abbreviate
         }
     }
 }
-
-/*
-public Dictionary<AsmodatForex.com.efxnow.democharting.chartingservice.TimeFrame, ServiceConfiguration.TimeFrame> TimeFrames
-        {
-            get
-            {
-                if (_TimeFrames.Count <= 0)
-                {
-                    var ValueFrames = Enums.ToList<ServiceConfiguration.TimeFrame>();
-                    var KeyFrames = Enums.ToList<ServiceConfiguration.TimeFrame>();
-                }
-
-
-                return _TimeFrames;
-            }
-
-        }
-*/
