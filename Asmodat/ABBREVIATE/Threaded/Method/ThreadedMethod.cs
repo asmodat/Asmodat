@@ -35,7 +35,11 @@ namespace Asmodat.Abbreviate
             return this.RunF<TResult>(expression, ids, 0, Exceptions, waitForAccess);
         }
 
-
+        /// <summary>
+        /// Tries to execute instantly and shows all errors, is not executed at all if thread is already running
+        /// </summary>
+        /// <param name="EAMethod"></param>
+        /// <returns></returns>
         public bool Run(Expression<Action> EAMethod)
         {
             return this.Run(EAMethod, null, true, false);

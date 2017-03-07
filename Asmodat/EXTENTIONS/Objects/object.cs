@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Asmodat.Abbreviate;
 using Newtonsoft.Json;
 using Asmodat.Debugging;
+using System.Threading;
+using Asmodat.Types;
 
 namespace Asmodat.Extensions.Objects
 {
@@ -26,7 +28,32 @@ namespace Asmodat.Extensions.Objects
         public static bool IsRefNull(this object o) { return object.ReferenceEquals(null, o) ? true : false; }
 
 
-        
+        public static bool IsLocked(this object o, int timeout_ms = 0)
+        {
+            if (o == null)
+                return false;
+
+            TickTimeout timeout = new TickTimeout(timeout_ms, TickTime.Unit.ms);
+            bool entered = false;
+            try
+            {
+                do
+                {
+                    entered = Monitor.TryEnter(o);
+
+                    if (entered || timeout_ms == 0)
+                        break;
+                }
+                while (timeout_ms < 0 || !timeout.IsTriggered);
+            }
+            finally
+            {
+                if (entered)
+                    Monitor.Exit(o);
+            }
+
+            return !entered;
+        }
 
 
         public static string SerializeJson(this object o)

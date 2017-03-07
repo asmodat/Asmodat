@@ -15,6 +15,39 @@ namespace Asmodat.Extensions.Collections.Generic
 
     public static class IEnumerableEx
     {
+
+        public static int TryCount<T>(this IEnumerable<T> enumerable, int _default = 0)
+        {
+            if (enumerable == null)
+                return _default;
+
+            try
+            {
+                return enumerable.Count();
+            }
+            catch
+            {
+                return _default;
+            }
+        }
+
+        public static long TryLongCount<T>(this IEnumerable<T> enumerable, long _default = 0)
+        {
+            if (enumerable == null)
+                return _default;
+
+            try
+            {
+                return enumerable.LongCount();
+            }
+            catch
+            {
+                return _default;
+            }
+        }
+
+
+
         public static IEnumerable<T> Clone<T>(this IEnumerable<T> enumerable) where T : ICloneable
         {
             if (enumerable == null) return null;
