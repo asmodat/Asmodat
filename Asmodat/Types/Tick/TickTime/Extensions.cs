@@ -20,6 +20,12 @@ namespace Asmodat.Types
 
     public static class TickTimeEx
     {
+        public static TickTime ToTickTime(this long ticks)
+        {
+            return new TickTime(ticks);
+        }
+
+
         public static bool Timeout(this TickTime start, long timeout_ms)
         {
             return TickTime.Timeout(start, timeout_ms, TickTime.Unit.ms);

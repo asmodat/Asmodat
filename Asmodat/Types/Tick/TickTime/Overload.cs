@@ -113,19 +113,19 @@ namespace Asmodat.Types
         }
         #endregion
 
-        public static explicit operator DateTime(TickTime TT)
+        public static implicit operator DateTime(TickTime TT)
         {
             return TT.UTC;
         }
-        public static explicit operator long(TickTime TT)
+        public static implicit operator long(TickTime TT)
         {
             return TT.Ticks;
         }
-        public static explicit operator TickTime(DateTime DT)
+        public static implicit operator TickTime(DateTime DT)
         {
             return new TickTime(DT);
         }
-        public static explicit operator TickTime(long ticks)
+        public static implicit operator TickTime(long ticks)
         {
             return new TickTime(ticks);
         }

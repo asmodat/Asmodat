@@ -447,6 +447,7 @@
     <Compile Include="EXTENTIONS\Drawing\Rectangle.cs" />
     <Compile Include="EXTENTIONS\Drawing\Imaging\PixelFormat.cs" />
     <Compile Include="EXTENTIONS\Drawing\Point.cs" />
+    <Compile Include="EXTENTIONS\Numerics\Complex.cs" />
     <Compile Include="EXTENTIONS\TryCatch.cs" />
     <Compile Include="EXTENTIONS\IO\FileInfo.cs" />
     <Compile Include="EXTENTIONS\IO\FileStream.cs" />

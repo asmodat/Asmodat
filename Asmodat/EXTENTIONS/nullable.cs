@@ -10,6 +10,23 @@ namespace Asmodat.Extensions
 
     public static class nullableEx
     {
+        public static T Value<T>(this T? source, T _default = default(T)) where T : struct
+        {
+            return (source == null || !source.HasValue) ? _default : source.Value;
+        }
+
+        public static T TryGetValue<T>(this T? source, T _default = default(T)) where T : struct
+        {
+            try
+            {
+                return Value(source, _default);
+            }
+            catch
+            {
+                return _default;
+            }
+        }
+
         public static bool IsNull<T>(this T? source) where T : struct
         {
             if (source == null || !source.HasValue)
@@ -48,13 +65,7 @@ namespace Asmodat.Extensions
             }
         }
 
-        public static T TryGetValue<T>(this T? source, T _default = default(T)) where T : struct
-        {
-            if (source == null || !source.HasValue)
-                return _default;
-            else
-                return source.Value;
-        }
+        
 
     }
 }

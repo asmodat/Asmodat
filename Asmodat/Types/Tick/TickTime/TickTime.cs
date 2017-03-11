@@ -293,22 +293,22 @@ namespace Asmodat.Types
         public static TickTime us { get { return new TickTime(10); } }
         [IgnoreDataMember]
         [XmlIgnore]
-        public static TickTime ms { get { return TickTime.us * 1000; } }
+        public static TickTime ms { get { return TickTime.us * (long)1000; } }
         [IgnoreDataMember]
         [XmlIgnore]
-        public static TickTime s { get { return TickTime.ms * 1000; ; } }
+        public static TickTime s { get { return TickTime.ms * (long)1000; ; } }
         [IgnoreDataMember]
         [XmlIgnore]
-        public static TickTime m { get { return TickTime.s * 60; ; } }
+        public static TickTime m { get { return TickTime.s * (long)60; ; } }
         [IgnoreDataMember]
         [XmlIgnore]
-        public static TickTime h { get { return TickTime.m * 60; ; } }
+        public static TickTime h { get { return TickTime.m * (long)60; ; } }
         [IgnoreDataMember]
         [XmlIgnore]
-        public static TickTime d { get { return TickTime.h * 24; ; } }
+        public static TickTime d { get { return TickTime.h * (long)24; ; } }
         [IgnoreDataMember]
         [XmlIgnore]
-        public static TickTime w { get { return TickTime.d * 7; ; } }
+        public static TickTime w { get { return TickTime.d * (long)7; ; } }
 
 
         public int CompareTo(object obj)

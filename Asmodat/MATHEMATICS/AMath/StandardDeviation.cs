@@ -29,9 +29,7 @@ namespace AsmodatMath
 
 
         /// <summary>
-        /// Standard deviation σ (sigma) is a measure of how spread out numbers are
-        /// it is a squer root of the variance
-        /// 
+        /// Standard deviation σ (sigma) is a measure of how spread out numbers are, it is a squer root of the variance
         /// set population to true then return sqrt(sum / (double)length); -> for standard deviation Variance
         /// set population to false then return sqrt(sum / (double)(length - 1)); -> population standard deviation variance
         /// </summary>
@@ -64,7 +62,6 @@ namespace AsmodatMath
         /// <summary>
         /// Standard deviation σ (sigma) is a measure of how spread out numbers are
         /// it is a squer root of the variance
-        /// 
         /// </summary>
         /// <param name="variance"></param>
         /// <returns></returns>

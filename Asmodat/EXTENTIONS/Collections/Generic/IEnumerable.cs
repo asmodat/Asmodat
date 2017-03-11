@@ -88,6 +88,12 @@ namespace Asmodat.Extensions.Collections.Generic
             else return false;
         }
 
+        public static bool IsCountGreaterThen<TSource>(this IEnumerable<TSource> source, int value)
+        {
+            int? cnt = source?.Count();
+            return cnt != null && cnt.Value > value;
+        }
+
         /// <summary>
         /// Checks if enumerable count is less or equal value
         /// </summary>
@@ -100,6 +106,12 @@ namespace Asmodat.Extensions.Collections.Generic
             if (source == null || source.Count() <= value)
                 return true;
             else return false;
+        }
+
+        public static bool IsCountGreaterOrEqual<TSource>(this IEnumerable<TSource> source, int value)
+        {
+            int? cnt = source?.Count();
+            return cnt != null && cnt.Value >= value;
         }
 
         public static int GetCount<TSource>(this IEnumerable<TSource> source)
@@ -214,7 +226,13 @@ namespace Asmodat.Extensions.Collections.Generic
         }
 
 
-       
+        public static IEnumerable<T> TakeLast<T>(this IEnumerable<T> source, int n)
+        {
+            if (source == null || source.Count() < n)
+                return null;
+
+            return source.Skip(Math.Max(0, source.Count() - n));
+        }
 
 
 

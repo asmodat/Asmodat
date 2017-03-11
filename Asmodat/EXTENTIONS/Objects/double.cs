@@ -14,6 +14,15 @@ namespace Asmodat.Extensions.Objects
 
     public static class doubleEx
     {
+        public static double GetSign(this double d)
+        {
+            if (double.IsNaN(d))
+                return double.NaN;
+            else if (d == 0)
+                return 0;
+            else return d > 0 ? 1 : -1;
+        }
+
         public static bool TryParse(this string value, out double result)
         {
             if(value.IsNullOrEmpty())
