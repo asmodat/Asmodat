@@ -68,5 +68,10 @@ namespace Asmodat.Abbreviate
             lock (locker)
                 base.Clear();
         }
+
+
+        public T TryGetLast() { lock (locker) return this.Last();  }
+
+        public T TryGetLastOrDefault() { lock (locker) return this.LastOrDefault();  }
     }
 }

@@ -23,6 +23,9 @@ namespace Asmodat.Extensions.Objects
             else return d > 0 ? 1 : -1;
         }
 
+        public static bool IsNaN(this double d) { return double.IsNaN(d); }
+
+
         public static bool TryParse(this string value, out double result)
         {
             if(value.IsNullOrEmpty())
@@ -40,9 +43,7 @@ namespace Asmodat.Extensions.Objects
             if (value.IsNullOrEmpty())
                 return _default;
 
-            double result;
-
-            if (double.TryParse(value, out result))
+            if (double.TryParse(value, out double result))
                 return result;
 
             return _default;

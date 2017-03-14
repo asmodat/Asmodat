@@ -55,6 +55,52 @@ namespace Asmodat.Abbreviate
             }
         }
 
+        /// <summary>
+        /// If value of the array is IEnumerable than this method can return specified values from value of this array.
+        /// Example: var d = new ThreadedDictionary(TKey, ThreadedSortedSet[T>); -> var result = d.TryGetWhere[T>(someKey, x => x.Prop == someValue);
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public IEnumerable<T> TryGetWhere<T>(TKey key, Func<T, bool> predicate)
+        {
+            try
+            {
+                lock (locker)
+                {
+                    return base.ContainsKey(key) ? ((IEnumerable<T>)base[key])?.Where(predicate) : null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        public T TryGetLastOrDefault<T>(TKey key, T _default = default(T))
+        {
+            try
+            {
+                lock (locker)
+                {
+                    if (!base.ContainsKey(key))
+                        return _default;
+
+                    var obj = ((IEnumerable<T>)base[key]);
+
+                    if (obj == null || obj.Count() <= 0)
+                        return _default;
+
+                    return obj.Last();
+                }
+            }
+            catch
+            {
+                return _default;
+            }
+        }
 
         public TValue[] GetValuesArray(TKey key)
         {

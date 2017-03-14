@@ -61,10 +61,7 @@ namespace Asmodat.Types
         /// </summary>
         /// <param name="unit"></param>
         /// <returns></returns>
-        public double Total(Unit unit)
-        {
-            return Ticks <= 0 ? 0 : (double)((double)Ticks / (double)unit);
-        }
+        public double Total(Unit unit) { return Ticks / (double)unit; }
 
 
         public string TotalString(bool addPrefixZeros, params Unit[] units)

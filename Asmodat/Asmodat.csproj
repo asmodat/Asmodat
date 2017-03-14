@@ -401,6 +401,11 @@
     <Compile Include="Cryptography\AED0x1s.cs" />
     <Compile Include="Cryptography\SecureStrings.cs" />
     <Compile Include="Cryptography\AED0x1.cs" />
+    <Compile Include="DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Debugging\DebugManager0x1\Initialize.cs" />
     <Compile Include="Debugging\DebugManager0x1\ProcessExecute.cs" />
     <Compile Include="Debugging\DebugManager0x1\ProcessCheckIP.cs" />
@@ -789,6 +794,11 @@
     <Compile Include="IO\Compression\Compression.cs" />
     <Compile Include="ABBREVIATE\AbstractDescriptionProvider.cs" />
     <Compile Include="AUDIO\Speech\Recognition\Numbers.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="SQL\Database\Database.cs" />
     <Compile Include="SQL\Database\Static\Column.cs" />
     <Compile Include="SQL\Database\Static\Row.cs" />
@@ -859,7 +869,22 @@
     <None Include="app.manifest" />
     <None Include="Content\bootstrap-theme.css.map" />
     <None Include="Content\bootstrap.css.map" />
+    <None Include="DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="OVERRIDE\" />
