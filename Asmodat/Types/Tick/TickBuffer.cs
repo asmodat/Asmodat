@@ -99,9 +99,7 @@ namespace Asmodat.Types
 
         public T ReadLast()
         {
-            TickTime time;
-            T result = ReadLast(out time);
-            return result;
+            return ReadLast(out TickTime time);
         }
 
         public T ReadLast(out TickTime time)
@@ -130,9 +128,7 @@ namespace Asmodat.Types
 
         public T ReadNext(TickTime previous)
         {
-            TickTime time;
-            T result = ReadNext(out time, previous);
-            return result;
+            return ReadNext(out TickTime time, previous);
         }
 
 

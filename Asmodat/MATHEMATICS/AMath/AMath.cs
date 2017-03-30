@@ -58,7 +58,7 @@ namespace AsmodatMath
 
 
 
-
+        
 
 
 
@@ -84,6 +84,21 @@ namespace AsmodatMath
         public static int RoundToPow(double value, double pow)
         {
             return (int)Math.Pow(pow, (int)(Math.Log(value) / Math.Log(pow)));
+        }
+
+        /// <summary>
+        /// Floor rounds to the nearest value
+        /// Examples: 
+        /// 10.4 to 0.25 = 10.25;
+        /// 10.51 to 0.25 = 10.5;
+        /// </summary>
+        /// <param name="round"></param>
+        /// <param name="toValue"></param>
+        /// <returns></returns>
+        public static double RoundToValue(double round, double toValue)
+        {
+            int val = (int)(round / toValue);
+            return (double)val * toValue;
         }
 
         /* */

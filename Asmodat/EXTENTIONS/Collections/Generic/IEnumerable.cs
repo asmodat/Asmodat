@@ -116,11 +116,7 @@ namespace Asmodat.Extensions.Collections.Generic
 
         public static int GetCount<TSource>(this IEnumerable<TSource> source)
         {
-            //IEnumerableEx.IsNullOrEmpty(source);
-
-            if (source == null || source.LongCount() <= 0)
-                return 0;
-            else return source.Count();
+            return (source == null || source.Count() <= 0) ? 0 : source.Count();
         }
 
         public static long GetLongCount<TSource>(this IEnumerable<TSource> source)

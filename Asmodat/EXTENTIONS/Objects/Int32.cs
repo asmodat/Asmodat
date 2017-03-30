@@ -14,6 +14,9 @@ namespace Asmodat.Extensions.Objects
 
     public static class Int32Ex
     {
+        public static Int32 GetSign(this Int32 v) { return (v == 0) ?  0 : (v > 0 ? 1 : -1); }
+
+
         public static BigInteger SumValues(this Int32[] values)
         {
             if (values.IsNullOrEmpty())
@@ -61,9 +64,7 @@ namespace Asmodat.Extensions.Objects
             if (value.IsNullOrEmpty())
                 return _default;
 
-            Int32 result;
-
-            if (Int32.TryParse(value, out result))
+            if (Int32.TryParse(value, out Int32 result))
                 return result;
 
             return _default;

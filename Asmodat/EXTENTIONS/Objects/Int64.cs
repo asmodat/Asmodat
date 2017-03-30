@@ -10,7 +10,8 @@ namespace Asmodat.Extensions.Objects
 
     public static class Int64Ex
     {
-       
+        public static Int64 GetSign(this Int64 v) { return (v == 0) ? 0 : (v > 0 ? 1 : -1); }
+
         public static byte[] ToBytes(Int64 value)
         {
             byte[] bytes = BitConverter.GetBytes(value);

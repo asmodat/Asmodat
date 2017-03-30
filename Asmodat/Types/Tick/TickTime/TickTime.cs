@@ -287,6 +287,7 @@ namespace Asmodat.Types
 
         [IgnoreDataMember]
         [XmlIgnore]
+#pragma warning disable IDE1006 // Naming Styles
         public static TickTime us { get { return new TickTime(10); } }
         [IgnoreDataMember]
         [XmlIgnore]
@@ -306,7 +307,7 @@ namespace Asmodat.Types
         [IgnoreDataMember]
         [XmlIgnore]
         public static TickTime w { get { return TickTime.d * (long)7; ; } }
-
+#pragma warning restore IDE1006 // Naming Styles
 
         public int CompareTo(object obj)
         {
