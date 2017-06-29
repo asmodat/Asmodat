@@ -40,7 +40,6 @@ namespace Asmodat.Abbreviate
 
         public void Synchronize()
         {
-
             bool done = false;
             while (!done)
             {
@@ -53,8 +52,7 @@ namespace Asmodat.Abbreviate
 
                         while (end > TickTime.NowTicks)
                         {
-                            int speep = AMath.Random(1, 11);
-                            Thread.Sleep(speep);
+                            Thread.Sleep(AMath.Random(1, 11));
                             end = this.Start.Ticks + constant;
                         }
 

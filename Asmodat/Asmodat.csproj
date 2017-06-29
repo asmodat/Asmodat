@@ -267,6 +267,24 @@
       <HintPath>..\packages\WriteableBitmapEx.1.5.0.0\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\AsmodatEthereumClient\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\AsmodatEthereumClient\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\AsmodatEthereumClient\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\AsmodatEthereumClient\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\AsmodatEthereumClient\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\AsmodatEthereumClient\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ABBREVIATE\Bytes.cs" />
@@ -397,6 +415,9 @@
     <Compile Include="CONTROLS\WPF\EventHandlers.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedCheckBox\ThreadedCheckBox.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedButton\ThreadedButton.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedDataGrid\ThreadedDataGrid.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedDateTimePicker\ThreadedDateTimePicker.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedGroupBox\ThreadedGroupBox.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedListBox\ThreadedListBox.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\LabelProperties.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabelledProgressBar\ThreadedLabelledProgressBar.xaml.cs">

@@ -165,5 +165,14 @@ namespace Asmodat.WPFControls
             get { return this.TryInvokeMethodFunction(() => { return base.MaxHeight; }); }
             set { this.TryInvokeMethodAction(() => { TB.MaxHeight = value; PB.MaxHeight = value; base.MaxHeight = value; }); }
         }
+
+
+        public delegate void PasswordChangedEventHandler(object sender, RoutedEventArgs e);
+        public event PasswordChangedEventHandler PasswordChangedEvent;
+
+        private void OnPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordChangedEvent(sender, e);
+        }
     }
 }

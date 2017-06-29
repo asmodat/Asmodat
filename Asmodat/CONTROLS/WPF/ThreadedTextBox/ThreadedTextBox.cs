@@ -7,6 +7,8 @@ namespace Asmodat.WPFControls
 {
     public partial class ThreadedTextBox : TextBox
     {
+        public void SetText(string text) => Text = text;
+
         public new string Text
         {
             get { return this.TryInvokeMethodFunction(() => { return base.Text; }); }
