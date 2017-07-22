@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 using Asmodat.Extensions.Collections.Generic;
 using Asmodat.IO;
 using System.Management;
+using System.Collections;
 
 namespace Asmodat.Extensions.Diagnostics
 {
@@ -30,8 +31,6 @@ namespace Asmodat.Extensions.Diagnostics
             return Process.Start(new ProcessStartInfo(fullPath, arguments));
         }
 
-
-        
         public static string GetExecutablePath(this Process p)
         {
             if (p == null) return null;
@@ -56,6 +55,26 @@ namespace Asmodat.Extensions.Diagnostics
            return null;
         }
 
+        public static Process[] GetFromPath(string path)
+        {
+            if (path.IsNullOrEmpty())
+                return null;
+
+            string filter = Path.GetFullPath(path);
+
+            Process[] arr = Process.GetProcesses();
+            if (arr.IsNullOrEmpty())
+                return null;
+
+            List<Process> results = new List<Process>();
+
+            foreach (Process p in arr)
+                if (string.Compare(filter, p?.GetExecutablePath(), true) == 0)
+                    results.Add(p);
+
+            return results.ToArray();
+        }
+
         public static bool IsRunningFromPath(string path)
         {
             if (path.IsNullOrEmpty())
@@ -68,18 +87,11 @@ namespace Asmodat.Extensions.Diagnostics
                 return false;
 
             foreach (Process p in arr)
-            {
-                if (p == null)
-                    continue;
-
-                if (string.Compare(filter, p.GetExecutablePath(), true) == 0)
+                if (string.Compare(filter, p?.GetExecutablePath(), true) == 0)
                     return true;
-            }
 
             return false;
         }
-
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNull(this Process process)
@@ -105,6 +117,22 @@ namespace Asmodat.Extensions.Diagnostics
             }
         }
 
+        public static void TryKill(IEnumerable<Process> processes, int timeout_ms)
+        {
+            if (processes.IsNullOrEmpty())
+                return;
+
+            Task[] tasks = new Task[processes.Count()];
+
+            var i = 0;
+            foreach(var p in processes)
+            {
+                tasks[i] = new Task(() => p.TryKill());
+                tasks[i++].Start();
+            }
+
+            Task.WaitAll(tasks.ToArray(), timeout_ms);
+        }
 
         public static string GetStandardOutput(this Process process)
         {

@@ -470,6 +470,7 @@
     <Compile Include="EXTENTIONS\Collections\Generic\List\Get.cs" />
     <Compile Include="EXTENTIONS\COM\Shell32\Shell.cs" />
     <Compile Include="EXTENTIONS\Data\SqlClient\SqlConnection.cs" />
+    <Compile Include="EXTENTIONS\Diagnostics\CMD.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\Process.cs" />
     <Compile Include="EXTENTIONS\Diagnostics\ProcessStartInfo.cs" />
     <Compile Include="EXTENTIONS\Drawing\Bitmap\Lock.cs" />
@@ -842,6 +843,7 @@
     <Compile Include="SystemResources\NetworkAdaptersInfo.cs" />
     <Compile Include="SystemResources\ProcessorsInfo.cs" />
     <Compile Include="Types\Barrel\BarrelList.cs" />
+    <Compile Include="Types\CMD.cs" />
     <Compile Include="Types\ConcurrentFixedQueue.cs" />
     <Compile Include="Types\ParamsWrapper.cs" />
     <Compile Include="Types\TasksManager\TaskObject.cs" />
