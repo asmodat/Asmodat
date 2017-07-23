@@ -9,6 +9,8 @@ using Asmodat.Abbreviate;
 using Asmodat.Extensions;
 using System.Diagnostics;
 using Asmodat.Extensions.Objects;
+using Asmodat.Extensions.Collections.Generic;
+using System.Threading;
 
 namespace Asmodat.Types
 {
@@ -20,12 +22,18 @@ namespace Asmodat.Types
         public bool CreateNoWindow { get; }
         private Process Process { get; set; }
 
-
         public int MaxOutputDataLength { get; set; } = 4096;
         public int MaxErrorDataLength { get; set; } = 4096;
 
         public ThreadedDictionary<TickTime, string> OutputData { get; private set; } = new ThreadedDictionary<TickTime, string>();
         public ThreadedDictionary<TickTime, string> ErrorData { get; private set; } = new ThreadedDictionary<TickTime, string>();
+
+        public enum ResponseType
+        {
+            Data = 1,
+            Error = 1 << 1,
+            Any = Data | Error
+        }
 
         public CMD(string fileName = "cmd.exe", bool createNoWindow = true)
         {
@@ -74,27 +82,26 @@ namespace Asmodat.Types
             ErrorData.Add(TickTime.Now, e.Data);
         }
 
-        public (string[] output, string[] error, TickTime start) WriteLine(string cmd, int wait_for_response_ms = 0)
+
+        public (string[] output, string[] error, TickTime start) WriteLine(string cmd) => WriteLine(cmd, 0);
+        public (string[] output, string[] error, TickTime start) WriteLine(string cmd, int timeout_ms)
         {
             lock (_locker)
             {
-                TickTime ttOutput = TickTime.Now;
-                TickTime ttError = TickTime.Now;
-                TickTime ttInit = TickTime.Now;
+                TickTime ttOutput = TickTime.Now, ttError = TickTime.Now, ttInit = TickTime.Now;
                 Process.StandardInput.WriteLine(cmd);
 
-                if (wait_for_response_ms <= 0)
+                if (timeout_ms <= 0)
                     return (null, null, ttInit);
 
-                TickTimeout timeout = new TickTimeout(wait_for_response_ms, TickTime.Unit.ms);
-                List<string> output = new List<string>();
-                List<string> error = new List<string>();
+                TickTimeout timeout = new TickTimeout(timeout_ms, TickTime.Unit.ms);
+                List<string> output = new List<string>(), error = new List<string>();
 
                 while (!timeout.IsTriggered && !Process.HasExited)
                 {
                     var outputKeys = OutputData.KeysArray;
 
-                    foreach(var key in outputKeys)
+                    foreach (var key in outputKeys)
                     {
                         var val = OutputData.TryGetValue(key);
                         if (val.IsNullOrEmpty())
@@ -125,6 +132,32 @@ namespace Asmodat.Types
 
                 return (output.ToArray(), error.ToArray(), ttInit);
             }
+        }
+
+        
+
+        public bool WaitForAnyResponse(ResponseType type, TickTime init, int timeout_ms, bool waitForAnyIsCaseSensitive, params string[] waitForAny)
+        {
+            if (waitForAny.IsNullOrEmpty())
+                return false;
+
+            var timeout = new TickTimeout(timeout_ms, TickTime.Unit.ms);
+            while (!timeout.IsTriggered)
+            {
+                if ((type & ResponseType.Data) > 0 && 
+                    waitForAny != null && 
+                    (OutputData.Any(p => p.Key > init && p.Value.ContainsAny(waitForAny, waitForAnyIsCaseSensitive == true))))
+                    return true;
+
+                if ((type & ResponseType.Error) > 0 && 
+                    waitForAny != null && 
+                    (ErrorData.Any(p => p.Key > init && p.Value.ContainsAny(waitForAny, waitForAnyIsCaseSensitive == true))))
+                    return true;
+
+                Thread.Sleep(10);
+            }
+
+            return false;
         }
 
         public void Exit(string exitCommand = "exit", int timeout_ms = 200)

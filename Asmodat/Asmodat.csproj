@@ -318,6 +318,7 @@
     <Compile Include="ABBREVIATE\Serialization\SerializeProperties.cs" />
     <Compile Include="ABBREVIATE\Serialization\XmlSerializer.cs" />
     <Compile Include="ABBREVIATE\Streams.cs" />
+    <Compile Include="ABBREVIATE\Threaded\Dictionary\Linq.cs" />
     <Compile Include="ABBREVIATE\Threaded\Dictionary\Get.cs" />
     <Compile Include="ABBREVIATE\Threaded\Dictionary\IO.cs" />
     <Compile Include="ABBREVIATE\Threaded\Dictionary\SerializationDataContract.cs" />

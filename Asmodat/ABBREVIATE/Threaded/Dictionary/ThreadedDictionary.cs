@@ -26,7 +26,7 @@ namespace Asmodat.Abbreviate
         {
             lock(locker)
             {
-                this.Clear();
+                base.Clear();
                 if(dictrionary != null)
                 foreach(var v in dictrionary)
                     base.Add(v.Key, v.Value);
