@@ -15,9 +15,9 @@ using System.Windows.Threading;
 
 namespace Asmodat.Extensions.Windows.Controls
 {
-    public  static partial class ControlEx
+    public  static partial class FrameworkElementEx
     {
-        public static bool TryInvokeMethodAction(this Control control, Action action)
+        public static bool TryInvokeMethodAction(this FrameworkElement control, Action action)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace Asmodat.Extensions.Windows.Controls
             }
         }
 
-        public static T TryInvokeMethodFunction<T>(this Control control, Func<T> func)
+        public static T TryInvokeMethodFunction<T>(this FrameworkElement control, Func<T> func)
         {
             T result;
 
@@ -48,7 +48,7 @@ namespace Asmodat.Extensions.Windows.Controls
             return result;
         }
         
-        public static void InvokeMethodAction(this Control control, Action action)
+        public static void InvokeMethodAction(this FrameworkElement control, Action action)
         {
             if (control == null || control.Dispatcher.CheckAccess())
                 action();
@@ -59,7 +59,7 @@ namespace Asmodat.Extensions.Windows.Controls
                 });
         }
 
-        public static T InvokeMethodFunction<T>(this Control control, Func<T> func)
+        public static T InvokeMethodFunction<T>(this FrameworkElement control, Func<T> func)
         {
             T result = default(T);
 
@@ -86,7 +86,5 @@ namespace Asmodat.Extensions.Windows.Controls
                 return _Invoker;
             }
         }
-
-
     }
 }

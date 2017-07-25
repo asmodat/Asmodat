@@ -432,6 +432,7 @@
     <Compile Include="CONTROLS\WPF\ThreadedTabControl.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabel\ThreadedLabel.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedComboBox\ThreadedComboBox.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedTextBlock\ThreadedTextBlock.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedTextBox\ThreadedTextBox.cs" />
     <Compile Include="Cryptography\AES256.cs" />
     <Compile Include="Cryptography\AMUID.cs" />
@@ -529,6 +530,7 @@
     <Compile Include="EXTENTIONS\Drawing\Size.cs" />
     <Compile Include="EXTENTIONS\Objects\ulong.cs" />
     <Compile Include="EXTENTIONS\Web\SessionState\HttpSessionStateEx.cs" />
+    <Compile Include="EXTENTIONS\Windows\Controls\FrameworkElement.cs" />
     <Compile Include="EXTENTIONS\Windows\Controls\Control.cs" />
     <Compile Include="EXTENTIONS\Windows\Forms\Control\KeyEventArgs.cs" />
     <Compile Include="EXTENTIONS\Windows\Forms\Control\Property.cs" />
@@ -904,8 +906,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
-    <None Include="Content\bootstrap-theme.css.map" />
-    <None Include="Content\bootstrap.css.map" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -945,10 +945,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="EXTENTIONS\AllExtentions.txt" />
     <Content Include="note.txt" />
     <Resource Include="Resources\paypal-donate-517.png" />

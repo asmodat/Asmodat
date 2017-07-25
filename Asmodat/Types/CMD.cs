@@ -37,7 +37,6 @@ namespace Asmodat.Types
 
         public CMD(string fileName = "cmd.exe", bool createNoWindow = true)
         {
-
             FileName = fileName;
             CreateNoWindow = createNoWindow;
 
@@ -59,6 +58,12 @@ namespace Asmodat.Types
             Process.OutputDataReceived += Process_OutputDataReceived;
             Process.ErrorDataReceived += Process_ErrorDataReceived;
         }
+
+        public KeyValuePair<TickTime, string>[] GetNextOutputs(TickTime init)
+            => OutputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray();
+
+        public KeyValuePair<TickTime, string>[] GetNextErrors(TickTime init)
+            => OutputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray();
 
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {

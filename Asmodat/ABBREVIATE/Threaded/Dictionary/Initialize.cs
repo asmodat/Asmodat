@@ -37,13 +37,6 @@ namespace Asmodat.Abbreviate
             this.XmlDeserialize(data);
         }
 
-
-       /* public static implicit operator ThreadedDictionary<TKey, TValue>(Dictionary<TKey, TValue> d)
-        {
-            return new ThreadedDictionary<TKey, TValue>(d);
-        }
-        */
         private ThreadedMethod Methods;
-
     }
 }
