@@ -2,12 +2,27 @@
 using Asmodat.Extensions.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Documents;
 
 namespace Asmodat.WPFControls
 {
     public partial class ThreadedTextBlock : System.Windows.Controls.TextBlock
     {
         public void SetText(string text) => Text = text;
+
+        public void WriteLine(string text) => WriteLine(text, Brushes.Black);
+
+        public void WriteLine(string text, Brush brush)
+        {
+            var run = new Run(text + "\r\n");
+            run.Foreground = brush;
+            this.TryInvokeMethodAction(() => { base.Inlines.Add(run); });
+        }
+
+        public new InlineCollection Inlines
+        {
+            get { return this.TryInvokeMethodFunction(() => { return base.Inlines; }); }
+        }
 
         public new string Text
         {

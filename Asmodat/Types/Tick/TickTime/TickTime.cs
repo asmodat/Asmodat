@@ -181,7 +181,6 @@ namespace Asmodat.Types
             return this.UTC.ToString(FormatTime, CultureInfo.InvariantCulture);
         }
 
-
         public string ToStringExact(string format)
         {
             return this.UTC.ToString(format, CultureInfo.InvariantCulture);

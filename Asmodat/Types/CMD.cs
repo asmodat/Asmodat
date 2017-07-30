@@ -22,9 +22,11 @@ namespace Asmodat.Types
         public bool CreateNoWindow { get; }
         private Process Process { get; set; }
 
+        public int MaxInputDataLength { get; set; } = 4096;
         public int MaxOutputDataLength { get; set; } = 4096;
         public int MaxErrorDataLength { get; set; } = 4096;
 
+        public ThreadedDictionary<TickTime, string> InputData { get; private set; } = new ThreadedDictionary<TickTime, string>();
         public ThreadedDictionary<TickTime, string> OutputData { get; private set; } = new ThreadedDictionary<TickTime, string>();
         public ThreadedDictionary<TickTime, string> ErrorData { get; private set; } = new ThreadedDictionary<TickTime, string>();
 
@@ -65,26 +67,35 @@ namespace Asmodat.Types
         public KeyValuePair<TickTime, string>[] GetNextErrors(TickTime init)
             => OutputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray();
 
+        public KeyValuePair<TickTime, string>[] GetNextInputs(TickTime init)
+            => InputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray();
+
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            if (e.Data.IsNullOrEmpty())
-                return;
+            lock (_locker)
+            {
+                if (e.Data.IsNullOrEmpty())
+                    return;
 
-            if (OutputData.Count >= MaxOutputDataLength)
-                OutputData.Remove(OutputData.FirstKey);
+                if (OutputData.Count >= MaxOutputDataLength)
+                    OutputData.Remove(OutputData.FirstKey);
 
-            OutputData.Add(TickTime.Now, e.Data);
+                OutputData.Add(TickTime.Now, e.Data);
+            }
         }
 
         private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            if (e.Data.IsNullOrEmpty())
-                return;
+            lock (_locker)
+            {
+                if (e.Data.IsNullOrEmpty())
+                    return;
 
-            if (ErrorData.Count >= MaxErrorDataLength)
-                ErrorData.Remove(OutputData.FirstKey);
+                if (ErrorData.Count >= MaxErrorDataLength)
+                    ErrorData.Remove(OutputData.FirstKey);
 
-            ErrorData.Add(TickTime.Now, e.Data);
+                ErrorData.Add(TickTime.Now, e.Data);
+            }
         }
 
 
@@ -95,6 +106,14 @@ namespace Asmodat.Types
             {
                 TickTime ttOutput = TickTime.Now, ttError = TickTime.Now, ttInit = TickTime.Now;
                 Process.StandardInput.WriteLine(cmd);
+
+                if (!cmd.IsNullOrEmpty())
+                {
+                    if (InputData.Count >= MaxInputDataLength)
+                        InputData.Remove(OutputData.FirstKey);
+
+                    InputData.Add(ttInit, cmd);
+                }
 
                 if (timeout_ms <= 0)
                     return (null, null, ttInit);
