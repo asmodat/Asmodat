@@ -30,11 +30,13 @@ namespace Asmodat.Types
         public ThreadedDictionary<TickTime, string> OutputData { get; private set; } = new ThreadedDictionary<TickTime, string>();
         public ThreadedDictionary<TickTime, string> ErrorData { get; private set; } = new ThreadedDictionary<TickTime, string>();
 
-        public enum ResponseType
+        public enum DataType
         {
-            Data = 1,
-            Error = 1 << 1,
-            Any = Data | Error
+            None = 1,
+            Output = 1 << 1,
+            Error = 1 << 2,
+            Input = 1 << 3,
+            Any = None | Output | Error | Input
         }
 
         public CMD(string fileName = "cmd.exe", bool createNoWindow = true)
@@ -61,15 +63,62 @@ namespace Asmodat.Types
             Process.ErrorDataReceived += Process_ErrorDataReceived;
         }
 
-        public KeyValuePair<TickTime, string>[] GetNextOutputs(TickTime init)
-            => OutputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray();
+        public (DataType type, string value) GetData(TickTime time)
+        {
+            if (!time.IsDefault)
+                lock (_locker)
+                {
+                    if (InputData.ContainsKey(time))
+                        return (DataType.Input, InputData[time]);
+                    if (ErrorData.ContainsKey(time))
+                        return (DataType.Error, ErrorData[time]);
+                    if (OutputData.ContainsKey(time))
+                        return (DataType.Output, OutputData[time]);
+                }
+
+            return (DataType.None, null);
+        }
+
+       /* public KeyValuePair<TickTime, string>[] GetNextData(TickTime init)
+        {
+            var data = new List<KeyValuePair<TickTime, string>>();
+            data.AddRange(GetNextOutputs(init));
+            data.AddRange(GetNextErrors(init));
+            data.AddRange(GetNextInputs(init));
+            return data.ToArray();
+        }*/
+
+        public TickTime GetNextPointer(TickTime init)
+        {
+            var data = this.GetNextData(DataType.Any, init);
+
+            if (data.IsNullOrEmpty())
+                return TickTime.Default;
+
+            return data.Min(x => x.Key);
+        }
+
+
+        public KeyValuePair<TickTime, string>[] GetNextData(DataType type, TickTime init)
+        {
+            ThreadedDictionary<TickTime, string> data = new ThreadedDictionary<TickTime, string>();
+
+            if ((type & DataType.Input) > 0) data.AddRange(InputData.ToDictionary());
+            if ((type & DataType.Error) > 0) data.AddRange(ErrorData.ToDictionary());
+            if ((type & DataType.Output) > 0) data.AddRange(OutputData.ToDictionary());
+
+            return data?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray() ?? new KeyValuePair<TickTime, string>[0];
+        }
+
+       /* public KeyValuePair<TickTime, string>[] GetNextOutputs(TickTime init)
+            => OutputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray() ?? new KeyValuePair<TickTime, string>[0];
 
         public KeyValuePair<TickTime, string>[] GetNextErrors(TickTime init)
-            => OutputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray();
+            => ErrorData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray() ?? new KeyValuePair<TickTime, string>[0];
 
         public KeyValuePair<TickTime, string>[] GetNextInputs(TickTime init)
             => InputData?.Where(x => x.Key > init)?.Select(x => { return new KeyValuePair<TickTime, string>(x.Key.Copy(), x.Value); })?.ToArray();
-
+*/
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             lock (_locker)
@@ -97,10 +146,9 @@ namespace Asmodat.Types
                 ErrorData.Add(TickTime.Now, e.Data);
             }
         }
-
-
-        public (string[] output, string[] error, TickTime start) WriteLine(string cmd) => WriteLine(cmd, 0);
-        public (string[] output, string[] error, TickTime start) WriteLine(string cmd, int timeout_ms)
+        
+        public TickTime WriteLine(string cmd) => WriteLine(cmd, 0);
+        public TickTime WriteLine(string cmd, int timeout_ms)
         {
             lock (_locker)
             {
@@ -116,7 +164,7 @@ namespace Asmodat.Types
                 }
 
                 if (timeout_ms <= 0)
-                    return (null, null, ttInit);
+                    return ttInit;
 
                 TickTimeout timeout = new TickTimeout(timeout_ms, TickTime.Unit.ms);
                 List<string> output = new List<string>(), error = new List<string>();
@@ -125,42 +173,17 @@ namespace Asmodat.Types
                 {
                     var outputKeys = OutputData.KeysArray;
 
-                    foreach (var key in outputKeys)
-                    {
-                        var val = OutputData.TryGetValue(key);
-                        if (val.IsNullOrEmpty())
-                            continue;
+                    if (ErrorData.Any(x => x.Key > ttInit) || OutputData.Any(x => x.Key > ttInit))
+                        break;
 
-                        if (key > ttOutput)
-                        {
-                            output.Add(val);
-                            ttOutput = key;
-                        }
-                    }
-
-                    var errorKeys = ErrorData.KeysArray;
-
-                    foreach (var key in errorKeys)
-                    {
-                        var val = ErrorData.TryGetValue(key);
-                        if (val.IsNullOrEmpty())
-                            continue;
-
-                        if (key > ttError)
-                        {
-                            error.Add(val);
-                            ttError = key;
-                        }
-                    }
+                    Thread.Sleep(10);
                 }
 
-                return (output.ToArray(), error.ToArray(), ttInit);
+                return ttInit;
             }
         }
-
         
-
-        public bool WaitForAnyResponse(ResponseType type, TickTime init, int timeout_ms, bool waitForAnyIsCaseSensitive, params string[] waitForAny)
+        public bool WaitForResponse(DataType responseType, TickTime init, int timeout_ms, bool waitForAnyIsCaseSensitive, params string[] waitForAny)
         {
             if (waitForAny.IsNullOrEmpty())
                 return false;
@@ -168,12 +191,12 @@ namespace Asmodat.Types
             var timeout = new TickTimeout(timeout_ms, TickTime.Unit.ms);
             while (!timeout.IsTriggered)
             {
-                if ((type & ResponseType.Data) > 0 && 
+                if ((responseType & DataType.Output) > 0 && 
                     waitForAny != null && 
                     (OutputData.Any(p => p.Key > init && p.Value.ContainsAny(waitForAny, waitForAnyIsCaseSensitive == true))))
                     return true;
 
-                if ((type & ResponseType.Error) > 0 && 
+                if ((responseType & DataType.Error) > 0 && 
                     waitForAny != null && 
                     (ErrorData.Any(p => p.Key > init && p.Value.ContainsAny(waitForAny, waitForAnyIsCaseSensitive == true))))
                     return true;

@@ -429,6 +429,7 @@
       <DependentUpon>ThreadedPasswordTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="CONTROLS\WPF\ThreadedProgressBar\ThreadedProgressBar.cs" />
+    <Compile Include="CONTROLS\WPF\ThreadedRichTextBox\ThreadedRichTextBox.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedTabControl.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedLabel\ThreadedLabel.cs" />
     <Compile Include="CONTROLS\WPF\ThreadedComboBox\ThreadedComboBox.cs" />

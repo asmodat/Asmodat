@@ -6,24 +6,30 @@ using System.Windows.Documents;
 
 namespace Asmodat.WPFControls
 {
-    public partial class ThreadedTextBlock : System.Windows.Controls.TextBlock
+    public partial class ThreadedRichTextBox : System.Windows.Controls.RichTextBox
     {
-        public void SetText(string text) => Text = text;
-
         public void WriteLine(string text) => WriteLine(text, Brushes.Black);
 
-        public void WriteLine(string text, Brush brush) => this.TryInvokeMethodAction(() => base.Inlines.Add(new Run(text + "\r\n") { Foreground = brush }));
-        
-
-        public new InlineCollection Inlines
+        public void WriteLine(string text, Brush brush)
         {
-            get { return this.TryInvokeMethodFunction(() => { return base.Inlines; }); }
+            this.TryInvokeMethodAction(() => 
+            {
+                var pntr = base.Document.ContentEnd;
+                TextRange tr = new TextRange(pntr, pntr);
+                tr.Text = $"{text}\r\n";
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
+            });
         }
 
-        public new string Text
+        public new void ScrollToEnd() => this.TryInvokeMethodAction(() => base.ScrollToEnd());
+        public new void ScrollToHome() => this.TryInvokeMethodAction(() => base.ScrollToHome());
+        public new void ScrollToHorizontalOffset(double offset) => this.TryInvokeMethodAction(() => base.ScrollToHorizontalOffset(offset));
+        public new void ScrollToVerticalOffset(double offset) => this.TryInvokeMethodAction(() => base.ScrollToVerticalOffset(offset));
+
+        public new object DataContext
         {
-            get { return this.TryInvokeMethodFunction(() => { return base.Text; }); }
-            set { this.TryInvokeMethodAction(() => { base.Text = value; }); }
+            get { return this.TryInvokeMethodFunction(() => { return base.DataContext; }); }
+            set { this.TryInvokeMethodAction(() => { base.DataContext = value; }); }
         }
 
         public new bool IsEnabled
@@ -54,13 +60,7 @@ namespace Asmodat.WPFControls
             get { return this.TryInvokeMethodFunction(() => { return base.Padding; }); }
             set { this.TryInvokeMethodAction(() => { base.Padding = value; }); }
         }
-
-        public new TextAlignment TextAlignment
-        {
-            get { return this.TryInvokeMethodFunction(() => { return base.TextAlignment; }); }
-            set { this.TryInvokeMethodAction(() => { base.TextAlignment = value; }); }
-        }
-
+        
         public new double Width
         {
             get => this.TryInvokeMethodFunction(() => { return base.Width; });
@@ -75,14 +75,26 @@ namespace Asmodat.WPFControls
 
         public new VerticalAlignment VerticalAlignment
         {
-            get { return this.TryInvokeMethodFunction(() => { return base.VerticalAlignment; }); }
-            set { this.TryInvokeMethodAction(() => { base.VerticalAlignment = value; }); }
+            get => this.TryInvokeMethodFunction(() => { return base.VerticalAlignment; });
+            set => this.TryInvokeMethodAction(() => { base.VerticalAlignment = value; });
         }
 
         public new HorizontalAlignment HorizontalAlignment
         {
             get => this.TryInvokeMethodFunction(() => { return base.HorizontalAlignment; });
             set => this.TryInvokeMethodAction(() => { base.HorizontalAlignment = value; });
+        }
+
+        public new VerticalAlignment VerticalContentAlignment
+        {
+            get => this.TryInvokeMethodFunction(() => { return base.VerticalContentAlignment; });
+            set => this.TryInvokeMethodAction(() => { base.VerticalContentAlignment = value; });
+        }
+
+        public new HorizontalAlignment HorizontalContentAlignment
+        {
+            get => this.TryInvokeMethodFunction(() => { return base.HorizontalContentAlignment; });
+            set => this.TryInvokeMethodAction(() => { base.HorizontalContentAlignment = value; });
         }
     }
 }
