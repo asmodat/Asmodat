@@ -1,16 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Asmodat.Extensions.Objects
 {
-    
-
     public static class Int64Ex
     {
-        public static Int64 GetSign(this Int64 v) { return (v == 0) ? 0 : (v > 0 ? 1 : -1); }
+        public static bool TryParse(this string value, out Int64 result)
+        {
+            if (value.IsNullOrEmpty())
+            {
+                result = default(Int64);
+                return false;
+            }
+
+            return Int64.TryParse(value, out result);
+        }
+
+
+        public static Int64 TryParse(this string value, Int64 _default)
+        {
+            if (value.IsNullOrEmpty())
+                return _default;
+
+            Int64 result;
+
+            if (Int64.TryParse(value, out result))
+                return result;
+
+            return _default;
+        }
+
 
         public static byte[] ToBytes(Int64 value)
         {
@@ -35,7 +53,7 @@ namespace Asmodat.Extensions.Objects
                 result = 0;
                 return false;
             }
-  
+
             return true;
         }
 
@@ -59,6 +77,6 @@ namespace Asmodat.Extensions.Objects
             return Int64Ex.FromBytes(bytes);
         }
 
-        
+
     }
 }

@@ -1,22 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Asmodat.Abbreviate;
-using Asmodat.Extensions.Objects;
-using Asmodat.Extensions.Collections.Generic;
-
-using System.Drawing;
-
-using Asmodat.Extensions;
 using System.Runtime.CompilerServices;
-
 
 namespace Asmodat.Extensions.Collections.Generic
 {
-    
+
 
     public static partial class ArrayEx
     {
@@ -30,7 +19,7 @@ namespace Asmodat.Extensions.Collections.Generic
         {
             if (source == null)
                 return true;
-            
+
             int i = 0, r = source.Rank;
             for (; i < r; i++)
                 if (source.GetLength(i) <= 0)
@@ -59,15 +48,15 @@ namespace Asmodat.Extensions.Collections.Generic
             if (source.IsNullOrEmpty() || values.IsNullOrEmpty())
                 return;
 
-            int 
-                w = source.Width(), 
-                h = source.Height(), 
+            int
+                w = source.Width(),
+                h = source.Height(),
                 d = source.Depth(),
-                offset = (y * w + x ) * d,
+                offset = (y * w + x) * d,
                 l = Math.Min(d, values.Length);
 
             Buffer.BlockCopy(values, 0, source, offset, l);
-         
+
             return;
         }
 
@@ -76,9 +65,9 @@ namespace Asmodat.Extensions.Collections.Generic
             if (source.IsNullOrEmpty() || values.IsNullOrEmpty())
                 return;
 
-            int 
-                w = source.Width(), 
-                h = source.Height(), 
+            int
+                w = source.Width(),
+                h = source.Height(),
                 d = source.Depth(),
                 offset = (y * w) * d,
                 l = Math.Min(w * d, values.Length);
@@ -139,11 +128,9 @@ namespace Asmodat.Extensions.Collections.Generic
             return sum;
         }
 
-
-
         public static bool AllClassesAreNull<TKey>(this TKey[,] source) where TKey : class
         {
-            
+
             if (source == null)
                 return false;
 
@@ -167,14 +154,9 @@ namespace Asmodat.Extensions.Collections.Generic
                 for (y = 0; y < h; y++)
                     if (source[x, y] == null)
                         return false;
-                
+
             return true;
         }
-
-
-
-
-
 
         public static void Populate<TKey>(this TKey[,] source, TKey value)
         {
@@ -221,7 +203,7 @@ namespace Asmodat.Extensions.Collections.Generic
         }
 
 
-       
+
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -245,7 +227,7 @@ namespace Asmodat.Extensions.Collections.Generic
             {
                 for (y = 0; y < h; y++)
                 {
-                    if(source[x, y] != null)
+                    if (source[x, y] != null)
                         result[x, y] = (TKey)source[x, y].Clone();
                 }
             }
@@ -269,7 +251,7 @@ namespace Asmodat.Extensions.Collections.Generic
             }
         }
 
-      
+
         /// <summary>
         /// Safely resizes array if neaded
         /// </summary>
@@ -294,12 +276,8 @@ namespace Asmodat.Extensions.Collections.Generic
         }
 
         public static T[] GetSafeRange<T>(this T[] source, int offset, int count)
-        {
-            return source.TryToList().GetSafeRange(offset, count).TryToArray();
-        }
-
-
-
+            => source.TryToList().GetSafeRange(offset, count).TryToArray();
+        
 
         public static TKey[] SubArray<TKey>(this TKey[] source, int offset)
         {
@@ -337,22 +315,6 @@ namespace Asmodat.Extensions.Collections.Generic
 
             return true;
         }
-
-        /*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool EqualSize<T1,T2>(this T1[,] source, T2[,] cmp)
-        {
-            if (source == null || cmp == null || source.Rank != cmp.Rank)
-                return false;
-
-            for (int i = 0; i < source.Rank; i++)
-            {
-                if (source.GetLength(i) != cmp.GetLength(i))
-                    return false;
-            }
-
-            return true;
-        }*/
-
 
         /// <summary>
         /// [width,height]
@@ -426,17 +388,13 @@ namespace Asmodat.Extensions.Collections.Generic
             return source.GetLength(2);
         }
 
-
         public static List<TKey> GetList<TKey>(this TKey[] source)
         {
             if (source == null)
                 return null;
-            
+
             return new List<TKey>(source);
         }
-
-
-        
 
         public static void Clear<TKey>(this TKey[] source)
         {
@@ -465,57 +423,9 @@ namespace Asmodat.Extensions.Collections.Generic
 
             T[] copy = new T[l];
 
-            Array.Copy(source,offset,copy,0, l);
+            Array.Copy(source, offset, copy, 0, l);
 
             return copy;
         }
-
-        
-
-
     }
 }
-
-
-/*
-
-     public static TKey[] AddDistinct<TKey>(this TKey[] source, TKey value)
-        {
-            if (value == null)
-                return source;
-
-            List<TKey> list;
-            if (source.IsNullOrEmpty())
-                list = new List<TKey>();
-            else list = new List<TKey>(source);
-
-            list.AddDistinct(value);
-
-            return list.ToArray();
-        }
-
-        public static TKey[] AddRangeDistinct<TKey>(this TKey[] source, List<TKey> values)
-        {
-            if (values.IsNullOrEmpty())
-                return source;
-
-            List<TKey> list;
-            if (source.IsNullOrEmpty())
-                list = new List<TKey>();
-            else list = new List<TKey>(source);
-
-            foreach (var v in values)
-                list.AddDistinct(v);
-
-            return list.ToArray();
-        }
-
-        public static TKey[] AddRangeDistinct<TKey>(this TKey[] source, TKey[] values)
-        {
-            if (values.IsNullOrEmpty())
-                return source;
-
-            return source.AddRangeDistinct(values.ToList());
-        }
-
-*/

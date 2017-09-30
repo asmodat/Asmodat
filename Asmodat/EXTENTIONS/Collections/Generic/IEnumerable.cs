@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Asmodat.Abbreviate;
 using Asmodat.Extensions.Objects;
-
-using System.Drawing;
 
 namespace Asmodat.Extensions.Collections.Generic
 {
-    
-
     public static class IEnumerableEx
     {
 
@@ -45,8 +37,6 @@ namespace Asmodat.Extensions.Collections.Generic
                 return _default;
             }
         }
-
-
 
         public static IEnumerable<T> Clone<T>(this IEnumerable<T> enumerable) where T : ICloneable
         {
@@ -116,7 +106,11 @@ namespace Asmodat.Extensions.Collections.Generic
 
         public static int GetCount<TSource>(this IEnumerable<TSource> source)
         {
-            return (source == null || source.Count() <= 0) ? 0 : source.Count();
+            //IEnumerableEx.IsNullOrEmpty(source);
+
+            if (source == null || source.LongCount() <= 0)
+                return 0;
+            else return source.Count();
         }
 
         public static long GetLongCount<TSource>(this IEnumerable<TSource> source)
@@ -167,7 +161,7 @@ namespace Asmodat.Extensions.Collections.Generic
             var knownKeys = new HashSet<Tkey>();
             return source.Where(element => knownKeys.Add(keySelector(element)));
         }
-        
+
         public static IEnumerable<TSource> SortAscending<TSource, Tkey>(this IEnumerable<TSource> source, Func<TSource, Tkey> keySelector)
         {
             if (source == null || keySelector == null || source.Count() <= 1)
@@ -184,7 +178,7 @@ namespace Asmodat.Extensions.Collections.Generic
             if (keySelector == null)
                 return null;
 
-                return source.OrderByDescending(keySelector);
+            return source.OrderByDescending(keySelector);
         }
 
         /// <summary>
@@ -200,7 +194,7 @@ namespace Asmodat.Extensions.Collections.Generic
         public static Dictionary<TKey, TElement> ToDistinctKeyDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> valueSelector)
         {
 
-            
+
 
             if (source == null || keySelector == null || valueSelector == null)
                 return null;
@@ -217,7 +211,7 @@ namespace Asmodat.Extensions.Collections.Generic
                 return new Dictionary<TKey, TElement>();
 
 
-            
+
             return distinct.ToDictionary(keySelector, valueSelector);
         }
 
@@ -230,8 +224,31 @@ namespace Asmodat.Extensions.Collections.Generic
             return source.Skip(Math.Max(0, source.Count() - n));
         }
 
+        /// <summary>
+        /// Executes action with index and returns count
+        /// </summary>
+        public static int ForEach<T>(this IEnumerable<T> source, Action<T, int> a)
+        {
+            int i = -1;
+            foreach (T item in source)
+                a(item, ++i);
 
+            return ++i;
+        }
 
+        /// <summary>
+        /// Executes action and returns count
+        /// </summary>
+        public static int ForEach<T>(this IEnumerable<T> source, Action<T> a)
+        {
+            int i = -1;
+            foreach (T item in source)
+            {
+                a(item);
+                ++i;
+            }
 
+            return ++i;
+        }
     }
 }

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Asmodat.Types
 {
-    public  static partial class TickTimeoutEx
+    public static partial class TickTimeoutEx
     {
         public static TickTimeout Copy(this TickTimeout timeout)
         {
@@ -117,7 +114,7 @@ namespace Asmodat.Types
         public bool TryEnter()
         {
             lock (locker)
-            if (IsTriggered)
+                if (IsTriggered)
                 {
                     this.Reset();
                     return true;
@@ -138,9 +135,6 @@ namespace Asmodat.Types
             }
         }
 
-
-
-
         /// <summary>
         /// Reset start time to Now, and disables forcing to timeout,
         /// reset does not enable timer if it is disabled, 
@@ -159,9 +153,14 @@ namespace Asmodat.Types
             this.Enabled = enable;
         }
 
-
-
-
+        /// <summary>
+        /// Waits until timeout is triggered
+        /// </summary>
+        public void Wait()
+        {
+            while (!IsTriggered)
+                Thread.Sleep(1);
+        }
 
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace Asmodat.Types
         private TickTime _Start = TickTime.Default;
         public TickTime Start { get { return _Start; } private set { _Start = value; } }
 
-        
+
         public long Timeout { get; private set; }
         public TickTime.Unit Unit { get; private set; }
     }
