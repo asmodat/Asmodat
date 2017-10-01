@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Asmodat.Abbreviate;
-using AsmodatMath;
 using Asmodat.Extensions.Collections.Generic;
 
 namespace Asmodat.Extensions
 {
-    
-
     public static class IComparableEx
     {
-
         public static T ToClosedInterval<T>(this T value, T min, T max) where T : IComparable<T>
         {
             //if (min.IsGreaterThen(max)) throw new ArgumentException("Invalid interval.");
@@ -29,8 +19,6 @@ namespace Asmodat.Extensions
 
             return result;
         }
-        
-
 
         /// <summary>
         /// Checks if value is inside closed [min, max] interval
@@ -68,7 +56,6 @@ namespace Asmodat.Extensions
 
             return false;
         }
-
 
         /// <summary>
         /// value {= comp
@@ -171,14 +158,5 @@ namespace Asmodat.Extensions
 
             return false;
         }
-
-
-        /*public static bool Min<T>(this T[,] value) where T : IComparable<T>
-        {
-            if (value.CompareTo(comp) <= 0)
-                return true;
-
-            return false;
-        }*/
     }
 }

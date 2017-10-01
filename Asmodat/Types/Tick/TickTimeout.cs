@@ -74,9 +74,17 @@ namespace Asmodat.Types
             this.Enabled = (Timeout > 0);
         }
 
-        public void SetTimeout(long Timeout)
+        public void SetTimeout(long Timeout) {
+            lock (locker)
+                this.Timeout = Timeout; 
+        }
+        public void SetTimeout(long Timeout, TickTime.Unit Unit)
         {
-            this.Timeout = Timeout;
+            lock (locker)
+            {
+                this.Timeout = Timeout;
+                this.Unit = Unit;
+            }
         }
 
         public bool Enabled { get; set; } = true;
