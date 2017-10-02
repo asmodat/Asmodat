@@ -492,6 +492,7 @@
     <Compile Include="EXTENTIONS\Drawing\Point.cs" />
     <Compile Include="EXTENTIONS\Numerics\Complex.cs" />
     <Compile Include="EXTENTIONS\Objects\doubleEx.cs" />
+    <Compile Include="EXTENTIONS\Threading\Tasks.cs" />
     <Compile Include="EXTENTIONS\TryCatch.cs" />
     <Compile Include="EXTENTIONS\IO\FileInfo.cs" />
     <Compile Include="EXTENTIONS\IO\FileStream.cs" />
@@ -507,7 +508,7 @@
     <Compile Include="EXTENTIONS\Objects\byte\checksum.cs" />
     <Compile Include="EXTENTIONS\Objects\bool.cs" />
     <Compile Include="EXTENTIONS\Objects\DateTime.cs" />
-    <Compile Include="EXTENTIONS\Objects\generic.cs" />
+    <Compile Include="EXTENTIONS\Objects\GenericEx.cs" />
     <Compile Include="EXTENTIONS\Objects\object.cs" />
     <Compile Include="EXTENTIONS\Objects\Int16.cs" />
     <Compile Include="EXTENTIONS\Objects\string\legacy2.cs" />

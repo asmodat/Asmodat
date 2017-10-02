@@ -7,6 +7,17 @@ namespace Asmodat.Extensions.Collections.Generic
 {
     public static class IEnumerableEx
     {
+        /// <summary>
+        /// returns common elements for two sets of enumerables
+        /// </summary>
+        public static IEnumerable<T> Intersection<T>(this IEnumerable<T> e1, IEnumerable<T> e2)
+        {
+            if (e1 == null || e2 == null)
+                return null;
+
+            var lookup = new HashSet<T>(e2);
+            return e1.Where(lookup.Contains);
+        }
 
         public static int TryCount<T>(this IEnumerable<T> enumerable, int _default = 0)
         {

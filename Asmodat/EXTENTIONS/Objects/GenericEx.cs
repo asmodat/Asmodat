@@ -1,35 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Asmodat.Abbreviate;
 using Asmodat.Extensions.Collections.Generic;
 
 namespace Asmodat.Extensions.Objects
 {
-    
-
-    public static class genericEx
+    public static class GenericEx
     {
         /// <summary>
-        /// Returns value if object is Equale
+        /// returns 'value' if 'value' == null else '_default'
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <param name="_default"></param>
-        /// <returns></returns>
         public static T ValueOrDefault<T>(this T value, T _default) where T : class
-        {
-            if (value == null)
-                return _default;
-            else
-                return value;
-        }
-
-
-
+            => (value == null) ? _default : value;
 
         public static bool IsOneOf<T>(this T val, params T[] ps) where T : IEquatable<T>
         {
@@ -44,10 +25,6 @@ namespace Asmodat.Extensions.Objects
         }
 
         public static bool Equals<T>(this T val1, T val2)
-        {
-            return !EqualityComparer<T>.Default.Equals(val1, val2);
-        }
-
-
+            => !EqualityComparer<T>.Default.Equals(val1, val2);
     }
 }

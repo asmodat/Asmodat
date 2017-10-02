@@ -288,15 +288,17 @@ namespace Asmodat.Extensions.Collections.Generic
 
         public static TKey[] SubArray<TKey>(this TKey[] source, int offset, int count)
         {
-            if (source == null || offset < 0 || count < 0 || (offset + count) > source.Length)
+            if (source == null || offset < 0 || count < 0 || offset >= source.Length)
                 return null;
 
-            if (source.Length == 0 || count == 0)
+            var size = Math.Min(source.Length - offset, count);
+
+            if (source.Length == 0 || size == 0)
                 return new TKey[0];
 
-            TKey[] result = new TKey[count];
+            TKey[] result = new TKey[size];
+            Array.Copy(source, offset, result, 0, size);
 
-            Array.Copy(source, offset, result, 0, count);
             return result;
         }
 
